@@ -32,7 +32,11 @@
   let cols = 80, rows = 45, stepX = 9, stepY = 13;
   let pixels = [];
   let palette = 0;
-  let t0 = performance.now();
+  let growth = 0;
+  let growthTarget = 0;
+  let dragLastY = null;
+  const water = document.getElementById('waterLilies');
+  const message = document.getElementById('lilyMessage');
   let lastPaint = 0;
   let active = true;
   let pixelRatio = 1;
@@ -177,23 +181,60 @@
     ctx.shadowBlur = 0;
   }
 
+  function updateMessage() {
+    if (!message) return;
+    if (growthTarget >= 18) {
+      message.textContent = 'With care, even the smallest beginnings can bloom.';
+    } else if (growthTarget >= 10) {
+      message.textContent = 'Look how far they have grown.';
+    } else if (growthTarget >= 3) {
+      message.textContent = 'A little more care, a little more growth.';
+    } else {
+      message.textContent = 'Water the lilies, or gently drag upward to help them grow.';
+    }
+  }
+
+  function nurture(amount) {
+    growthTarget = Math.min(20, growthTarget + amount);
+    updateMessage();
+  }
+
   function restart() {
-    t0 = performance.now() - (reducedMotion.matches ? 20000 : 0);
-    paint(reducedMotion.matches ? 20 : 0);
+    growth = 0;
+    growthTarget = 0;
+    updateMessage();
+    paint(0);
   }
 
   function animate(now) {
     requestAnimationFrame(animate);
     if (!active || now - lastPaint < 1000 / 22) return;
     lastPaint = now;
-    paint(reducedMotion.matches ? 20 : Math.min(22, (now - t0) / 1000));
+    growth += (growthTarget - growth) * (reducedMotion.matches ? 1 : 0.11);
+    if (Math.abs(growth - growthTarget) < 0.004) growth = growthTarget;
+    paint(growth);
   }
 
+  if (water) water.addEventListener('click', function () { nurture(3.6); });
+  canvas.addEventListener('pointerdown', function (event) {
+    dragLastY = event.clientY;
+    canvas.setPointerCapture(event.pointerId);
+  });
+  canvas.addEventListener('pointermove', function (event) {
+    if (dragLastY === null) return;
+    const upward = dragLastY - event.clientY;
+    dragLastY = event.clientY;
+    if (upward > 0) nurture(upward * 0.047);
+  });
+  function endDrag() { dragLastY = null; }
+  canvas.addEventListener('pointerup', endDrag);
+  canvas.addEventListener('pointercancel', endDrag);
+  canvas.addEventListener('lostpointercapture', endDrag);
   replay.addEventListener('click', restart);
   colorButton.addEventListener('click', function () {
     palette = (palette + 1) % palettes.length;
     colorButton.textContent = 'Colors: ' + palettes[palette].name;
-    restart();
+    paint(growth);
   });
   enter.addEventListener('click', function () {
     const target = document.getElementById('gardenStart');
@@ -207,7 +248,7 @@
       active = !!entries[0].isIntersecting;
     }, { threshold: 0.01 }).observe(canvas);
   }
-  if (reducedMotion.addEventListener) reducedMotion.addEventListener('change', restart);
+  if (reducedMotion.addEventListener) reducedMotion.addEventListener('change', function () { paint(growth); });
   resize();
   restart();
   requestAnimationFrame(animate);
