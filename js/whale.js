@@ -28,7 +28,7 @@
     x=Math.max(60,Math.min(w-60,x));
   }
   addEventListener("resize",resize);resize();
-  canvas.addEventListener("pointerdown", e=>{
+  window.addEventListener("pointerdown", e=>{
     const rect=canvas.getBoundingClientRect();
     const dx=e.clientX-x,dy=e.clientY-y;
     if(Math.abs(dx)<110*scale && Math.abs(dy)<65*scale){
