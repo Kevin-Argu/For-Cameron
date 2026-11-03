@@ -496,3 +496,11 @@ body {
     .ascii-intro-controls { gap: 7px; }
     .ascii-intro-controls button { padding: 10px 12px; font-size: 13px; }
 }
+
+/* Persistent whale travels above Desmos and every page section. */
+#roamingWhale{position:fixed;inset:0;z-index:1000;pointer-events:none;}
+.whale-section{min-height:100svh;display:flex;align-items:center;justify-content:center;text-align:center;background:radial-gradient(ellipse at 50% 55%,#15334b,#060e1b 75%);color:#e1f5fa;padding:5rem 1.5rem;position:relative;overflow:hidden;}
+.whale-section h2{font:normal clamp(38px,7vw,80px) Georgia,serif;letter-spacing:.025em;}
+.whale-section p{font:italic clamp(15px,2vw,20px) Georgia,serif;color:#9abacb;margin-top:1rem;}
+.whale-section .whale-stars{position:absolute;inset:0;opacity:.3;pointer-events:none;background-image:radial-gradient(#d3f5ff 1px,transparent 1px);background-size:67px 71px;}
+.whale-section .whale-words{position:relative;z-index:1;transform:translateY(-22vh);pointer-events:none;}
