@@ -16,12 +16,30 @@
 
     <main>
 
+    <!-- Interactive ASCII lily garden -->
+    <section class="ascii-intro" aria-label="Grow the ASCII lilies">
+        <div class="ascii-intro-heading">
+            <p class="ascii-kicker">a little something for you</p>
+            <h1>Some things grow with a little care.</h1>
+            <p id="lilyMessage" aria-live="polite">Water the lilies, or gently drag upward to help them grow.</p>
+        </div>
+        <canvas id="asciiLiliesCanvas" aria-label="Animated lilies drawn entirely from colored ASCII characters. Drag upward to grow them."></canvas>
+        <div class="ascii-intro-controls">
+            <button id="waterLilies" type="button">♡ Water the lilies</button>
+            <button id="colorLilies" type="button">Colors: Pink</button>
+            <button id="replayLilies" type="button">Start again</button>
+            <button id="enterGarden" class="ascii-enter" type="button">Enter the garden ↓</button>
+        </div>
+        <p class="ascii-hint">Every little bit of care makes something beautiful grow.</p>
+    </section>
+
+
         <!-- ========================================
              PAGE 1
              CAMERON + DESMOS FLOWERS
         ========================================= -->
 
-        <section class="hero">
+        <section class="hero" id="gardenStart">
 
             <div class="desmos-wrapper">
 
@@ -108,6 +126,9 @@
     <!-- ========================================
          OUR JAVASCRIPT
     ========================================= -->
+
+    <!-- ASCII lilies intro -->
+    <script src="js/ascii-lilies.js"></script>
 
     <!-- Flowers -->
     <script src="js/flowers.js"></script>
