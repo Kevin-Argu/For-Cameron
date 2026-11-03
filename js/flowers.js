@@ -38,7 +38,8 @@ const flowerRevealGroups = {
     petunia: [],
     plumeria: [],
     hibiscus: [],
-    lilac: []
+    lilac: [],
+    wisteria: []
 };
 
 function registerFlowerReveal(id, kind, opacity) {
@@ -515,6 +516,65 @@ addLilacBloom({
 
 
 // ============================================================
+// WISTERIA 1–16 — hanging above Cameron
+// Restored coordinates and sizes from the earlier Desmos design.
+// ============================================================
+const wisteriaOriginal = [
+    [420,170,12], [425,180,12], [417,183,11], [428,191,12],
+    [421,194,13], [416,188,15], [424,200,14], [419,205,15],
+    [427,212,14], [422,217,15], [418,223,16], [426,229,16],
+    [421,233,15], [429,236,14], [424,240,16], [430,245,17]
+];
+
+const WISTERIA_X = 0.1, WISTERIA_Y = 5.35;
+const WISTERIA_SCALE_X = 0.046, WISTERIA_SCALE_Y = 0.039;
+const WISTERIA_SIZE = 0.041;
+
+function addWisteriaBloom(i, originalX, originalY, size) {
+    const x = WISTERIA_X + (originalX - 423) * WISTERIA_SCALE_X;
+    const y = WISTERIA_Y - (originalY - 170) * WISTERIA_SCALE_Y;
+    const r = size * WISTERIA_SIZE;
+    const id = "wisteria_" + i;
+
+    const curve = (factor, shift = 6) => {
+        const radius = (r * factor) + "\\sin(\\tan(\\sin(t))+" + shift + ")";
+        return "(" + radius + "\\cos(t)+" + x + "," +
+                    radius + "\\sin(t)+" + y + ")";
+    };
+
+    [
+        ["outer", 1, "#b56dde"],
+        ["p80", 0.8, "#d7b3f2"],
+        ["p60", 0.6, "#c99be9"],
+        ["p40", 0.4, "#d7b3f2"],
+        ["p20", 0.2, "#ead1f6"]
+    ].forEach(([layer, factor, color]) => {
+        addFilledCurve(id + "_" + layer, curve(factor), color);
+    });
+    addLineCurve(id + "_accent", curve(0.85, 3), "#9a56d1", 1.7);
+
+    const ivoryR = (r * .18) + "\\log_{2}(\\sin(t)+2)";
+    const goldR = (r * .15) + "\\log_{2}(\\cos(\\sin(t)))";
+
+    addFilledCurve(id + "_ivory",
+        "(" + ivoryR + "\\cos(t)+" + x + "," +
+              ivoryR + "\\sin(t)+" + y + ")", "#f6f0dc");
+
+    addLineCurve(id + "_gold",
+        "(" + goldR + "\\cos(t)+" + x + "," +
+              goldR + "\\sin(t)+" + y + ")", "#efe08e", 2);
+}
+
+// A Desmos vine that moves with its blossoms when panned/zoomed.
+addLineCurve("wisteria_stem", "(0.1+0.08\\sin(2t),5.65-t)",
+    "#8b9672", 2, "3.5");
+
+wisteriaOriginal.forEach(([x, y, size], index) => {
+    addWisteriaBloom(index + 1, x, y, size);
+});
+
+
+// ============================================================
 // CLICKABLE FLOWER MATH
 // ============================================================
 
@@ -601,6 +661,13 @@ t - 1`
     },
 
 
+    wisteria: {
+        title: "Wisteria",
+        note: "Sixteen blossoms hang in a cascading cluster. Layered parametric curves create each individual flower.",
+        equation: "x(t) = R sin(tan(sin(t)) + 6) cos(t) + X\n\ny(t) = R sin(tan(sin(t)) + 6) sin(t) + Y",
+        details: "Wisteria 1–16\nLayer sizes: 1, 0.8, 0.6, 0.4, 0.2\nAccent phase: +3\nInner details: log₂(sin(t)+2) and log₂(cos(sin(t)))"
+    },
+
     lilac: {
         title: "Lilac",
 
@@ -672,6 +739,14 @@ const flowerClickAreas = [
         cy: -2.3,
         width: 6.0,
         height: 5.1
+    },
+
+    {
+        id: "wisteria",
+        cx: 0.1,
+        cy: 3.85,
+        width: 1.7,
+        height: 3.8
     }
 
 ];
@@ -1280,6 +1355,8 @@ function closeFlowerMath() {
 // CREATE THE CLICKABLE FLOWER AREAS
 // ============================================================
 
+const flowerZoneButtons = [];
+
 flowerClickAreas.forEach(
     (flower) => {
 
@@ -1340,9 +1417,36 @@ flowerClickAreas.forEach(
         flowerClickLayer.appendChild(
             button
         );
+        flowerZoneButtons.push({ flower, button });
 
     }
 );
+
+// Keep each clickable region on its actual Desmos flower, even
+// when the graph is moved or zoomed.
+function updateFlowerClickPositions() {
+    if (typeof flowerCalculator.mathToPixels !== "function") return;
+    flowerZoneButtons.forEach(({ flower, button }) => {
+        const a = flowerCalculator.mathToPixels({
+            x: flower.cx - flower.width / 2,
+            y: flower.cy + flower.height / 2
+        });
+        const b = flowerCalculator.mathToPixels({
+            x: flower.cx + flower.width / 2,
+            y: flower.cy - flower.height / 2
+        });
+        if (![a.x, a.y, b.x, b.y].every(Number.isFinite)) return;
+        button.style.left = a.x + "px";
+        button.style.top = a.y + "px";
+        button.style.width = Math.max(0, b.x - a.x) + "px";
+        button.style.height = Math.max(0, b.y - a.y) + "px";
+    });
+}
+if (typeof flowerCalculator.observe === "function") {
+    flowerCalculator.observe("graphpaperBounds", updateFlowerClickPositions);
+}
+window.addEventListener("resize", updateFlowerClickPositions);
+updateFlowerClickPositions();
 
 
 // ============================================================
@@ -1386,7 +1490,7 @@ document.addEventListener(
 // scrolled into view (including via Enter the garden).
 // ============================================================
 
-const flowerRevealOrder = ["sakura", "petunia", "plumeria", "hibiscus", "lilac"];
+const flowerRevealOrder = ["sakura", "petunia", "plumeria", "hibiscus", "lilac", "wisteria"];
 const flowerRevealReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 function updateFlowerReveal(name, progress) {
