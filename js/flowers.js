@@ -564,7 +564,7 @@ function addWisteriaBloom(number, x, y, r, phase) {
     // This produces a recognizable blossom, not a circular disk.
     function petal(factor, rotation) {
         const radial = (r * factor).toFixed(3) +
-            "(0.46+0.54\\cos(4(t-" + rotation.toFixed(3) + ")))";
+            "(0.54+0.46\\cos(4(t-" + rotation.toFixed(3) + ")))";
         return "(" + radial + "\\cos(t)" + wisteriaOffset(x) +
             "," + radial + "\\sin(t)" + wisteriaOffset(y) + ")";
     }
@@ -678,7 +678,7 @@ t - 1`
     wisteria: {
         title: "Wisteria",
         note: "Sixteen four-petaled blossoms form a soft, tapered hanging cluster. Each flower uses a parametric petal curve, with different sizes, positions, and rotations.",
-        equation: "r(t) = R[0.46 + 0.54 cos(4(t − φ))]\n\nx(t) = r(t) cos(t) + X\n\ny(t) = r(t) sin(t) + Y",
+        equation: "r(t) = R[0.54 + 0.46 cos(4(t − φ))]\n\nx(t) = r(t) cos(t) + X\n\ny(t) = r(t) sin(t) + Y",
         details: "Wisteria 1–16\nR controls blossom size\nφ rotates the four petals\nX and Y position each blossom\nAn inner 0.72R layer adds shading\nSmall ellipse curves form the pale flower centers."
     },
 
