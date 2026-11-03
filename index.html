@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cameron</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+
+<body>
+
+    <main>
+
+        <!-- ========================================
+             PAGE 1
+             CAMERON + DESMOS FLOWERS
+        ========================================= -->
+
+        <section class="hero">
+
+            <div class="desmos-wrapper">
+
+                <!-- DESMOS FLOWER GRAPH -->
+                <div id="flowerCalculator"></div>
+
+
+                <!-- CAMERON -->
+                <h1 class="cameron-title">
+                    Cameron.
+                </h1>
+
+
+                <!--
+                    LOCK LAYER
+
+                    When this layer is active,
+                    scrolling moves the WEBSITE
+                    instead of moving Desmos.
+                -->
+                <div
+                    class="desmos-lock"
+                    id="desmosLock"
+                >
+
+                    <button
+                        class="explore-button"
+                        id="exploreButton"
+                    >
+                        Explore
+                    </button>
+
+                </div>
+
+
+                <!--
+                    DONE BUTTON
+
+                    Only appears while Desmos
+                    is interactive.
+                -->
+                <button
+                    class="done-button"
+                    id="doneButton"
+                >
+                    Done
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ========================================
+             PAGE 2
+             DESMOS HEART
+        ========================================= -->
+
+        <section class="heart-section">
+
+            <div id="heartCalculator"></div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- ========================================
+         DESMOS API
+
+         PASTE YOUR API KEY WHERE IT SAYS:
+
+         MYAPIHERE
+    ========================================= -->
+
+    <script
+        src="https://www.desmos.com/api/v1.12/calculator.js?apiKey=b836d5b9911b48079c3f012e7dff2ae0">
+    </script>
+
+
+
+    <!-- ========================================
+         OUR JAVASCRIPT
+    ========================================= -->
+
+    <!-- Flowers -->
+    <script src="js/flowers.js"></script>
+
+    <!-- Heart -->
+    <script src="js/heart.js"></script>
+
+    <!-- Explore / Done interaction -->
+    <script src="js/main.js"></script>
+
+
+</body>
+
+</html>
