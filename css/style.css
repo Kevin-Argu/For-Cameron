@@ -404,3 +404,95 @@ body {
     }
 
 }
+/* ========================================
+   OPENING: INTERACTIVE ASCII LILIES
+======================================== */
+.ascii-intro {
+    position: relative;
+    min-height: 100svh;
+    overflow: hidden;
+    background: #040609;
+    color: #f7e9ef;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 54px 18px 26px;
+    isolation: isolate;
+}
+.ascii-intro-heading {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    pointer-events: none;
+}
+.ascii-kicker {
+    color: #c7a6b7;
+    font-size: 13px;
+    letter-spacing: .17em;
+    text-transform: uppercase;
+}
+.ascii-intro h1 {
+    font-weight: normal;
+    font-size: clamp(23px, 3.5vw, 42px);
+    margin: 12px 0;
+}
+#lilyMessage {
+    font-size: clamp(13px, 1.6vw, 16px);
+    color: #c4b9bf;
+}
+#asciiLiliesCanvas {
+    display: block;
+    width: min(100%, 900px);
+    height: min(62svh, 650px);
+    flex: 0 1 auto;
+    min-height: 270px;
+    cursor: ns-resize;
+    touch-action: none;
+    user-select: none;
+}
+.ascii-intro-controls {
+    display: flex;
+    position: relative;
+    z-index: 2;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-width: 900px;
+}
+.ascii-intro-controls button {
+    font: 14px Georgia, "Times New Roman", serif;
+    color: #f9e5ed;
+    background: #17151b;
+    border: 1px solid #68515f;
+    border-radius: 999px;
+    padding: 12px 17px;
+    min-height: 44px;
+    cursor: pointer;
+}
+.ascii-intro-controls button:hover,
+.ascii-intro-controls button:focus-visible {
+    background: #382432;
+    border-color: #dcb5c7;
+}
+.ascii-intro-controls .ascii-enter {
+    background: #f2c9dc;
+    color: #2b1824;
+    border-color: #f2c9dc;
+}
+.ascii-intro-controls .ascii-enter:hover {
+    color: #fff;
+}
+.ascii-hint {
+    text-align: center;
+    margin-top: 16px;
+    color: #9c8d96;
+    font-size: 12px;
+    font-style: italic;
+}
+@media (max-width: 600px) {
+    .ascii-intro { padding-top: 34px; }
+    #asciiLiliesCanvas { height: 48svh; min-height: 240px; }
+    .ascii-intro-controls { gap: 7px; }
+    .ascii-intro-controls button { padding: 10px 12px; font-size: 13px; }
+}
