@@ -31,25 +31,49 @@ flowerCalculator.setMathBounds({
     top: 6
 });
 
+// Store the original opacity of each individual Desmos curve.
+// The actual equations remain unchanged. We animate only their visibility.
+const flowerRevealGroups = {
+    sakura: [],
+    petunia: [],
+    plumeria: [],
+    hibiscus: [],
+    lilac: []
+};
+
+function registerFlowerReveal(id, kind, opacity) {
+    const group = id.startsWith("lilac_")
+        ? "lilac"
+        : Object.keys(flowerRevealGroups).find(name => id.startsWith(name));
+
+    if (group) {
+        flowerRevealGroups[group].push({ id, kind, opacity });
+    }
+}
+
 function addFilledCurve(id, latex, color, max = "12\\pi", fillOpacity = 1) {
+    registerFlowerReveal(id, "fill", fillOpacity);
+
     flowerCalculator.setExpression({
         id,
         latex,
         color,
         fill: true,
-        fillOpacity,
+        fillOpacity: 0,
         lineOpacity: 0,
         parametricDomain: { min: "0", max }
     });
 }
 
 function addLineCurve(id, latex, color, lineWidth = 2, max = "12\\pi", lineOpacity = 1) {
+    registerFlowerReveal(id, "line", lineOpacity);
+
     flowerCalculator.setExpression({
         id,
         latex,
         color,
         lineWidth,
-        lineOpacity,
+        lineOpacity: 0,
         parametricDomain: { min: "0", max }
     });
 }
@@ -1354,3 +1378,115 @@ document.addEventListener(
 
     }
 );
+
+// ============================================================
+// ONE-BY-ONE FLOWER REVEAL
+// The individual Desmos formulas are preserved; only their
+// draw opacities change. Animation begins when this section is
+// scrolled into view (including via Enter the garden).
+// ============================================================
+
+const flowerRevealOrder = ["sakura", "petunia", "plumeria", "hibiscus", "lilac"];
+const flowerRevealReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+function updateFlowerReveal(name, progress) {
+    const fraction = Math.max(0, Math.min(1, progress));
+    const updates = flowerRevealGroups[name].map(curve => ({
+        id: curve.id,
+        [curve.kind === "fill" ? "fillOpacity" : "lineOpacity"]:
+            Math.min(1, curve.opacity * fraction)
+    }));
+
+    if (updates.length) {
+        flowerCalculator.setExpressions(updates);
+    }
+}
+
+function finishFlowerReveal() {
+    flowerRevealOrder.forEach(name => updateFlowerReveal(name, 1));
+    flowerMathHint.style.opacity = "1";
+}
+
+let flowerRevealStarted = false;
+
+function startFlowerReveal() {
+    if (flowerRevealStarted) return;
+    flowerRevealStarted = true;
+
+    // Honor accessibility preferences and avoid unnecessary motion.
+    if (flowerRevealReducedMotion.matches) {
+        finishFlowerReveal();
+        return;
+    }
+
+    const delayBetween = 540;
+    const fadeDuration = 880;
+    let previousFrame = -1;
+
+    function animateReveal(now) {
+        if (!startFlowerReveal.startTime) {
+            startFlowerReveal.startTime = now;
+        }
+
+        const elapsed = now - startFlowerReveal.startTime;
+
+        // Desmos updates are batched and capped around 15 FPS
+        // so the equations don't redraw needlessly every frame.
+        const frameNumber = Math.floor(elapsed / 66);
+        if (frameNumber !== previousFrame) {
+            previousFrame = frameNumber;
+
+            flowerRevealOrder.forEach((name, index) => {
+                const local = (elapsed - index * delayBetween) / fadeDuration;
+                if (local <= 0) return;
+
+                const t = Math.max(0, Math.min(1, local));
+                const smooth = t * t * (3 - 2 * t);
+                updateFlowerReveal(name, smooth);
+            });
+        }
+
+        const total = (flowerRevealOrder.length - 1) * delayBetween + fadeDuration;
+        if (elapsed < total) {
+            window.requestAnimationFrame(animateReveal);
+        } else {
+            finishFlowerReveal();
+        }
+    }
+
+    window.requestAnimationFrame(animateReveal);
+}
+
+flowerMathHint.style.opacity = "0";
+flowerMathHint.style.transition = "opacity 450ms ease";
+
+const cameronSection = document.getElementById("gardenStart") || flowerElement;
+
+if ("IntersectionObserver" in window) {
+    const flowerRevealObserver = new IntersectionObserver(entries => {
+        if (!entries.some(entry => entry.isIntersecting)) return;
+        flowerRevealObserver.disconnect();
+        startFlowerReveal();
+    }, { threshold: 0.22 });
+
+    flowerRevealObserver.observe(cameronSection);
+} else {
+    const onScrollCheck = () => {
+        const box = cameronSection.getBoundingClientRect();
+        if (box.top < innerHeight * 0.78 && box.bottom > innerHeight * 0.22) {
+            window.removeEventListener("scroll", onScrollCheck);
+            startFlowerReveal();
+        }
+    };
+    window.addEventListener("scroll", onScrollCheck, { passive: true });
+    onScrollCheck();
+}
+
+// In case reduced motion is enabled after animation has begun:
+if (flowerRevealReducedMotion.addEventListener) {
+    flowerRevealReducedMotion.addEventListener("change", event => {
+        if (event.matches && flowerRevealStarted) {
+            finishFlowerReveal();
+        }
+    });
+}
