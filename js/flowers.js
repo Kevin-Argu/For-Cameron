@@ -516,66 +516,78 @@ addLilacBloom({
 
 
 // ============================================================
-// WISTERIA 1–16 — hanging above Cameron
-// Restored coordinates and sizes from the earlier Desmos design.
+// WISTERIA 1–16 — a tapered hanging cluster above Cameron.
+// Each bloom is a four-petal parametric flower, not concentric circles.
+// Wisteria stays a single reveal group, like the Lilac.
 // ============================================================
-const wisteriaOriginal = [
-    [420,170,12], [425,180,12], [417,183,11], [428,191,12],
-    [421,194,13], [416,188,15], [424,200,14], [419,205,15],
-    [427,212,14], [422,217,15], [418,223,16], [426,229,16],
-    [421,233,15], [429,236,14], [424,240,16], [430,245,17]
+
+// Each entry is [x, y, radius, rotation in radians] in Desmos coordinates.
+// The staggered positions taper toward the hanging tip.
+const wisteriaBlooms = [
+    [-0.78, 5.14, 0.48, 0.10], [ 0.04, 5.31, 0.52, 0.32],
+    [ 0.87, 5.12, 0.48, 0.02], [-1.15, 4.66, 0.48, 0.27],
+    [-0.33, 4.71, 0.52, 0.08], [ 0.49, 4.65, 0.50, 0.24],
+    [ 1.15, 4.55, 0.44, 0.19], [-0.86, 4.13, 0.46, 0.22],
+    [-0.03, 4.16, 0.48, 0.04], [ 0.78, 4.02, 0.45, 0.35],
+    [-0.54, 3.59, 0.42, 0.13], [ 0.27, 3.56, 0.43, 0.31],
+    [ 0.82, 3.41, 0.36, 0.16], [-0.24, 3.05, 0.37, 0.35],
+    [ 0.37, 2.94, 0.35, 0.03], [ 0.07, 2.55, 0.30, 0.25]
 ];
 
-const WISTERIA_X = 0.1, WISTERIA_Y = 5.35;
-const WISTERIA_SCALE_X = 0.046, WISTERIA_SCALE_Y = 0.039;
-const WISTERIA_SIZE = 0.041;
-
-function addWisteriaBloom(i, originalX, originalY, size) {
-    const x = WISTERIA_X + (originalX - 423) * WISTERIA_SCALE_X;
-    const y = WISTERIA_Y - (originalY - 170) * WISTERIA_SCALE_Y;
-    const r = size * WISTERIA_SIZE;
-    const id = "wisteria_" + i;
-    const offsetX = (x < 0 ? "" : "+") + x;
-    const offsetY = (y < 0 ? "" : "+") + y;
-
-    const curve = (factor, shift = 6) => {
-        const radius = (r * factor) + "\\sin(\\tan(\\sin(t))+" + shift + ")";
-        return "(" + radius + "\\cos(t)" + offsetX + "," +
-                    radius + "\\sin(t)" + offsetY + ")";
-    };
-
-    [
-        ["outer", 1, "#b56dde"],
-        ["p80", 0.8, "#d7b3f2"],
-        ["p60", 0.6, "#c99be9"],
-        ["p40", 0.4, "#d7b3f2"],
-        ["p20", 0.2, "#ead1f6"]
-    ].forEach(([layer, factor, color]) => {
-        addFilledCurve(id + "_" + layer, curve(factor), color);
-    });
-    addLineCurve(id + "_accent", curve(0.85, 3), "#9a56d1", 1.7);
-
-    const ivoryR = (r * .18) + "\\log_{2}(\\sin(t)+2)";
-    const goldR = (r * .15) + "\\log_{2}(\\cos(\\sin(t)))";
-
-    addFilledCurve(id + "_ivory",
-        "(" + ivoryR + "\\cos(t)" + offsetX + "," +
-              ivoryR + "\\sin(t)" + offsetY + ")", "#f6f0dc");
-
-    addLineCurve(id + "_gold",
-        "(" + goldR + "\\cos(t)" + offsetX + "," +
-              goldR + "\\sin(t)" + offsetY + ")", "#efe08e", 2);
+function wisteriaOffset(value) {
+    // Desmos accepts +0.5 and -0.5, but not '+-0.5'.
+    return value < 0 ? value.toFixed(3) : "+" + value.toFixed(3);
 }
 
-// A Desmos vine that moves with its blossoms when panned/zoomed.
-addLineCurve("wisteria_stem", "(0.1+0.08\\sin(2t),5.65-t)",
-    "#8b9672", 2, "3.5");
+function wisteriaEllipse(x, y, rx, ry) {
+    return "(" + rx.toFixed(3) + "\\cos(t)" + wisteriaOffset(x) +
+        "," + ry.toFixed(3) + "\\sin(t)" + wisteriaOffset(y) + ")";
+}
 
-wisteriaOriginal.forEach(([x, y, size], index) => {
-    addWisteriaBloom(index + 1, x, y, size);
+// A gently curved vine, plotted behind the flowers.
+addLineCurve("wisteria_vine",
+    "(0.08+0.13\\sin(1.3t),5.80-t)",
+    "#76936b", 2.2, "3.35", 0.70);
+
+function addWisteriaBloom(number, x, y, r, phase) {
+    const id = "wisteria_" + number;
+
+    // Join every blossom back to the vine with a short, thin stalk.
+    const vineX = 0.08 + 0.13 * Math.sin(1.3 * (5.80 - y));
+    const stalk = "(" + (x - vineX).toFixed(3) + "t" +
+        wisteriaOffset(vineX) + "," +
+        (y - (y + 0.24)).toFixed(3) + "t" +
+        wisteriaOffset(y + 0.24) + ")";
+    addLineCurve(id + "_stalk", stalk, "#82a078", 1.25, "1", 0.8);
+
+    // A radial quatrefoil with deep indentations between the petals.
+    // This produces a recognizable blossom, not a circular disk.
+    function petal(factor, rotation) {
+        const radial = (r * factor).toFixed(3) +
+            "(0.46+0.54\\cos(4(t-" + rotation.toFixed(3) + ")))";
+        return "(" + radial + "\\cos(t)" + wisteriaOffset(x) +
+            "," + radial + "\\sin(t)" + wisteriaOffset(y) + ")";
+    }
+
+    const outerColor = number % 4 === 0 ? "#9964be" : "#ae7bd1";
+    const innerColor = number % 3 === 0 ? "#e1bff1" : "#cfa7e8";
+
+    addFilledCurve(id + "_petals", petal(1, phase), outerColor, "2\\pi");
+    addFilledCurve(id + "_inner", petal(0.72, phase), innerColor, "2\\pi", 0.96);
+
+    // Soft centers: tiny circles, not rings around the flowers.
+    addFilledCurve(id + "_throat", wisteriaEllipse(x, y, r * 0.14, r * 0.14),
+        "#fff7df", "2\\pi");
+    addFilledCurve(id + "_pollen", wisteriaEllipse(x, y, r * 0.066, r * 0.066),
+        "#ecd57e", "2\\pi");
+}
+
+wisteriaBlooms.forEach(([x, y, radius, rotation], index) => {
+    addWisteriaBloom(index + 1, x, y, radius, rotation);
 });
 
 
+// ============================================================
 // ============================================================
 // CLICKABLE FLOWER MATH
 // ============================================================
@@ -1486,113 +1498,129 @@ document.addEventListener(
 );
 
 // ============================================================
-// ONE-BY-ONE FLOWER REVEAL
-// The individual Desmos formulas are preserved; only their
-// draw opacities change. Animation begins when this section is
-// scrolled into view (including via Enter the garden).
+// ONE-BY-ONE FLOWER REVEAL — replay on each re-entry.
+// Sakura, Petunia, Plumeria, Hibiscus, Lilac cluster, Wisteria cluster.
+// Both flower clusters fade in together as their own groups.
 // ============================================================
 
 const flowerRevealOrder = ["sakura", "petunia", "plumeria", "hibiscus", "lilac", "wisteria"];
 const flowerRevealReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+const flowerFadeDuration = 860;
+const flowerStagger = 540;
 
 function updateFlowerReveal(name, progress) {
-    const fraction = Math.max(0, Math.min(1, progress));
+    const p = Math.max(0, Math.min(1, progress));
     const updates = flowerRevealGroups[name].map(curve => ({
         id: curve.id,
         [curve.kind === "fill" ? "fillOpacity" : "lineOpacity"]:
-            Math.min(1, curve.opacity * fraction)
+            Math.min(1, curve.opacity * p)
     }));
-
-    if (updates.length) {
-        flowerCalculator.setExpressions(updates);
-    }
+    if (updates.length) flowerCalculator.setExpressions(updates);
 }
 
-function finishFlowerReveal() {
+function resetFlowerReveal() {
+    flowerRevealOrder.forEach(name => updateFlowerReveal(name, 0));
+    flowerMathHint.style.opacity = "0";
+}
+
+function completeFlowerReveal() {
     flowerRevealOrder.forEach(name => updateFlowerReveal(name, 1));
     flowerMathHint.style.opacity = "1";
 }
 
-let flowerRevealStarted = false;
+let flowerRevealVisible = false;
+let flowerRevealGeneration = 0;
 
-function startFlowerReveal() {
-    if (flowerRevealStarted) return;
-    flowerRevealStarted = true;
+function revealFlowersAgain() {
+    if (flowerRevealVisible) return;
+    flowerRevealVisible = true;
 
-    // Honor accessibility preferences and avoid unnecessary motion.
+    // Invalidate any animation belonging to an earlier visit.
+    const generation = ++flowerRevealGeneration;
+    resetFlowerReveal();
+
     if (flowerRevealReducedMotion.matches) {
-        finishFlowerReveal();
+        completeFlowerReveal();
         return;
     }
 
-    const delayBetween = 540;
-    const fadeDuration = 880;
-    let previousFrame = -1;
+    let startTime = null;
+    let lastTick = -1;
+    const total = (flowerRevealOrder.length - 1) * flowerStagger + flowerFadeDuration;
 
-    function animateReveal(now) {
-        if (!startFlowerReveal.startTime) {
-            startFlowerReveal.startTime = now;
-        }
+    function step(now) {
+        if (!flowerRevealVisible || generation !== flowerRevealGeneration) return;
+        if (startTime === null) startTime = now;
 
-        const elapsed = now - startFlowerReveal.startTime;
+        const elapsed = now - startTime;
+        const tick = Math.floor(elapsed / 70); // limit Desmos redraws
 
-        // Desmos updates are batched and capped around 15 FPS
-        // so the equations don't redraw needlessly every frame.
-        const frameNumber = Math.floor(elapsed / 66);
-        if (frameNumber !== previousFrame) {
-            previousFrame = frameNumber;
-
-            flowerRevealOrder.forEach((name, index) => {
-                const local = (elapsed - index * delayBetween) / fadeDuration;
-                if (local <= 0) return;
-
-                const t = Math.max(0, Math.min(1, local));
-                const smooth = t * t * (3 - 2 * t);
-                updateFlowerReveal(name, smooth);
+        if (tick !== lastTick) {
+            lastTick = tick;
+            flowerRevealOrder.forEach((name, i) => {
+                const progress = (elapsed - i * flowerStagger) / flowerFadeDuration;
+                if (progress <= 0) return;
+                const t = Math.max(0, Math.min(1, progress));
+                updateFlowerReveal(name, t * t * (3 - 2 * t));
             });
         }
 
-        const total = (flowerRevealOrder.length - 1) * delayBetween + fadeDuration;
         if (elapsed < total) {
-            window.requestAnimationFrame(animateReveal);
+            window.requestAnimationFrame(step);
         } else {
-            finishFlowerReveal();
+            completeFlowerReveal();
         }
     }
 
-    window.requestAnimationFrame(animateReveal);
+    window.requestAnimationFrame(step);
+}
+
+function leaveFlowerSection() {
+    if (!flowerRevealVisible) return;
+    flowerRevealVisible = false;
+    flowerRevealGeneration++; // cancel outstanding animation frames
+    resetFlowerReveal();      // prepare for the next scroll into view
 }
 
 flowerMathHint.style.opacity = "0";
-flowerMathHint.style.transition = "opacity 450ms ease";
+flowerMathHint.style.transition = "opacity 400ms ease";
 
 const cameronSection = document.getElementById("gardenStart") || flowerElement;
 
+// A small exit/entry gap prevents accidental repeated restarts as the
+// section crosses one threshold during slow scrolling.
 if ("IntersectionObserver" in window) {
-    const flowerRevealObserver = new IntersectionObserver(entries => {
-        if (!entries.some(entry => entry.isIntersecting)) return;
-        flowerRevealObserver.disconnect();
-        startFlowerReveal();
-    }, { threshold: 0.22 });
+    const observer = new IntersectionObserver(entries => {
+        const entry = entries[0];
+        if (entry.intersectionRatio >= 0.35) {
+            revealFlowersAgain();
+        } else if (entry.intersectionRatio <= 0.08) {
+            leaveFlowerSection();
+        }
+    }, { threshold: [0, 0.08, 0.35, 1] });
 
-    flowerRevealObserver.observe(cameronSection);
+    observer.observe(cameronSection);
 } else {
     const onScrollCheck = () => {
-        const box = cameronSection.getBoundingClientRect();
-        if (box.top < innerHeight * 0.78 && box.bottom > innerHeight * 0.22) {
-            window.removeEventListener("scroll", onScrollCheck);
-            startFlowerReveal();
-        }
+        const rect = cameronSection.getBoundingClientRect();
+        const visible = Math.max(0,
+            Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0));
+        const fraction = visible / Math.max(1, Math.min(rect.height, window.innerHeight));
+
+        if (fraction >= 0.35) revealFlowersAgain();
+        else if (fraction <= 0.08) leaveFlowerSection();
     };
     window.addEventListener("scroll", onScrollCheck, { passive: true });
+    window.addEventListener("resize", onScrollCheck);
     onScrollCheck();
 }
 
-// In case reduced motion is enabled after animation has begun:
+// Accessibility: reveal immediately when reduced-motion is enabled.
 if (flowerRevealReducedMotion.addEventListener) {
     flowerRevealReducedMotion.addEventListener("change", event => {
-        if (event.matches && flowerRevealStarted) {
-            finishFlowerReveal();
+        if (event.matches && flowerRevealVisible) {
+            flowerRevealGeneration++;
+            completeFlowerReveal();
         }
     });
 }
