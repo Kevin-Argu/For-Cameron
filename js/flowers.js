@@ -582,8 +582,11 @@ function addWisteriaBloom(number, x, y, r, phase) {
         "#ecd57e", "2\\pi");
 }
 
+// Make each of the sixteen blossoms a little fuller, keeping the
+// same positions, equations, vine, and synchronized fade animation.
+const wisteriaSizeBoost = 1.17;
 wisteriaBlooms.forEach(([x, y, radius, rotation], index) => {
-    addWisteriaBloom(index + 1, x, y, radius, rotation);
+    addWisteriaBloom(index + 1, x, y, radius * wisteriaSizeBoost, rotation);
 });
 
 
