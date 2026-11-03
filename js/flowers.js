@@ -677,9 +677,9 @@ t - 1`
 
     wisteria: {
         title: "Wisteria",
-        note: "Sixteen blossoms hang in a cascading cluster. Layered parametric curves create each individual flower.",
-        equation: "x(t) = R sin(tan(sin(t)) + 6) cos(t) + X\n\ny(t) = R sin(tan(sin(t)) + 6) sin(t) + Y",
-        details: "Wisteria 1–16\nLayer sizes: 1, 0.8, 0.6, 0.4, 0.2\nAccent phase: +3\nInner details: log₂(sin(t)+2) and log₂(cos(sin(t)))"
+        note: "Sixteen four-petaled blossoms form a soft, tapered hanging cluster. Each flower uses a parametric petal curve, with different sizes, positions, and rotations.",
+        equation: "r(t) = R[0.46 + 0.54 cos(4(t − φ))]\n\nx(t) = r(t) cos(t) + X\n\ny(t) = r(t) sin(t) + Y",
+        details: "Wisteria 1–16\nR controls blossom size\nφ rotates the four petals\nX and Y position each blossom\nAn inner 0.72R layer adds shading\nSmall ellipse curves form the pale flower centers."
     },
 
     lilac: {
@@ -757,10 +757,10 @@ const flowerClickAreas = [
 
     {
         id: "wisteria",
-        cx: 0.1,
-        cy: 3.85,
-        width: 1.7,
-        height: 3.8
+        cx: 0,
+        cy: 4.0,
+        width: 3.7,
+        height: 4.0
     }
 
 ];
