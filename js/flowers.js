@@ -535,11 +535,13 @@ function addWisteriaBloom(i, originalX, originalY, size) {
     const y = WISTERIA_Y - (originalY - 170) * WISTERIA_SCALE_Y;
     const r = size * WISTERIA_SIZE;
     const id = "wisteria_" + i;
+    const offsetX = (x < 0 ? "" : "+") + x;
+    const offsetY = (y < 0 ? "" : "+") + y;
 
     const curve = (factor, shift = 6) => {
         const radius = (r * factor) + "\\sin(\\tan(\\sin(t))+" + shift + ")";
-        return "(" + radius + "\\cos(t)+" + x + "," +
-                    radius + "\\sin(t)+" + y + ")";
+        return "(" + radius + "\\cos(t)" + offsetX + "," +
+                    radius + "\\sin(t)" + offsetY + ")";
     };
 
     [
@@ -557,12 +559,12 @@ function addWisteriaBloom(i, originalX, originalY, size) {
     const goldR = (r * .15) + "\\log_{2}(\\cos(\\sin(t)))";
 
     addFilledCurve(id + "_ivory",
-        "(" + ivoryR + "\\cos(t)+" + x + "," +
-              ivoryR + "\\sin(t)+" + y + ")", "#f6f0dc");
+        "(" + ivoryR + "\\cos(t)" + offsetX + "," +
+              ivoryR + "\\sin(t)" + offsetY + ")", "#f6f0dc");
 
     addLineCurve(id + "_gold",
-        "(" + goldR + "\\cos(t)+" + x + "," +
-              goldR + "\\sin(t)+" + y + ")", "#efe08e", 2);
+        "(" + goldR + "\\cos(t)" + offsetX + "," +
+              goldR + "\\sin(t)" + offsetY + ")", "#efe08e", 2);
 }
 
 // A Desmos vine that moves with its blossoms when panned/zoomed.
