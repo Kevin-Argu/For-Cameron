@@ -420,31 +420,10 @@ body {
     padding: 54px 18px 26px;
     isolation: isolate;
 }
-.ascii-intro-heading {
-    position: relative;
-    z-index: 2;
-    text-align: center;
-    pointer-events: none;
-}
-.ascii-kicker {
-    color: #c7a6b7;
-    font-size: 13px;
-    letter-spacing: .17em;
-    text-transform: uppercase;
-}
-.ascii-intro h1 {
-    font-weight: normal;
-    font-size: clamp(23px, 3.5vw, 42px);
-    margin: 12px 0;
-}
-#lilyMessage {
-    font-size: clamp(13px, 1.6vw, 16px);
-    color: #c4b9bf;
-}
 #asciiLiliesCanvas {
     display: block;
     width: min(100%, 900px);
-    height: min(62svh, 650px);
+    height: min(74svh, 720px);
     flex: 0 1 auto;
     min-height: 270px;
     cursor: ns-resize;
@@ -483,16 +462,9 @@ body {
 .ascii-intro-controls .ascii-enter:hover {
     color: #fff;
 }
-.ascii-hint {
-    text-align: center;
-    margin-top: 16px;
-    color: #9c8d96;
-    font-size: 12px;
-    font-style: italic;
-}
 @media (max-width: 600px) {
     .ascii-intro { padding-top: 34px; }
-    #asciiLiliesCanvas { height: 48svh; min-height: 240px; }
+    #asciiLiliesCanvas { height: 62svh; min-height: 240px; }
     .ascii-intro-controls { gap: 7px; }
     .ascii-intro-controls button { padding: 10px 12px; font-size: 13px; }
 }
