@@ -36,7 +36,6 @@
   let growthTarget = 0;
   let dragLastY = null;
   const water = document.getElementById('waterLilies');
-  const message = document.getElementById('lilyMessage');
   let lastPaint = 0;
   let active = true;
   let pixelRatio = 1;
@@ -158,6 +157,56 @@
     glyph(center.x, center.y, '@', p.pollen, 7);
   }
 
+
+  // A bright blue shower, triggered by Water the lilies.
+  // This is rendered with the original lily canvas, without covering buttons.
+  let rainDrops = [];
+
+  function startRain() {
+    const width = canvas.width / pixelRatio;
+    const height = canvas.height / pixelRatio;
+    if (!width || !height) return;
+    rainDrops = Array.from({ length: 105 }, () => ({
+      x: width * (0.12 + Math.random() * 0.76),
+      y: -height * (0.08 + Math.random() * 0.53),
+      speed: 7 + Math.random() * 8,
+      size: 3.3 + Math.random() * 2.9,
+      alpha: 0.65 + Math.random() * 0.35,
+      sway: (Math.random() - 0.5) * 0.8
+    }));
+  }
+
+  function paintRain() {
+    if (!rainDrops.length) return;
+    const height = canvas.height / pixelRatio;
+    ctx.save();
+    ctx.lineCap = 'round';
+    for (const drop of rainDrops) {
+      drop.y += drop.speed;
+      drop.x += drop.sway;
+      if (drop.y > height * 0.94) continue;
+      const { x, y, size } = drop;
+      const fade = y > height * 0.76
+        ? Math.max(0, (height * 0.94 - y) / (height * 0.18)) : 1;
+      ctx.globalAlpha = drop.alpha * fade;
+      ctx.fillStyle = '#60ceff';
+      ctx.shadowColor = '#48c7ff';
+      ctx.shadowBlur = 7;
+      ctx.beginPath();
+      ctx.moveTo(x, y - size * 1.55);
+      ctx.bezierCurveTo(x - size * 0.6, y - size * 0.5,
+                        x - size * 0.85, y + size * 0.2, x, y + size * 0.55);
+      ctx.bezierCurveTo(x + size * 0.85, y + size * 0.2,
+                        x + size * 0.6, y - size * 0.5, x, y - size * 1.55);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = '#d7f6ff';
+      ctx.fillRect(x - size * 0.24, y - size * 0.48, 1.25, 2);
+    }
+    ctx.restore();
+    rainDrops = rainDrops.filter(drop => drop.y <= height * 0.94);
+  }
+
   function paint(t) {
     pixels = new Array(cols * rows);
     stems(t);
@@ -179,30 +228,16 @@
       ctx.fillText(pix.c, x, y);
     }
     ctx.shadowBlur = 0;
-  }
-
-  function updateMessage() {
-    if (!message) return;
-    if (growthTarget >= 18) {
-      message.textContent = 'With care, even the smallest beginnings can bloom.';
-    } else if (growthTarget >= 10) {
-      message.textContent = 'Look how far they have grown.';
-    } else if (growthTarget >= 3) {
-      message.textContent = 'A little more care, a little more growth.';
-    } else {
-      message.textContent = 'Water the lilies, or gently drag upward to help them grow.';
-    }
+    paintRain();
   }
 
   function nurture(amount) {
     growthTarget = Math.min(20, growthTarget + amount);
-    updateMessage();
   }
 
   function restart() {
     growth = 0;
     growthTarget = 0;
-    updateMessage();
     paint(0);
   }
 
@@ -215,7 +250,10 @@
     paint(growth);
   }
 
-  if (water) water.addEventListener('click', function () { nurture(3.6); });
+  if (water) water.addEventListener('click', function () {
+    nurture(3.6);
+    if (!reducedMotion.matches) startRain();
+  });
   canvas.addEventListener('pointerdown', function (event) {
     dragLastY = event.clientY;
     canvas.setPointerCapture(event.pointerId);
