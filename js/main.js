@@ -1,43 +1,44 @@
-// ========================================
-// DESMOS INTERACTION MODE
-// ========================================
+(() => {
+    'use strict';
 
-const desmosLock = document.getElementById("desmosLock");
-const exploreButton = document.getElementById("exploreButton");
-const doneButton = document.getElementById("doneButton");
+    const site = window.CameronSite = {
+        entered: !document.body.classList.contains('peanut-lock'),
+        reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)'),
+        flowerUI: null
+    };
+    window.CameronGraphs = {};
 
+    const garden = document.getElementById('gardenStart');
+    const calculator = document.getElementById('flowerCalculator');
+    const lock = document.getElementById('desmosLock');
+    const explore = document.getElementById('exploreButton');
+    const done = document.getElementById('doneButton');
 
-// ========================================
-// EXPLORE BUTTON
-// ========================================
+    function setExploring(enabled, restoreFocus = false) {
+        if (enabled && explore.disabled) return;
+        garden.classList.toggle('is-exploring', enabled);
+        lock.classList.toggle('unlocked', enabled);
+        calculator.inert = !enabled;
+        explore.hidden = enabled;
+        explore.setAttribute('aria-expanded', String(enabled));
+        done.hidden = !enabled;
+        if (site.flowerUI) site.flowerUI.setInteractive(enabled);
+        if (enabled) done.focus({ preventScroll: true });
+        else if (restoreFocus) explore.focus({ preventScroll: true });
+    }
 
-exploreButton.addEventListener("click", function () {
+    explore.addEventListener('click', () => setExploring(true));
+    done.addEventListener('click', () => setExploring(false, true));
+    document.addEventListener('keydown', event => {
+        if (event.key !== 'Escape' || !garden.classList.contains('is-exploring')) return;
+        if (!site.flowerUI || !site.flowerUI.closeMath(true)) setExploring(false, true);
+        event.preventDefault();
+    });
 
-    // Unlock Desmos
-    desmosLock.classList.add("unlocked");
-
-    // Hide Explore completely
-    exploreButton.classList.add("hidden");
-
-    // Show Done
-    doneButton.classList.add("visible");
-
-});
-
-
-// ========================================
-// DONE BUTTON
-// ========================================
-
-doneButton.addEventListener("click", function () {
-
-    // Lock Desmos
-    desmosLock.classList.remove("unlocked");
-
-    // Hide Done
-    doneButton.classList.remove("visible");
-
-    // Bring Explore back
-    exploreButton.classList.remove("hidden");
-
-});
+    // Leaving a section should never leave its graph in scroll-catching mode.
+    if ('IntersectionObserver' in window) {
+        new IntersectionObserver(entries => {
+            if (!entries[0].isIntersecting) setExploring(false);
+        }).observe(garden);
+    }
+})();

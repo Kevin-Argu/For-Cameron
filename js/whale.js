@@ -11,7 +11,11 @@
   if (!ctx) return;
   const home = document.getElementById("whaleHome");
   const intro = document.querySelector(".ascii-intro");
-  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const site = window.CameronSite;
+  let reduced = site.reducedMotion.matches;
+  let frameId = 0, layoutDirty = true, lastDraw = 0, lastRect = null;
+  let atHome = false, atIntro = true, heartTimer;
+  canvas.setAttribute("aria-hidden", String(!site.entered));
   const clamp = (n,a,b) => Math.max(a, Math.min(b,n));
 
   const whale = [
@@ -48,20 +52,31 @@
     canvas.style.height = h + "px";
     ctx.setTransform(dpr,0,0,dpr,0,0);
     x = clamp(x,0,w);
+    lastRect = null;
+    layoutDirty = true;
+    requestFrame();
   }
   addEventListener("resize",resize,{passive:true});
   addEventListener("scroll",()=>{
     const current = scrollY;
     scrollNudge = clamp(scrollNudge + (current-previousScroll)*.28,-50,75);
     previousScroll = current;
+    layoutDirty = true;
+    requestFrame();
   },{passive:true});
   resize();
 
-  addEventListener("pointerdown",e=>{
+  addEventListener("click",e=>{
+    if (!site.entered || e.target.closest("button, a, input, textarea, select, summary, .flower-math-card")) return;
     if (Math.abs(e.clientX-x) < longest*glyphWidth*scale/2 &&
         Math.abs(e.clientY-y) < whale.length*rowHeight*scale/2) {
       hearts = 1;
       if (!reduced) direction *= -1;
+      else {
+        clearTimeout(heartTimer);
+        heartTimer = setTimeout(() => { hearts = 0; requestFrame(); }, 900);
+      }
+      requestFrame();
     }
   },{passive:true});
 
@@ -97,17 +112,28 @@
   }
 
   function frame(now) {
+    frameId = 0;
+    if (!site.entered || document.hidden) return;
+    if (!reduced && lastDraw && now - lastDraw < 1000 / 60 - .5) { requestFrame(); return; }
+    lastDraw = now;
     const dt = Math.min((now-last||16.67)/16.67,2);
-    last = now; elapsed += dt;
-    ctx.clearRect(0,0,w,h);
-    const r = home && home.getBoundingClientRect();
-    const introRect = intro && intro.getBoundingClientRect();
-    const atHome = !!r && r.top<h*.75 && r.bottom>h*.25;
-    const atIntro = !!introRect && introRect.top<h*.75 && introRect.bottom>h*.25;
+    last = now;
+    if (!reduced) elapsed += dt;
+    // Section geometry only changes when scrolling or resizing, not on every swim frame.
+    if (layoutDirty) {
+      const r = home && home.getBoundingClientRect();
+      const introRect = intro && intro.getBoundingClientRect();
+      atHome = !!r && r.top<h*.75 && r.bottom>h*.25;
+      atIntro = !!introRect && introRect.top<h*.75 && introRect.bottom>h*.25;
+      layoutDirty = false;
+    }
+    if (lastRect) ctx.clearRect(lastRect.x, lastRect.y, lastRect.width, lastRect.height);
     const goalScale = Math.max(.3,Math.min(atHome?1.55:.94,(w-32)/(longest*glyphWidth)));
     const goalY = h*(atHome?.67:atIntro?.69:.64);
     if (reduced) {
-      scale=goalScale; x=atHome?w*.5:w*.77; y=goalY;
+      scale=goalScale;
+      const half = Math.min(w*.47, longest*glyphWidth*scale/2+6);
+      x=clamp(atHome?w*.5:w*.77, half, w-half); y=goalY;
     } else {
       scale += (goalScale-scale)*Math.min(1,.04*dt);
       y += (goalY+scrollNudge-y)*Math.min(1,.038*dt);
@@ -123,8 +149,37 @@
     ctx.scale(scale,scale);
     draw(atHome||atIntro);
     ctx.restore();
-    hearts = Math.max(0,hearts-.012*dt);
-    if (!reduced) requestAnimationFrame(frame);
+    // Clear the previous whale and splash area, rather than the entire display.
+    lastRect = { x: x - longest*glyphWidth*scale/2 - 24,
+      y: y - whale.length*rowHeight*scale/2 - 150*scale - 24,
+      width: longest*glyphWidth*scale + 48,
+      height: whale.length*rowHeight*scale + 150*scale + 48 };
+    if (!reduced) hearts = Math.max(0,hearts-.012*dt);
+    if (!reduced) requestFrame();
   }
-  requestAnimationFrame(frame);
+  function requestFrame() {
+    if (!frameId && site.entered && !document.hidden) frameId = requestAnimationFrame(frame);
+  }
+  function updateActivity() {
+    cancelAnimationFrame(frameId);
+    frameId = 0;
+    last = 0;
+    lastDraw = 0;
+    layoutDirty = true;
+    canvas.setAttribute('aria-hidden', String(!site.entered));
+    requestFrame();
+  }
+  document.addEventListener('cameron:entered', updateActivity);
+  document.addEventListener('visibilitychange', updateActivity);
+  site.reducedMotion.addEventListener('change', () => {
+    reduced = site.reducedMotion.matches;
+    updateActivity();
+  });
+  if ('ResizeObserver' in window) {
+    const observer = new ResizeObserver(() => { layoutDirty = true; requestFrame(); });
+    if (home) observer.observe(home);
+    if (intro) observer.observe(intro);
+  }
+  requestFrame();
 })();
+

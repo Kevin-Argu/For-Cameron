@@ -1,497 +1,125 @@
-/* ========================================
-   RESET
-======================================== */
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+:root {
+    --paper: #f7f3ec;
+    --ink: #24211f;
+    --pink: #f2c9dc;
+    --rose: #9b4d5b;
+    --serif: Georgia, "Times New Roman", serif;
+    --ui-font: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --focus: #9b4d8a;
+    --space: clamp(16px, 3vw, 28px);
 }
-
-
-html {
-    scroll-behavior: smooth;
+* { box-sizing: border-box; margin: 0; padding: 0; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; }
+body { background: var(--paper); color: var(--ink); font-family: var(--serif); overflow-x: hidden; }
+button {
+    min-height: 44px;
+    padding: 11px 18px;
+    border: 1px solid rgba(36, 33, 31, .22);
+    border-radius: 999px;
+    font: 14px/1.3 var(--serif);
+    color: var(--ink);
+    background: rgba(247, 243, 236, .96);
+    cursor: pointer;
+    touch-action: manipulation;
+    transition: background-color .18s ease, border-color .18s ease, transform .18s ease;
 }
-
-
-body {
-    margin: 0;
-
-    background: #f7f3ec;
-    color: #24211f;
-
-    font-family: Georgia, "Times New Roman", serif;
-
-    overflow-x: hidden;
+button:disabled { cursor: wait; opacity: .55; }
+button:focus-visible, summary:focus-visible { outline: 3px solid var(--focus); outline-offset: 4px; }
+@media (hover: hover) {
+    button:where(:not(:disabled)):hover { background: #fff; transform: translateY(-2px); }
 }
+button:not(:disabled):active { transform: translateY(0); }
 
-
-
-/* ========================================
-   PAGE 1
-   CAMERON + FLOWERS
-======================================== */
-
-.hero {
-    position: relative;
-
-    width: 100%;
-    height: 100vh;
-    min-height: 100vh;
-
-    overflow: hidden;
-
-    background: #f7f3ec;
-}
-
-
-
-/* ========================================
-   DESMOS WRAPPER
-======================================== */
-
-.desmos-wrapper {
-    position: relative;
-
-    width: 100%;
-    height: 100%;
-}
-
-
-
-/* ========================================
-   FLOWER DESMOS CALCULATOR
-======================================== */
-
-#flowerCalculator {
-    position: absolute;
-
-    inset: 0;
-
-    width: 100%;
-    height: 100%;
-
-    z-index: 1;
-
-    background: white;
-}
-
-
-
-/* ========================================
-   CAMERON
-======================================== */
-
+.hero { position: relative; width: 100%; height: 100vh; height: 100svh; min-height: 360px; overflow: hidden; background: var(--paper); }
+.desmos-wrapper { position: relative; width: 100%; height: 100%; }
+#flowerCalculator { position: absolute; inset: 0; z-index: 1; background: #fff; }
 .cameron-title {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10;
+    color: var(--ink); font: normal clamp(44px, 10vw, 130px)/1 var(--serif);
+    white-space: nowrap; text-align: center; pointer-events: none; user-select: none;
+}
+.desmos-lock { position: absolute; inset: 0; z-index: 20; touch-action: pan-y; }
+.desmos-lock.unlocked { pointer-events: none; }
+.explore-button, .done-button {
     position: absolute;
-
-    top: 50%;
-    left: 50%;
-
-    transform: translate(-50%, -50%);
-
-    z-index: 10;
-
-    margin: 0;
-
-    color: #24211f;
-
-    font-family: Georgia, "Times New Roman", serif;
-
-    font-size: clamp(60px, 12vw, 130px);
-
-    font-weight: normal;
-
-    line-height: 1;
-
-    white-space: nowrap;
-
-    text-align: center;
-
-    pointer-events: none;
-
-    user-select: none;
+    right: max(var(--space), env(safe-area-inset-right));
+    bottom: max(var(--space), env(safe-area-inset-bottom));
+    z-index: 50; font-style: italic;
+    box-shadow: 0 4px 20px rgba(36,33,31,.08);
 }
-
-
-
-/* ========================================
-   DESMOS LOCK
-======================================== */
-
-.desmos-lock {
-    position: absolute;
-
-    inset: 0;
-
-    z-index: 20;
-
-    pointer-events: auto;
-
-    touch-action: pan-y;
+.graph-status {
+    position: absolute; top: var(--space); left: 50%; transform: translateX(-50%); z-index: 60;
+    width: min(360px, calc(100% - 32px)); padding: 12px 16px; text-align: center;
+    border: 1px solid rgba(85,55,80,.12); border-radius: 16px;
+    background: rgba(255,252,255,.96); color: #594653; font: 14px/1.5 var(--ui-font);
 }
+.graph-status button { margin-top: 10px; }
 
-
-/*
-   When Explore is clicked,
-   the invisible layer stops catching
-   mouse/touch input.
-
-   Desmos underneath becomes interactive.
-*/
-
-.desmos-lock.unlocked {
-    pointer-events: none;
-}
-
-
-
-/* ========================================
-   EXPLORE BUTTON
-======================================== */
-
-.explore-button {
-    position: absolute;
-
-    right: 24px;
-    bottom: 24px;
-
-    z-index: 21;
-
-    padding: 10px 18px;
-
-    border: 1px solid rgba(36, 33, 31, 0.22);
-
-    border-radius: 999px;
-
-    background: rgba(247, 243, 236, 0.90);
-
-    color: #24211f;
-
-    font-family: Georgia, "Times New Roman", serif;
-
-    font-size: 14px;
-
-    font-style: italic;
-
-    cursor: pointer;
-
-    box-shadow:
-        0 4px 20px
-        rgba(36, 33, 31, 0.08);
-
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-
-    transition:
-        opacity 0.2s ease,
-        visibility 0.2s ease,
-        background 0.2s ease,
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
-}
-
-
-.explore-button:hover {
-    background: white;
-
-    transform: translateY(-2px);
-
-    box-shadow:
-        0 6px 25px
-        rgba(36, 33, 31, 0.12);
-}
-
-
-.explore-button:active {
-    transform: translateY(0);
-}
-
-
-/*
-   Completely remove Explore while
-   Desmos is interactive.
-*/
-
-.explore-button.hidden {
-    opacity: 0;
-
-    visibility: hidden;
-
-    pointer-events: none;
-}
-
-
-
-/* ========================================
-   DONE BUTTON
-======================================== */
-
-.done-button {
-    position: absolute;
-
-    right: 24px;
-    bottom: 24px;
-
-    z-index: 30;
-
-    padding: 10px 18px;
-
-    border: 1px solid rgba(36, 33, 31, 0.22);
-
-    border-radius: 999px;
-
-    background: rgba(247, 243, 236, 0.95);
-
-    color: #24211f;
-
-    font-family: Georgia, "Times New Roman", serif;
-
-    font-size: 14px;
-
-    font-style: italic;
-
-    cursor: pointer;
-
-    box-shadow:
-        0 4px 20px
-        rgba(36, 33, 31, 0.10);
-
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-
-    opacity: 0;
-
-    visibility: hidden;
-
-    pointer-events: none;
-
-    transition:
-        opacity 0.2s ease,
-        visibility 0.2s ease,
-        background 0.2s ease,
-        transform 0.2s ease;
-}
-
-
-/*
-   Show Done only while Desmos
-   is interactive.
-*/
-
-.done-button.visible {
-    opacity: 1;
-
-    visibility: visible;
-
-    pointer-events: auto;
-}
-
-
-.done-button:hover {
-    background: white;
-
-    transform: translateY(-2px);
-}
-
-
-.done-button:active {
-    transform: translateY(0);
-}
-
-
-
-/* ========================================
-   PAGE 2
-   DESMOS HEART
-======================================== */
-
-.heart-section {
-    position: relative;
-
-    width: 100%;
-    min-height: 100vh;
-
-    display: flex;
-
-    justify-content: center;
-    align-items: center;
-
-    padding: 60px 20px;
-
-    background: #f7f3ec;
-}
-
-
-
-/* ========================================
-   HEART CALCULATOR
-======================================== */
-
-#heartCalculator {
-    width: min(900px, 92vw);
-
-    height: 600px;
-
-    background: white;
-
-    border-radius: 14px;
-
-    overflow: hidden;
-
-    box-shadow:
-        0 15px 50px
-        rgba(36, 33, 31, 0.08);
-}
-
-
-
-/* ========================================
-   MOBILE
-======================================== */
-
-@media (max-width: 600px) {
-
-    .cameron-title {
-        font-size: clamp(55px, 20vw, 90px);
-    }
-
-
-    .explore-button,
-    .done-button {
-        right: 16px;
-        bottom: 16px;
-
-        min-height: 44px;
-
-        padding: 10px 17px;
-
-        font-size: 14px;
-    }
-
-
-    .heart-section {
-        padding: 30px 10px;
-    }
-
-
-    #heartCalculator {
-        width: 96vw;
-
-        height: 520px;
-
-        border-radius: 10px;
-    }
-
-}
-
-
-
-/* ========================================
-   REDUCED MOTION
-======================================== */
-
-@media (prefers-reduced-motion: reduce) {
-
-    html {
-        scroll-behavior: auto;
-    }
-
-
-    .explore-button,
-    .done-button {
-        transition: none;
-    }
-
-}
-/* ========================================
-   OPENING: INTERACTIVE ASCII LILIES
-======================================== */
 .ascii-intro {
-    position: relative;
-    min-height: 100svh;
-    overflow: hidden;
-    background: #040609;
-    color: #f7e9ef;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 54px 18px 26px;
-    isolation: isolate;
+    position: relative; min-height: 100vh; min-height: 100svh; overflow: hidden;
+    background: #040609; color: #f7e9ef; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: max(28px, env(safe-area-inset-top)) 18px max(26px, env(safe-area-inset-bottom));
 }
 #asciiLiliesCanvas {
-    display: block;
-    width: min(100%, 900px);
-    height: min(74svh, 720px);
-    flex: 0 1 auto;
-    min-height: 270px;
-    cursor: ns-resize;
-    touch-action: none;
-    user-select: none;
+    display: block; width: min(100%, 900px); height: min(70vh, 720px); height: min(70svh, 720px);
+    flex: 0 0 auto; min-height: 220px; cursor: ns-resize; touch-action: none; user-select: none;
 }
-.ascii-intro-controls {
-    display: flex;
-    position: relative;
-    z-index: 2;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 14px;
-    width: min(100%, 900px);
-    margin-inline: auto;
-}
-.ascii-actions {
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    width: 100%;
-}
-.ascii-enter-row {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-}
-.ascii-intro-controls button {
-    font: 14px Georgia, "Times New Roman", serif;
-    color: #f9e5ed;
-    background: #17151b;
-    border: 1px solid #68515f;
-    border-radius: 999px;
-    padding: 12px 17px;
-    min-height: 44px;
-    cursor: pointer;
-}
-.ascii-intro-controls button:hover,
-.ascii-intro-controls button:focus-visible {
-    background: #382432;
-    border-color: #dcb5c7;
-}
-.ascii-intro-controls .ascii-enter {
-    background: #f2c9dc;
-    color: #2b1824;
-    border-color: #f2c9dc;
-    min-width: min(100%, 260px);
-    text-align: center;
-}
-.ascii-intro-controls .ascii-enter:hover {
-    color: #fff;
-}
-@media (max-width: 600px) {
-    .ascii-intro { padding-top: 34px; }
-    #asciiLiliesCanvas { height: 62svh; min-height: 240px; }
-    .ascii-intro-controls { gap: 10px; }
-    .ascii-actions { flex-wrap: wrap; gap: 7px; }
-    .ascii-intro-controls button { padding: 10px 12px; font-size: 13px; }
-    .ascii-enter-row .ascii-enter { min-width: min(100%, 230px); }
+.ascii-intro-controls { display: flex; flex-direction: column; align-items: center; gap: 14px; width: min(100%, 900px); position: relative; z-index: 20; }
+.ascii-actions { display: flex; justify-content: center; gap: 12px; width: 100%; }
+.ascii-enter-row { display: flex; justify-content: center; width: 100%; }
+.ascii-intro-controls button { color: #f9e5ed; background: #17151b; border-color: #68515f; --focus: #f2c9dc; }
+.ascii-intro-controls button:focus-visible { background: #382432; }
+.ascii-intro-controls .ascii-enter { background: var(--pink); color: #2b1824; border-color: var(--pink); min-width: min(100%, 260px); }
+@media (hover: hover) {
+    .ascii-intro-controls button:hover { background: #382432; border-color: #dcb5c7; }
+    .ascii-intro-controls .ascii-enter:hover { background: #ffdfec; color: #2b1824; }
 }
 
-/* Persistent whale travels above Desmos and every page section. */
-#roamingWhale{position:fixed;inset:0;z-index:1000;pointer-events:none;}
-.whale-section{min-height:100svh;display:flex;align-items:center;justify-content:center;text-align:center;background:radial-gradient(ellipse at 50% 55%,#15334b,#060e1b 75%);color:#e1f5fa;padding:5rem 1.5rem;position:relative;overflow:hidden;}
-.whale-section h2{font:normal clamp(38px,7vw,80px) Georgia,serif;letter-spacing:.025em;}
-.whale-section p{font:italic clamp(15px,2vw,20px) Georgia,serif;color:#9abacb;margin-top:1rem;}
-.whale-section .whale-stars{position:absolute;inset:0;opacity:.3;pointer-events:none;background-image:radial-gradient(#d3f5ff 1px,transparent 1px);background-size:67px 71px;}
-.whale-section .whale-words{position:relative;z-index:1;transform:translateY(-22vh);pointer-events:none;}
+#roamingWhale { position: fixed; inset: 0; z-index: 15; pointer-events: none; }
+.whale-section {
+    min-height: 100vh; min-height: 100svh; display: flex; align-items: center; justify-content: center;
+    text-align: center; background: radial-gradient(ellipse at 50% 55%, #15334b, #060e1b 75%);
+    color: #e1f5fa; padding: 5rem 1.5rem; position: relative; overflow: hidden;
+}
+.whale-section h2 { font: normal clamp(38px,7vw,80px)/1.12 var(--serif); letter-spacing: .025em; text-wrap: balance; }
+.whale-section p { font: italic clamp(15px,2vw,20px)/1.5 var(--serif); color: #9abacb; margin-top: 1rem; text-wrap: balance; }
+.whale-stars { position: absolute; inset: 0; opacity: .3; pointer-events: none; background-image: radial-gradient(#d3f5ff 1px, transparent 1px); background-size: 67px 71px; }
+.whale-words { position: relative; z-index: 1; transform: translateY(-18vh); transform: translateY(-18svh); pointer-events: none; }
+
+.heart-section {
+    position: relative; min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column;
+    justify-content: center; align-items: center; gap: 18px;
+    padding: max(32px, env(safe-area-inset-top)) var(--space) max(32px, env(safe-area-inset-bottom));
+    background: var(--paper);
+}
+.heart-controls { display: flex; justify-content: center; gap: 10px; position: sticky; top: max(12px, env(safe-area-inset-top)); z-index: 110; }
+.heart-controls button { box-shadow: 0 4px 20px rgba(36,33,31,.08); }
+.heart-stage {
+    position: relative; width: min(900px, 100%); height: clamp(320px, 70vh, 600px); height: clamp(320px, 70svh, 600px);
+    border-radius: 16px; background: #fff; box-shadow: 0 15px 50px rgba(36,33,31,.08); overflow: hidden;
+}
+.heart-section.showing-math .heart-stage { height: clamp(480px, 78vh, 720px); height: clamp(480px, 78svh, 720px); }
+#heartCalculator { position: absolute; inset: 0; z-index: 1; }
+.heart-lock { position: absolute; inset: 0; z-index: 2; touch-action: pan-y; }
+@media (max-width: 600px) {
+    .cameron-title { font-size: clamp(40px, 11.5vw, 68px); }
+    #asciiLiliesCanvas { height: 62vh; height: 62svh; }
+    .ascii-actions { display: grid; grid-template-columns: 1.25fr 1fr 1fr; gap: 7px; max-width: 430px; }
+    .ascii-actions button { padding: 10px 7px; font-size: 13px; min-width: 0; }
+    .ascii-intro-controls { gap: 10px; }
+    .ascii-enter-row .ascii-enter { min-width: min(100%, 230px); }
+    .heart-section { padding-inline: 12px; }
+}
+@media (max-height: 500px) {
+    .ascii-intro { padding-top: 16px; padding-bottom: 16px; }
+    #asciiLiliesCanvas { min-height: 180px; height: 55vh; height: 55svh; }
+    .whale-words { transform: translateY(-12vh); transform: translateY(-12svh); }
+    .whale-section h2 { font-size: clamp(28px, 5vw, 48px); }
+}
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    button { transition: none; }
+    button:where(:not(:disabled)):hover { transform: none; }
+}

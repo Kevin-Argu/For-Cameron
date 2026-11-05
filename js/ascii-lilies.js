@@ -12,7 +12,8 @@
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
 
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const site = window.CameronSite;
+  const reducedMotion = site.reducedMotion;
   const palettes = [
     { name: 'Pink', petals: ['#f9bfd2', '#ec8fb4', '#ffdfeb'], pollen: '#fbe7a4' },
     { name: 'White', petals: ['#fffdf3', '#d7e6df', '#f6f4e5'], pollen: '#f9dda0' },
@@ -35,9 +36,11 @@
   let growth = 0;
   let growthTarget = 0;
   let dragLastY = null;
+  let dragPointer = null;
   const water = document.getElementById('waterLilies');
   let lastPaint = 0;
-  let active = true;
+  let active = false;
+  let frameId = 0;
   let pixelRatio = 1;
 
   function clamp(n, low, high) { return Math.max(low, Math.min(high, n)); }
@@ -60,6 +63,7 @@
     ctx.font = '600 ' + Math.max(8, Math.min(14, stepY * 0.94)) + 'px Menlo, Consolas, monospace';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
+    invalidate();
   }
 
   function glyph(x, y, c, color, depth) {
@@ -176,14 +180,14 @@
     }));
   }
 
-  function paintRain() {
+  function paintRain(delta) {
     if (!rainDrops.length) return;
     const height = canvas.height / pixelRatio;
     ctx.save();
     ctx.lineCap = 'round';
     for (const drop of rainDrops) {
-      drop.y += drop.speed;
-      drop.x += drop.sway;
+      drop.y += drop.speed * delta;
+      drop.x += drop.sway * delta;
       if (drop.y > height * 0.94) continue;
       const { x, y, size } = drop;
       const fade = y > height * 0.76
@@ -207,7 +211,7 @@
     rainDrops = rainDrops.filter(drop => drop.y <= height * 0.94);
   }
 
-  function paint(t) {
+  function paint(t, delta = 1) {
     pixels = new Array(cols * rows);
     stems(t);
     babiesBreath(t);
@@ -228,66 +232,94 @@
       ctx.fillText(pix.c, x, y);
     }
     ctx.shadowBlur = 0;
-    paintRain();
+    paintRain(delta);
   }
 
+  function canPaint() {
+    return active && site.entered && !document.hidden;
+  }
+  function schedule() {
+    if (!frameId && canPaint()) frameId = requestAnimationFrame(animate);
+  }
+  function invalidate() {
+    schedule();
+  }
+  function updateActivity() {
+    if (!canPaint()) {
+      cancelAnimationFrame(frameId);
+      frameId = 0;
+      lastPaint = 0;
+    } else invalidate();
+  }
   function nurture(amount) {
     growthTarget = Math.min(20, growthTarget + amount);
+    invalidate();
   }
-
   function restart() {
     growth = 0;
     growthTarget = 0;
-    paint(0);
+    rainDrops = [];
+    invalidate();
   }
-
   function animate(now) {
-    requestAnimationFrame(animate);
-    if (!active || now - lastPaint < 1000 / 22) return;
+    frameId = 0;
+    if (!canPaint()) return;
+    const interval = 1000 / 22;
+    if (lastPaint && now - lastPaint < interval) { schedule(); return; }
+    const delta = lastPaint ? Math.min(2, (now - lastPaint) / interval) : 1;
     lastPaint = now;
-    growth += (growthTarget - growth) * (reducedMotion.matches ? 1 : 0.11);
-    if (Math.abs(growth - growthTarget) < 0.004) growth = growthTarget;
-    paint(growth);
+    growth += (growthTarget - growth) * (reducedMotion.matches ? 1 : 1 - Math.pow(.89, delta));
+    if (Math.abs(growth - growthTarget) < .004) growth = growthTarget;
+    paint(growth, delta);
+    if (growth !== growthTarget || rainDrops.length) schedule();
   }
 
-  if (water) water.addEventListener('click', function () {
-    nurture(3.6);
+  if (water) water.addEventListener('click', () => {
     if (!reducedMotion.matches) startRain();
+    nurture(3.6);
   });
-  canvas.addEventListener('pointerdown', function (event) {
+  canvas.addEventListener('pointerdown', event => {
+    if (event.isPrimary === false || event.button > 0) return;
+    dragPointer = event.pointerId;
     dragLastY = event.clientY;
     canvas.setPointerCapture(event.pointerId);
   });
-  canvas.addEventListener('pointermove', function (event) {
-    if (dragLastY === null) return;
+  canvas.addEventListener('pointermove', event => {
+    if (dragLastY === null || event.pointerId !== dragPointer) return;
     const upward = dragLastY - event.clientY;
     dragLastY = event.clientY;
-    if (upward > 0) nurture(upward * 0.047);
+    if (upward > 0) nurture(upward * .047);
   });
-  function endDrag() { dragLastY = null; }
+  function endDrag() { dragLastY = null; dragPointer = null; }
   canvas.addEventListener('pointerup', endDrag);
   canvas.addEventListener('pointercancel', endDrag);
   canvas.addEventListener('lostpointercapture', endDrag);
   replay.addEventListener('click', restart);
-  colorButton.addEventListener('click', function () {
+  colorButton.addEventListener('click', () => {
     palette = (palette + 1) % palettes.length;
     colorButton.textContent = 'Colors: ' + palettes[palette].name;
-    paint(growth);
+    invalidate();
   });
-  enter.addEventListener('click', function () {
+  enter.addEventListener('click', () => {
     const target = document.getElementById('gardenStart');
-    if (target) {
-      target.scrollIntoView({ behavior: reducedMotion.matches ? 'auto' : 'smooth', block: 'start' });
-    }
+    if (!target) return;
+    target.scrollIntoView({ behavior: reducedMotion.matches ? 'instant' : 'smooth', block: 'start' });
+    target.focus({ preventScroll: true });
   });
-  window.addEventListener('resize', resize);
+  if ('ResizeObserver' in window) new ResizeObserver(resize).observe(canvas);
+  else window.addEventListener('resize', resize, { passive: true });
   if ('IntersectionObserver' in window) {
-    new IntersectionObserver(function (entries) {
-      active = !!entries[0].isIntersecting;
-    }, { threshold: 0.01 }).observe(canvas);
-  }
-  if (reducedMotion.addEventListener) reducedMotion.addEventListener('change', function () { paint(growth); });
+    new IntersectionObserver(entries => {
+      active = entries[0].isIntersecting;
+      updateActivity();
+    }, { threshold: .01 }).observe(canvas);
+  } else active = true;
+  reducedMotion.addEventListener('change', () => {
+    if (reducedMotion.matches) rainDrops = [];
+    invalidate();
+  });
+  document.addEventListener('visibilitychange', updateActivity);
+  document.addEventListener('cameron:entered', updateActivity);
   resize();
   restart();
-  requestAnimationFrame(animate);
 })();

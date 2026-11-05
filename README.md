@@ -1,2 +1,41 @@
-# For-Cameron
-a little something
+# For Cameron
+
+A little something: peanut-free welcome → interactive ASCII lilies → Cameron and mathematical flowers → roaming ASCII whale → animated Desmos heart.
+
+## Run locally
+
+From this folder, run:
+
+```sh
+python3 -m http.server 8000
+```
+
+Open `http://localhost:8000`. The source is a static website with no build step. Desmos requires an internet connection. Publishing and domain configuration are separate from editing these files.
+
+## Controls
+
+- Water the lilies or drag upward to grow them. Colors cycles through the original palettes; Start again resets growth and rain.
+- Enter the garden moves to Cameron's flowers. Explore enables graph interaction and flower math cards. Done closes the card and restores page scrolling. Escape closes an open card first, then exits Explore.
+- The whale enters after the welcome screen closes and continues roaming. Tapping it away from other controls preserves its heart reaction.
+- Show math exposes the heart's equation and slider; Hide math restores page scrolling. Pause/Play controls the animation. The heart pauses offscreen and when the tab is hidden, while preserving an explicit pause choice.
+- Reduced motion disables automatic heart playback and uses a stationary whale. Play can still explicitly enable the heart. Lily growth responds without the rain animation.
+
+## Desmos configuration
+
+The API key is configured in the `desmos-api-key` meta tag in `index.html`. This update retains the existing key. Verify its status and personal-project configuration at <https://www.desmos.com/my-api>; the repository cannot establish its account/tier or guarantee removal of a trial-key notice. Provider notices are not hidden by CSS.
+
+`js/graph-loader.js` downloads the pinned v1.12 library asynchronously after entry and initializes each graph near its section. A failed download or 15-second timeout exposes Try again while leaving the rest of the experience usable.
+
+The flower equations, colors, domains, layer opacities, and six reveal groups are preserved. Framing changes to contain the composition with equal horizontal and vertical units. Flower hitboxes track Desmos coordinates after panning and zooming. The heart uses Desmos's documented `playing` property; the old undocumented `loopMode`/`sliderPeriod` arguments have been removed.
+
+## Checks
+
+With Node.js 18 or later:
+
+```sh
+node --test tests/experience.test.cjs
+```
+
+The dependency-free tests cover expression preservation, responsive math bounds, welcome entry without Desmos, timeout/retry and lazy loading, Explore/Done/Escape, repeat reveals, idle/offscreen animation scheduling, reduced-motion resize, and heart controls. The test doubles do not render HTML/CSS or execute the real Desmos library.
+
+Before sharing, check the actual website in desktop and mobile browsers, including Safari: 320px and 390px portrait, landscape, tablet, and desktop; welcome scrolling on short screens; all lily controls; flower panning and math-card dismissal; repeated section visits; heart math and play/pause; reduced motion; and a throttled/blocked Desmos request. Confirm the API-key notice against the actual key and domain. Browser rendering was unavailable in the editing environment for this update.

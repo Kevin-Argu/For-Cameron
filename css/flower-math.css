@@ -1,0 +1,48 @@
+/* Sibling controls stay above the graph's scroll overlay and the roaming whale. */
+.flower-click-layer { position: absolute; inset: 0; z-index: 25; pointer-events: none; }
+.flower-click-zone {
+    position: absolute; padding: 0; min-height: 0;
+    border: 2px solid transparent; border-radius: 50%; background: transparent;
+    cursor: pointer; pointer-events: auto;
+    transition: background .18s ease, border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+.flower-click-zone:hover, .flower-click-zone:focus-visible {
+    background: rgba(255,255,255,.08); border-color: rgba(166,88,174,.35);
+    box-shadow: 0 0 0 5px rgba(166,88,174,.08), 0 0 28px rgba(166,88,174,.22);
+    transform: scale(1.025); outline: none;
+}
+.flower-math-hint {
+    position: absolute; top: 16px; left: 50%; transform: translateX(-50%); z-index: 30;
+    padding: 8px 14px; border: 1px solid rgba(85,55,80,.15); border-radius: 999px;
+    background: rgba(255,255,255,.90); color: #65445f; font: 600 13px/1.2 var(--ui-font);
+    box-shadow: 0 5px 18px rgba(60,35,55,.08); pointer-events: none;
+    white-space: nowrap; transition: opacity .4s ease;
+}
+.flower-math-card {
+    position: absolute; top: 22px; right: 22px; z-index: 120;
+    width: min(410px, calc(100% - 44px)); max-height: calc(100% - 44px);
+    overflow-y: auto; overscroll-behavior: contain; padding: 24px;
+    border: 1px solid rgba(90,60,85,.16); border-radius: 20px;
+    background: rgba(255,252,255,.97); box-shadow: 0 18px 55px rgba(59,33,56,.18);
+    color: #30222e; font-family: var(--ui-font);
+}
+.flower-math-close {
+    position: absolute; top: 12px; right: 12px; width: 44px; height: 44px; padding: 0;
+    border: 0; border-radius: 50%; background: rgba(99,68,95,.08); color: #5b4056; font-size: 24px;
+}
+.flower-math-card h2 { margin: 0 50px 5px 0; font: 500 32px/1.1 var(--serif); }
+.math-kicker { margin-bottom: 7px; padding-right: 30px; color: #9b5a92; font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+.math-note { margin: 12px 0 17px; color: #594653; font-size: 14px; line-height: 1.55; }
+.math-equation { padding: 15px; border-radius: 13px; background: #f6edf6; color: #382532; white-space: pre-wrap; overflow-wrap: anywhere; font: 16px/1.65 var(--serif); }
+.flower-math-card details { margin-top: 15px; padding-top: 14px; border-top: 1px solid rgba(90,60,85,.12); }
+.flower-math-card summary { cursor: pointer; color: #8f4e85; font-size: 14px; font-weight: 700; }
+.flower-math-details { margin-top: 11px; padding: 13px; border-radius: 12px; background: #faf6fa; white-space: pre-wrap; overflow-wrap: anywhere; font: 14px/1.6 var(--serif); }
+@media (max-width: 700px) {
+    .flower-math-card { top: 12px; right: 12px; width: calc(100% - 24px); max-height: calc(100% - 24px); padding: 20px; }
+    .flower-math-card h2 { font-size: 27px; }
+    .flower-math-hint { top: 9px; font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .flower-click-zone, .flower-math-hint { transition: none; }
+    .flower-click-zone:hover, .flower-click-zone:focus-visible { transform: none; }
+}

@@ -1,41 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" class="peanut-locked">
 <head>
     <meta charset="UTF-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#040609">
+    <meta name="desmos-api-key" content="b836d5b9911b48079c3f012e7dff2ae0">
     <title>Cameron</title>
-
-    <link rel="stylesheet" href="css/style.css?v=3">
-
-    <!-- Critical styling keeps the welcome screen usable even with a cached old stylesheet. -->
-    <style>
-      html:has(body.peanut-lock) { overflow: hidden !important; }
-      body.peanut-lock { position: fixed !important; inset: 0 !important; width: 100% !important; height: 100% !important; overflow: hidden !important; }
-      #peanutGate { position: fixed !important; inset: 0 !important; z-index: 2147483647 !important; background: #000 !important; color: #f2f2f2 !important; display: flex !important; align-items: center !important; justify-content: center !important; padding: 24px !important; box-sizing: border-box !important; opacity: 1; transition: opacity .45s ease; font-family: Arial, Helvetica, sans-serif !important; text-align: center !important; }
-      #peanutGate .peanut-gate-card { width: 100%; max-width: 1100px; margin: auto; text-align: center; }
-      #peanutGate .peanut-gate-icon { display: block; width: clamp(88px, 10vw, 132px); height: clamp(88px, 10vw, 132px); margin: 0 auto 30px; color: #d1d1d1; }
-      #peanutGate h1 { margin: 0 0 28px; color: #f2f2f2; font: 700 clamp(25px, 3.5vw, 36px)/1.2 Arial, sans-serif; }
-      #peanutGate p { margin: 0 auto 28px; max-width: 1100px; color: #c7c7c7; font: 400 clamp(17px, 2.5vw, 27px)/1.45 Arial, sans-serif; }
-      #peanutGate button { display: inline-block; border: 0; border-radius: 23px; padding: 20px 40px; min-height: 70px; background: #232325; color: #f3f3f3; font: 700 clamp(19px, 2.6vw, 30px)/1.2 Arial, sans-serif; cursor: pointer; }
-      #peanutGate.is-closing { opacity: 0 !important; pointer-events: none !important; }
-      #peanutGate.is-dismissed { display: none !important; }
-    </style>
-    <link rel="stylesheet" href="css/peanut-gate.css?v=2">
-    <script defer src="js/peanut-gate.js?v=3"></script>
-
+    <link rel="stylesheet" href="css/style.css?v=4">
+    <link rel="stylesheet" href="css/peanut-gate.css?v=4">
+    <link rel="stylesheet" href="css/flower-math.css?v=4">
+    <!-- Local controls initialize without waiting for the external graph library. -->
+    <script defer src="js/main.js?v=4"></script>
+    <script defer src="js/peanut-gate.js?v=4"></script>
+    <script defer src="js/ascii-lilies.js?v=4"></script>
+    <script defer src="js/whale.js?v=4"></script>
+    <script defer src="js/flowers.js?v=4"></script>
+    <script defer src="js/heart.js?v=4"></script>
+    <script defer src="js/graph-loader.js?v=4"></script>
 </head>
-
-
 <body class="peanut-lock">
-
-    <!-- Peanut-free entrance (shown before the existing garden) -->
     <div id="peanutGate" class="peanut-gate" role="dialog" aria-modal="true"
          aria-labelledby="peanutGateTitle" aria-describedby="peanutGateDescription">
         <div class="peanut-gate-card">
-            <!-- Crossed-out peanut emblem for the peanut-free welcome screen. -->
             <svg class="peanut-gate-icon" width="120" height="120" viewBox="0 0 100 100" fill="none"
                  stroke="currentColor" stroke-width="3.5" stroke-linecap="round"
                  stroke-linejoin="round" aria-hidden="true" focusable="false">
@@ -54,18 +40,13 @@
             <h1 id="peanutGateTitle">Certified Peanut-Free Website</h1>
             <p id="peanutGateDescription">For your safety, absolutely no peanuts were used in the making of this website.</p>
             <button id="enterPeanutFree" class="peanut-gate-btn" type="button">Okay, let me in</button>
+            <noscript><p>Please enable JavaScript to enter the interactive garden.</p></noscript>
         </div>
     </div>
 
-
-    <main>
-
-        <!-- ========================================
-             PAGE 1: INTERACTIVE ASCII LILIES
-        ========================================= -->
+    <main inert aria-hidden="true">
         <section class="ascii-intro" id="lilyFinale" aria-label="Grow the ASCII lilies">
-            <canvas id="asciiLiliesCanvas" aria-label="Animated lilies drawn entirely from colored ASCII characters. Drag upward to grow them."></canvas>
-
+            <canvas id="asciiLiliesCanvas" role="img" aria-label="Animated lilies drawn from colored ASCII characters. Drag upward or use Water the lilies to grow them."></canvas>
             <div class="ascii-intro-controls">
                 <div class="ascii-actions">
                     <button id="waterLilies" type="button">♡ Water the lilies</button>
@@ -78,112 +59,45 @@
             </div>
         </section>
 
-        <!-- ========================================
-             PAGE 2
-             CAMERON + DESMOS FLOWERS
-        ========================================= -->
-
-        <section class="hero" id="gardenStart">
-
+        <section class="hero" id="gardenStart" aria-label="Cameron's mathematical garden" tabindex="-1">
             <div class="desmos-wrapper">
-
-                <!-- DESMOS FLOWER GRAPH -->
-                <div id="flowerCalculator"></div>
-
-
-                <!-- CAMERON -->
-                <h1 class="cameron-title">
-                    Cameron.
-                </h1>
-
-
-                <!--
-                    LOCK LAYER
-
-                    When this layer is active,
-                    scrolling moves the WEBSITE
-                    instead of moving Desmos.
-                -->
-                <div
-                    class="desmos-lock"
-                    id="desmosLock"
-                >
-
-                    <button
-                        class="explore-button"
-                        id="exploreButton"
-                    >
-                        Explore
-                    </button>
-
+                <div id="flowerCalculator" inert></div>
+                <h1 class="cameron-title">Cameron.</h1>
+                <div class="graph-status" id="flowerStatus">
+                    <p role="status">Opening the garden…</p>
+                    <button type="button" data-retry="flowers" hidden>Try again</button>
                 </div>
-
-
-                <!--
-                    DONE BUTTON
-
-                    Only appears while Desmos
-                    is interactive.
-                -->
-                <button
-                    class="done-button"
-                    id="doneButton"
-                >
-                    Done
-                </button>
-
+                <div class="desmos-lock" id="desmosLock">
+                    <button class="explore-button" id="exploreButton" type="button"
+                            aria-controls="flowerCalculator" aria-expanded="false" disabled>Explore</button>
+                </div>
+                <button class="done-button" id="doneButton" type="button" hidden>Done</button>
             </div>
-
         </section>
 
-        <section class="whale-section" id="whaleHome" aria-label="The whale"><div class="whale-stars"></div><div class="whale-words"><h2>A little ocean of wonder.</h2><p>Some things are worth swimming across the world for.</p></div></section>
+        <section class="whale-section" id="whaleHome" aria-label="The whale">
+            <div class="whale-stars" aria-hidden="true"></div>
+            <div class="whale-words">
+                <h2>A little ocean of wonder.</h2>
+                <p>Some things are worth swimming across the world for.</p>
+            </div>
+        </section>
 
-        <!-- ========================================
-             PAGE 4
-             DESMOS HEART
-        ========================================= -->
-
-        <section class="heart-section">
-
-            <div id="heartCalculator"></div>
-
+        <section class="heart-section" id="heartFinale" aria-label="The animated mathematical heart">
+            <div class="heart-controls" aria-label="Heart controls">
+                <button id="toggleHeartMath" type="button" aria-expanded="false"
+                        aria-controls="heartCalculator" disabled>Show math</button>
+                <button id="toggleHeartAnimation" type="button" disabled>Pause</button>
+            </div>
+            <div class="heart-stage">
+                <div id="heartCalculator" inert></div>
+                <div class="heart-lock" id="heartLock" aria-hidden="true"></div>
+                <div class="graph-status" id="heartStatus">
+                    <p role="status">Opening the heart…</p>
+                    <button type="button" data-retry="heart" hidden>Try again</button>
+                </div>
+            </div>
         </section>
     </main>
-
-
-
-    <!-- ========================================
-         DESMOS API
-
-         PASTE YOUR API KEY WHERE IT SAYS:
-
-         MYAPIHERE
-    ========================================= -->
-
-    <script
-        src="https://www.desmos.com/api/v1.12/calculator.js?apiKey=b836d5b9911b48079c3f012e7dff2ae0">
-    </script>
-
-
-
-    <!-- ========================================
-         OUR JAVASCRIPT
-    ========================================= -->
-
-    <!-- ASCII lilies opening -->
-    <script src="js/ascii-lilies.js"></script>
-
-    <!-- Flowers -->
-    <script src="js/flowers.js"></script>
-
-    <!-- Heart -->
-    <script src="js/heart.js"></script>
-
-    <!-- Explore / Done interaction -->
-    <script src="js/main.js"></script>
-    <script src="js/whale.js"></script>
-
-
 </body>
-
 </html>

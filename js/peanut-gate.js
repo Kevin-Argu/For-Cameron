@@ -1,97 +1,62 @@
-// Controls the welcome screen independently of the garden / Desmos scripts.
-(function () {
-    "use strict";
+(() => {
+    'use strict';
 
-    function initializePeanutGate() {
-        const gate = document.getElementById("peanutGate");
-        const enterButton = document.getElementById("enterPeanutFree");
-        const site = document.querySelector("main");
-        if (!gate || !enterButton) return;
+    const gate = document.getElementById('peanutGate');
+    const enter = document.getElementById('enterPeanutFree');
+    const main = document.querySelector('main');
+    if (!gate || !enter) return;
+    let closing = false;
+    let finished = false;
+    let fallbackTimer;
+    window.scrollTo({ top: 0, behavior: 'instant' });
 
-        let closing = false;
-        let finished = false;
-
-        // Lock the entire document, not just a visible panel. This also
-        // prevents the mouse wheel, touch swipes and keyboard from bypassing it.
-        document.documentElement.classList.add("peanut-locked");
-        document.body.classList.add("peanut-lock");
-        window.scrollTo(0, 0);
-
-        if (site) {
-            site.inert = true;
-            site.setAttribute("aria-hidden", "true");
-        }
-
-        function stopScroll(event) {
-            if (!finished) event.preventDefault();
-        }
-
-        function handleKeys(event) {
-            if (finished) return;
-
-            // The welcome button is the only keyboard target until entry.
-            if (event.key === "Tab") {
-                event.preventDefault();
-                enterButton.focus({ preventScroll: true });
-                return;
-            }
-            if ([" ", "PageDown", "PageUp", "ArrowDown", "ArrowUp",
-                 "Home", "End", "ArrowLeft", "ArrowRight"].includes(event.key)) {
-                // Space/arrow keys must not scroll the page.
-                // Space/Enter on the focused button remain usable.
-                if (event.key === " " && document.activeElement === enterButton) return;
-                event.preventDefault();
-            }
-        }
-
-        const scrollOptions = { passive: false, capture: true };
-        document.addEventListener("wheel", stopScroll, scrollOptions);
-        document.addEventListener("touchmove", stopScroll, scrollOptions);
-        document.addEventListener("keydown", handleKeys, true);
-
-        enterButton.focus({ preventScroll: true });
-
-        function completeEntry() {
-            if (finished) return;
-            finished = true;
-            gate.classList.add("is-dismissed");
-            gate.setAttribute("aria-hidden", "true");
-
-            if (site) {
-                site.inert = false;
-                site.removeAttribute("aria-hidden");
-            }
-
-            document.documentElement.classList.remove("peanut-locked");
-            document.body.classList.remove("peanut-lock");
-            document.removeEventListener("wheel", stopScroll, scrollOptions);
-            document.removeEventListener("touchmove", stopScroll, scrollOptions);
-            document.removeEventListener("keydown", handleKeys, true);
-            window.scrollTo(0, 0);
-
-            const firstGardenButton = document.getElementById("waterLilies");
-            if (firstGardenButton) firstGardenButton.focus({ preventScroll: true });
-        }
-
-        enterButton.addEventListener("click", function () {
-            if (closing) return;
-            closing = true;
-            gate.classList.add("is-closing");
-
-            gate.addEventListener("transitionend", function (event) {
-                if (event.target === gate && event.propertyName === "opacity") {
-                    completeEntry();
-                }
-            }, { once: true });
-
-            // Also works if reduced motion is enabled or transitions are unavailable.
-            window.setTimeout(completeEntry, 550);
-        });
+    // The document stays locked, but a short-screen welcome can scroll itself.
+    function preventBackgroundScroll(event) {
+        if (!gate.contains(event.target)) event.preventDefault();
     }
-
-    if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initializePeanutGate, { once: true });
-    } else {
-        initializePeanutGate();
+    function trapFocus(event) {
+        if (event.key === 'Tab') {
+            event.preventDefault();
+            enter.focus({ preventScroll: true });
+        }
     }
+    const options = { passive: false, capture: true };
+    document.addEventListener('wheel', preventBackgroundScroll, options);
+    document.addEventListener('touchmove', preventBackgroundScroll, options);
+    document.addEventListener('keydown', trapFocus, true);
+    enter.focus({ preventScroll: true });
+
+    function completeEntry() {
+        if (finished) return;
+        finished = true;
+        clearTimeout(fallbackTimer);
+        gate.removeEventListener('transitionend', onTransitionEnd);
+        gate.hidden = true;
+        gate.setAttribute('aria-hidden', 'true');
+        main.inert = false;
+        main.removeAttribute('aria-hidden');
+        document.documentElement.classList.remove('peanut-locked');
+        document.body.classList.remove('peanut-lock');
+        document.removeEventListener('wheel', preventBackgroundScroll, options);
+        document.removeEventListener('touchmove', preventBackgroundScroll, options);
+        document.removeEventListener('keydown', trapFocus, true);
+        window.scrollTo({ top: 0, behavior: 'instant' });
+        window.CameronSite.entered = true;
+        document.dispatchEvent(new CustomEvent('cameron:entered'));
+        document.getElementById('waterLilies').focus({ preventScroll: true });
+    }
+    function onTransitionEnd(event) {
+        if (event.target === gate && event.propertyName === 'opacity') completeEntry();
+    }
+    enter.addEventListener('click', () => {
+        if (closing) return;
+        closing = true;
+        if (window.CameronSite.reducedMotion.matches) {
+            completeEntry();
+            return;
+        }
+        gate.addEventListener('transitionend', onTransitionEnd);
+        gate.classList.add('is-closing');
+        fallbackTimer = setTimeout(completeEntry, 550);
+    });
 })();

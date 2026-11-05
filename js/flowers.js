@@ -1,6 +1,8 @@
+(() => {
+'use strict';
+window.CameronGraphs.flowers = function initializeFlowers() {
 // ============================================================
 // DESMOS FLOWER BACKGROUND + CLICKABLE MATH
-// Replace your entire current flower JavaScript with this file.
 // ============================================================
 
 const flowerElement = document.getElementById("flowerCalculator");
@@ -13,13 +15,14 @@ const flowerCalculator = Desmos.GraphingCalculator(flowerElement, {
     expressionsTopbar: false,
     pointsOfInterest: false,
     trace: false,
-    border: false
+    border: false,
+    graphDescription: "Sakura, petunia, plumeria, hibiscus, lilac and wisteria surround Cameron."
 });
 
 flowerCalculator.updateSettings({
     showGrid: true,
-    xAxis: false,
-    yAxis: false,
+    showXAxis: false,
+    showYAxis: false,
     xAxisNumbers: false,
     yAxisNumbers: false
 });
@@ -30,6 +33,8 @@ flowerCalculator.setMathBounds({
     bottom: -6,
     top: 6
 });
+
+const initialExpressions = [];
 
 // Store the original opacity of each individual Desmos curve.
 // The actual equations remain unchanged. We animate only their visibility.
@@ -55,7 +60,7 @@ function registerFlowerReveal(id, kind, opacity) {
 function addFilledCurve(id, latex, color, max = "12\\pi", fillOpacity = 1) {
     registerFlowerReveal(id, "fill", fillOpacity);
 
-    flowerCalculator.setExpression({
+    initialExpressions.push({
         id,
         latex,
         color,
@@ -69,7 +74,7 @@ function addFilledCurve(id, latex, color, max = "12\\pi", fillOpacity = 1) {
 function addLineCurve(id, latex, color, lineWidth = 2, max = "12\\pi", lineOpacity = 1) {
     registerFlowerReveal(id, "line", lineOpacity);
 
-    flowerCalculator.setExpression({
+    initialExpressions.push({
         id,
         latex,
         color,
@@ -117,32 +122,32 @@ addFilledCurve(
 // PETUNIA - TOP RIGHT
 // ============================================================
 
-flowerCalculator.setExpression({
+initialExpressions.push({
     id: "Xpet",
     latex: "X_{pet}=5"
 });
 
-flowerCalculator.setExpression({
+initialExpressions.push({
     id: "Ypet",
     latex: "Y_{pet}=2.7"
 });
 
-flowerCalculator.setExpression({
+initialExpressions.push({
     id: "Pet",
     latex: "P_{et}=1.15"
 });
 
-flowerCalculator.setExpression({
+initialExpressions.push({
     id: "Ptu",
     latex: "P_{tu}=P_{et}\\cdot0.3"
 });
 
-flowerCalculator.setExpression({
+initialExpressions.push({
     id: "Ppetunia",
     latex: "P_{petunia}=P_{et}\\cdot0.9"
 });
 
-flowerCalculator.setExpression({
+initialExpressions.push({
     id: "Ps",
     latex: "P_s=P_{et}\\cdot0.1"
 });
@@ -221,27 +226,27 @@ addFilledCurve(
 // HIBISCUS - BOTTOM CENTER
 // ============================================================
 
-flowerCalculator.setExpression({
+initialExpressions.push({
     id: "Xhib",
     latex: "X_{hib}=0"
 });
 
-flowerCalculator.setExpression({
+initialExpressions.push({
     id: "Yhib",
     latex: "Y_{hib}=-3"
 });
 
-flowerCalculator.setExpression({
+initialExpressions.push({
     id: "Hlove",
     latex: "H_{love}=-1.25"
 });
 
-flowerCalculator.setExpression({
+initialExpressions.push({
     id: "Hlover",
     latex: "H_{lover}=\\frac{H_{love}}{4}"
 });
 
-flowerCalculator.setExpression({
+initialExpressions.push({
     id: "Hlovers",
     latex: "H_{lovers}=\\frac{H_{love}}{10}"
 });
@@ -316,17 +321,17 @@ addFilledCurve(
 // PLUMERIA - BOTTOM LEFT
 // ============================================================
 
-flowerCalculator.setExpression({
+initialExpressions.push({
     id: "Xplum",
     latex: "X_{plum}=-6.2"
 });
 
-flowerCalculator.setExpression({
+initialExpressions.push({
     id: "Yplum",
     latex: "Y_{plum}=-3.2"
 });
 
-flowerCalculator.setExpression({
+initialExpressions.push({
     id: "Pplum",
     latex: "P_{plum}=-1.35"
 });
@@ -769,861 +774,201 @@ const flowerClickAreas = [
 ];
 
 
-// ============================================================
-// INTERACTION STYLES
-// ============================================================
 
-flowerElement.style.position = "relative";
-
-const flowerMathStyle =
-    document.createElement("style");
-
-flowerMathStyle.textContent = `
-
-    .flower-click-layer {
-        position: absolute;
-        inset: 0;
-        z-index: 20;
-        pointer-events: none;
-    }
-
-
-    .flower-click-zone {
-        position: absolute;
-
-        border: 2px solid transparent;
-        border-radius: 50%;
-
-        background: transparent;
-
-        cursor: pointer;
-        pointer-events: auto;
-
-        transition:
-            background .18s ease,
-            border-color .18s ease,
-            box-shadow .18s ease,
-            transform .18s ease;
-    }
-
-
-    .flower-click-zone:hover,
-    .flower-click-zone:focus-visible {
-
-        background:
-            rgba(255,255,255,.08);
-
-        border-color:
-            rgba(166,88,174,.35);
-
-        box-shadow:
-            0 0 0 5px rgba(166,88,174,.08),
-            0 0 28px rgba(166,88,174,.22);
-
-        transform:
-            scale(1.025);
-
-        outline:
-            none;
-    }
-
-
-    .flower-math-hint {
-        position: absolute;
-
-        top: 16px;
-        left: 50%;
-
-        transform:
-            translateX(-50%);
-
-        z-index: 25;
-
-        padding:
-            8px 14px;
-
-        border:
-            1px solid rgba(85,55,80,.15);
-
-        border-radius:
-            999px;
-
-        background:
-            rgba(255,255,255,.90);
-
-        color:
-            #65445f;
-
-        font:
-            600 13px/1.2
-            -apple-system,
-            BlinkMacSystemFont,
-            "Segoe UI",
-            sans-serif;
-
-        box-shadow:
-            0 5px 18px
-            rgba(60,35,55,.08);
-
-        pointer-events:
-            none;
-
-        white-space:
-            nowrap;
-    }
-
-
-    .flower-math-card {
-        position: absolute;
-
-        top: 22px;
-        right: 22px;
-
-        z-index: 40;
-
-        width:
-            min(
-                410px,
-                calc(100% - 44px)
-            );
-
-        max-height:
-            calc(100% - 44px);
-
-        overflow-y:
-            auto;
-
-        box-sizing:
-            border-box;
-
-        padding:
-            24px;
-
-        border:
-            1px solid
-            rgba(90,60,85,.16);
-
-        border-radius:
-            20px;
-
-        background:
-            rgba(255,252,255,.97);
-
-        box-shadow:
-            0 18px 55px
-            rgba(59,33,56,.18);
-
-        color:
-            #30222e;
-
-        font-family:
-            -apple-system,
-            BlinkMacSystemFont,
-            "Segoe UI",
-            sans-serif;
-    }
-
-
-    .flower-math-card[hidden] {
-        display:
-            none;
-    }
-
-
-    .flower-math-close {
-        position:
-            absolute;
-
-        top:
-            12px;
-
-        right:
-            12px;
-
-        width:
-            38px;
-
-        height:
-            38px;
-
-        border:
-            0;
-
-        border-radius:
-            50%;
-
-        background:
-            rgba(99,68,95,.08);
-
-        color:
-            #5b4056;
-
-        cursor:
-            pointer;
-
-        font-size:
-            24px;
-    }
-
-
-    .flower-math-card h2 {
-        margin:
-            0 42px 5px 0;
-
-        font:
-            500 32px/1.1
-            Georgia,
-            "Times New Roman",
-            serif;
-    }
-
-
-    .math-kicker {
-        margin-bottom:
-            7px;
-
-        color:
-            #9b5a92;
-
-        font-size:
-            11px;
-
-        font-weight:
-            800;
-
-        letter-spacing:
-            .12em;
-
-        text-transform:
-            uppercase;
-    }
-
-
-    .math-note {
-        margin:
-            12px 0 17px;
-
-        color:
-            #594653;
-
-        font-size:
-            14px;
-
-        line-height:
-            1.55;
-    }
-
-
-    .math-equation {
-        margin:
-            0;
-
-        padding:
-            15px;
-
-        border-radius:
-            13px;
-
-        background:
-            #f6edf6;
-
-        color:
-            #382532;
-
-        white-space:
-            pre-wrap;
-
-        overflow-wrap:
-            anywhere;
-
-        font:
-            16px/1.65
-            Georgia,
-            "Times New Roman",
-            serif;
-    }
-
-
-    .flower-math-card details {
-        margin-top:
-            15px;
-
-        padding-top:
-            14px;
-
-        border-top:
-            1px solid
-            rgba(90,60,85,.12);
-    }
-
-
-    .flower-math-card summary {
-        cursor:
-            pointer;
-
-        color:
-            #8f4e85;
-
-        font-size:
-            14px;
-
-        font-weight:
-            700;
-    }
-
-
-    .flower-math-details {
-        margin-top:
-            11px;
-
-        padding:
-            13px;
-
-        border-radius:
-            12px;
-
-        background:
-            #faf6fa;
-
-        white-space:
-            pre-wrap;
-
-        font:
-            14px/1.6
-            Georgia,
-            "Times New Roman",
-            serif;
-    }
-
-
-    @media (max-width: 700px) {
-
-        .flower-math-card {
-            top:
-                12px;
-
-            right:
-                12px;
-
-            width:
-                calc(100% - 24px);
-
-            max-height:
-                calc(100% - 24px);
-
-            padding:
-                20px;
-        }
-
-
-        .flower-math-card h2 {
-            font-size:
-                27px;
-        }
-
-
-        .flower-math-hint {
-            top:
-                9px;
-
-            font-size:
-                12px;
-        }
-
-    }
-
-`;
-
-document.head.appendChild(
-    flowerMathStyle
-);
-
-
-// ============================================================
-// CLICK LAYER
-// ============================================================
-
-const flowerClickLayer =
-    document.createElement("div");
-
-flowerClickLayer.className =
-    "flower-click-layer";
-
-flowerElement.appendChild(
-    flowerClickLayer
-);
-
-
-// ============================================================
-// CONVERT DESMOS COORDINATES TO SCREEN POSITION
-// ============================================================
-
-function graphBoxToPercent(
-    cx,
-    cy,
-    width,
-    height
-) {
-
-    const leftBound = -10;
-    const rightBound = 10;
-
-    const bottomBound = -6;
-    const topBound = 6;
-
-    return {
-
-        left:
-            (
-                (
-                    cx -
-                    width / 2 -
-                    leftBound
-                )
-                /
-                (
-                    rightBound -
-                    leftBound
-                )
-            )
-            * 100,
-
-        top:
-            (
-                (
-                    topBound -
-                    (
-                        cy +
-                        height / 2
-                    )
-                )
-                /
-                (
-                    topBound -
-                    bottomBound
-                )
-            )
-            * 100,
-
-        width:
-            (
-                width
-                /
-                (
-                    rightBound -
-                    leftBound
-                )
-            )
-            * 100,
-
-        height:
-            (
-                height
-                /
-                (
-                    topBound -
-                    bottomBound
-                )
-            )
-            * 100
-
-    };
-
-}
-
-
-// ============================================================
-// MATH CARD
-// ============================================================
-
-const flowerMathCard =
-    document.createElement(
-        "section"
-    );
-
-flowerMathCard.className =
-    "flower-math-card";
-
-flowerMathCard.hidden =
-    true;
-
-flowerMathCard.innerHTML = `
-
-    <button
-        type="button"
-        class="flower-math-close"
-        aria-label="Close math panel"
-    >
-        ×
-    </button>
-
-
-    <div class="math-kicker">
-        Math behind the flower
-    </div>
-
-
-    <h2></h2>
-
-
+flowerCalculator.setExpressions(initialExpressions);
+const site = window.CameronSite;
+const section = document.getElementById('gardenStart');
+const wrapper = section.querySelector('.desmos-wrapper');
+const layer = document.createElement('div');
+layer.className = 'flower-click-layer';
+layer.hidden = true;
+wrapper.appendChild(layer);
+
+const card = document.createElement('section');
+card.className = 'flower-math-card';
+card.id = 'flowerMathPanel';
+card.hidden = true;
+card.setAttribute('role', 'dialog');
+card.setAttribute('aria-labelledby', 'flowerMathTitle');
+card.innerHTML = `
+    <button type="button" class="flower-math-close" aria-label="Close math panel">×</button>
+    <div class="math-kicker">Math behind the flower</div>
+    <h2 id="flowerMathTitle"></h2>
     <p class="math-note"></p>
-
-
     <pre class="math-equation"></pre>
-
-
-    <details>
-
-        <summary>
-            View parameters and layers
-        </summary>
-
-        <div class="flower-math-details"></div>
-
-    </details>
-
+    <details><summary>View parameters and layers</summary><div class="flower-math-details"></div></details>
 `;
+wrapper.appendChild(card);
+const closeButton = card.querySelector('.flower-math-close');
+const hint = document.createElement('div');
+hint.className = 'flower-math-hint';
+hint.textContent = '✦ Tap a flower to explore its math';
+hint.hidden = true;
+wrapper.appendChild(hint);
+let selectedButton = null;
+let interactive = false;
 
-flowerElement.appendChild(
-    flowerMathCard
-);
-
-
-// ============================================================
-// CLICK A FLOWER MESSAGE
-// ============================================================
-
-const flowerMathHint =
-    document.createElement(
-        "div"
-    );
-
-flowerMathHint.className =
-    "flower-math-hint";
-
-flowerMathHint.textContent =
-    "✦ Click a flower to explore its math";
-
-flowerElement.appendChild(
-    flowerMathHint
-);
-
-
-// ============================================================
-// OPEN FLOWER MATH
-// ============================================================
-
-function openFlowerMath(id) {
-
-    const info =
-        flowerMathInfo[id];
-
-    if (!info) {
-        return;
-    }
-
-    flowerMathCard
-        .querySelector("h2")
-        .textContent =
-        info.title;
-
-    flowerMathCard
-        .querySelector(".math-note")
-        .textContent =
-        info.note;
-
-    flowerMathCard
-        .querySelector(".math-equation")
-        .textContent =
-        info.equation;
-
-    flowerMathCard
-        .querySelector(".flower-math-details")
-        .textContent =
-        info.details;
-
-    flowerMathCard
-        .querySelector("details")
-        .open =
-        false;
-
-    flowerMathCard.hidden =
-        false;
-
-    flowerMathHint.style.display =
-        "none";
-
+function openMath(flower, button) {
+    const info = flowerMathInfo[flower.id];
+    card.querySelector('h2').textContent = info.title;
+    card.querySelector('.math-note').textContent = info.note;
+    card.querySelector('.math-equation').textContent = info.equation;
+    card.querySelector('.flower-math-details').textContent = info.details;
+    card.querySelector('details').open = false;
+    if (selectedButton) selectedButton.setAttribute('aria-expanded', 'false');
+    selectedButton = button;
+    selectedButton.setAttribute('aria-expanded', 'true');
+    card.hidden = false;
+    hint.hidden = true;
+    closeButton.focus({ preventScroll: true });
 }
-
-
-// ============================================================
-// CLOSE FLOWER MATH
-// ============================================================
-
-function closeFlowerMath() {
-
-    flowerMathCard.hidden =
-        true;
-
+function closeMath(restoreFocus = false) {
+    if (card.hidden) return false;
+    card.hidden = true;
+    if (selectedButton) selectedButton.setAttribute('aria-expanded', 'false');
+    hint.hidden = !interactive;
+    if (restoreFocus && selectedButton) selectedButton.focus({ preventScroll: true });
+    return true;
 }
-
-
-// ============================================================
-// CREATE THE CLICKABLE FLOWER AREAS
-// ============================================================
-
-const flowerZoneButtons = [];
-
-flowerClickAreas.forEach(
-    (flower) => {
-
-        const box =
-            graphBoxToPercent(
-                flower.cx,
-                flower.cy,
-                flower.width,
-                flower.height
-            );
-
-        const button =
-            document.createElement(
-                "button"
-            );
-
-        button.type =
-            "button";
-
-        button.className =
-            "flower-click-zone";
-
-        button.setAttribute(
-            "aria-label",
-            `Explore the math behind ${flowerMathInfo[flower.id].title}`
-        );
-
-        button.title =
-            `Explore ${flowerMathInfo[flower.id].title} math`;
-
-        button.style.left =
-            `${box.left}%`;
-
-        button.style.top =
-            `${box.top}%`;
-
-        button.style.width =
-            `${box.width}%`;
-
-        button.style.height =
-            `${box.height}%`;
-
-        button.addEventListener(
-            "click",
-            (event) => {
-
-                event.preventDefault();
-
-                event.stopPropagation();
-
-                openFlowerMath(
-                    flower.id
-                );
-
-            }
-        );
-
-        flowerClickLayer.appendChild(
-            button
-        );
-        flowerZoneButtons.push({ flower, button });
-
-    }
-);
-
-// Keep each clickable region on its actual Desmos flower, even
-// when the graph is moved or zoomed.
-function updateFlowerClickPositions() {
-    if (typeof flowerCalculator.mathToPixels !== "function") return;
-    flowerZoneButtons.forEach(({ flower, button }) => {
-        const a = flowerCalculator.mathToPixels({
-            x: flower.cx - flower.width / 2,
-            y: flower.cy + flower.height / 2
-        });
-        const b = flowerCalculator.mathToPixels({
-            x: flower.cx + flower.width / 2,
-            y: flower.cy - flower.height / 2
-        });
+closeButton.addEventListener('click', () => closeMath(true));
+const zones = flowerClickAreas.map(flower => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'flower-click-zone';
+    button.setAttribute('aria-haspopup', 'dialog');
+    button.setAttribute('aria-controls', 'flowerMathPanel');
+    button.setAttribute('aria-expanded', 'false');
+    button.setAttribute('aria-label', 'Explore the math behind ' + flowerMathInfo[flower.id].title);
+    button.title = 'Explore ' + flowerMathInfo[flower.id].title + ' math';
+    button.addEventListener('click', event => {
+        event.preventDefault();
+        event.stopPropagation();
+        openMath(flower, button);
+    });
+    layer.appendChild(button);
+    return { flower, button };
+});
+function updateClickPositions() {
+    zones.forEach(({ flower, button }) => {
+        const a = flowerCalculator.mathToPixels({ x: flower.cx - flower.width / 2, y: flower.cy + flower.height / 2 });
+        const b = flowerCalculator.mathToPixels({ x: flower.cx + flower.width / 2, y: flower.cy - flower.height / 2 });
         if (![a.x, a.y, b.x, b.y].every(Number.isFinite)) return;
-        button.style.left = a.x + "px";
-        button.style.top = a.y + "px";
-        button.style.width = Math.max(0, b.x - a.x) + "px";
-        button.style.height = Math.max(0, b.y - a.y) + "px";
+        Object.assign(button.style, {
+            left: a.x + 'px', top: a.y + 'px',
+            width: Math.max(0, b.x - a.x) + 'px', height: Math.max(0, b.y - a.y) + 'px'
+        });
     });
 }
-if (typeof flowerCalculator.observe === "function") {
-    flowerCalculator.observe("graphpaperBounds", updateFlowerClickPositions);
+function fitGarden() {
+    if (interactive) return;
+    const { width, height } = flowerElement.getBoundingClientRect();
+    if (!width || !height) return;
+    // Contain the original composition with equal horizontal and vertical units.
+    const unitsPerPixel = Math.max(20 / width, 12 / height);
+    flowerCalculator.setMathBounds({
+        left: -width * unitsPerPixel / 2, right: width * unitsPerPixel / 2,
+        bottom: -height * unitsPerPixel / 2, top: height * unitsPerPixel / 2
+    });
+    updateClickPositions();
 }
-window.addEventListener("resize", updateFlowerClickPositions);
-updateFlowerClickPositions();
-
-
-// ============================================================
-// CLOSE BUTTON
-// ============================================================
-
-flowerMathCard
-    .querySelector(
-        ".flower-math-close"
-    )
-    .addEventListener(
-        "click",
-        closeFlowerMath
-    );
-
-
-// ============================================================
-// ESCAPE KEY ALSO CLOSES THE PANEL
-// ============================================================
-
-document.addEventListener(
-    "keydown",
-    (event) => {
-
-        if (
-            event.key === "Escape" &&
-            !flowerMathCard.hidden
-        ) {
-
-            closeFlowerMath();
-
-        }
-
+flowerCalculator.observe('graphpaperBounds', updateClickPositions);
+let resizeFrame = 0;
+function queueResize() {
+    cancelAnimationFrame(resizeFrame);
+    resizeFrame = requestAnimationFrame(() => { fitGarden(); updateClickPositions(); });
+}
+if ('ResizeObserver' in window) new ResizeObserver(queueResize).observe(flowerElement);
+else window.addEventListener('resize', queueResize, { passive: true });
+fitGarden();
+site.flowerUI = {
+    closeMath,
+    setInteractive(enabled) {
+        interactive = enabled;
+        layer.hidden = !enabled;
+        hint.hidden = !enabled;
+        if (!enabled) { closeMath(); fitGarden(); }
     }
-);
+};
 
-// ============================================================
-// ONE-BY-ONE FLOWER REVEAL — replay on each re-entry.
-// Sakura, Petunia, Plumeria, Hibiscus, Lilac cluster, Wisteria cluster.
-// Both flower clusters fade in together as their own groups.
-// ============================================================
-
-const flowerRevealOrder = ["sakura", "petunia", "plumeria", "hibiscus", "lilac", "wisteria"];
-const flowerRevealReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-const flowerFadeDuration = 860;
-const flowerStagger = 540;
-
-function updateFlowerReveal(name, progress) {
-    const p = Math.max(0, Math.min(1, progress));
-    const updates = flowerRevealGroups[name].map(curve => ({
-        id: curve.id,
-        [curve.kind === "fill" ? "fillOpacity" : "lineOpacity"]:
-            Math.min(1, curve.opacity * p)
-    }));
+// Preserve the six groups and replay order; only changed opacities are sent to Desmos.
+const revealOrder = ['sakura', 'petunia', 'plumeria', 'hibiscus', 'lilac', 'wisteria'];
+const lastProgress = new Map();
+let revealFrame = 0;
+let visible = false;
+let ratio = 0;
+function updateReveal(values) {
+    const updates = [];
+    revealOrder.forEach((name, i) => {
+        const progress = Math.max(0, Math.min(1, values[i]));
+        if (lastProgress.get(name) === progress) return;
+        lastProgress.set(name, progress);
+        flowerRevealGroups[name].forEach(curve => updates.push({
+            id: curve.id,
+            [curve.kind === 'fill' ? 'fillOpacity' : 'lineOpacity']: curve.opacity * progress
+        }));
+    });
     if (updates.length) flowerCalculator.setExpressions(updates);
 }
-
-function resetFlowerReveal() {
-    flowerRevealOrder.forEach(name => updateFlowerReveal(name, 0));
-    flowerMathHint.style.opacity = "0";
+function stopReveal() {
+    cancelAnimationFrame(revealFrame);
+    revealFrame = 0;
+    visible = false;
+    updateReveal(revealOrder.map(() => 0));
+    hint.style.opacity = '0';
 }
-
-function completeFlowerReveal() {
-    flowerRevealOrder.forEach(name => updateFlowerReveal(name, 1));
-    flowerMathHint.style.opacity = "1";
-}
-
-let flowerRevealVisible = false;
-let flowerRevealGeneration = 0;
-
-function revealFlowersAgain() {
-    if (flowerRevealVisible) return;
-    flowerRevealVisible = true;
-
-    // Invalidate any animation belonging to an earlier visit.
-    const generation = ++flowerRevealGeneration;
-    resetFlowerReveal();
-
-    if (flowerRevealReducedMotion.matches) {
-        completeFlowerReveal();
+function startReveal() {
+    if (visible || document.hidden) return;
+    visible = true;
+    updateReveal(revealOrder.map(() => 0));
+    hint.style.opacity = '0';
+    if (site.reducedMotion.matches) {
+        updateReveal(revealOrder.map(() => 1));
+        hint.style.opacity = '1';
         return;
     }
-
-    let startTime = null;
+    let started = null;
     let lastTick = -1;
-    const total = (flowerRevealOrder.length - 1) * flowerStagger + flowerFadeDuration;
-
-    function step(now) {
-        if (!flowerRevealVisible || generation !== flowerRevealGeneration) return;
-        if (startTime === null) startTime = now;
-
-        const elapsed = now - startTime;
-        const tick = Math.floor(elapsed / 70); // limit Desmos redraws
-
-        if (tick !== lastTick) {
+    const duration = 860, stagger = 540;
+    const total = duration + stagger * (revealOrder.length - 1);
+    function frame(now) {
+        if (!visible) return;
+        if (started === null) started = now;
+        const elapsed = now - started;
+        const tick = Math.floor(elapsed / 70);
+        if (tick !== lastTick || elapsed >= total) {
             lastTick = tick;
-            flowerRevealOrder.forEach((name, i) => {
-                const progress = (elapsed - i * flowerStagger) / flowerFadeDuration;
-                if (progress <= 0) return;
-                const t = Math.max(0, Math.min(1, progress));
-                updateFlowerReveal(name, t * t * (3 - 2 * t));
-            });
+            updateReveal(revealOrder.map((_, i) => {
+                const t = Math.max(0, Math.min(1, (elapsed - i * stagger) / duration));
+                return t * t * (3 - 2 * t);
+            }));
         }
-
-        if (elapsed < total) {
-            window.requestAnimationFrame(step);
-        } else {
-            completeFlowerReveal();
-        }
+        if (elapsed < total) revealFrame = requestAnimationFrame(frame);
+        else { revealFrame = 0; hint.style.opacity = '1'; }
     }
-
-    window.requestAnimationFrame(step);
+    revealFrame = requestAnimationFrame(frame);
 }
-
-function leaveFlowerSection() {
-    if (!flowerRevealVisible) return;
-    flowerRevealVisible = false;
-    flowerRevealGeneration++; // cancel outstanding animation frames
-    resetFlowerReveal();      // prepare for the next scroll into view
+function updateVisibility() {
+    if (document.hidden || ratio <= .08) stopReveal();
+    else if (ratio >= .35) startReveal();
 }
-
-flowerMathHint.style.opacity = "0";
-flowerMathHint.style.transition = "opacity 400ms ease";
-
-const cameronSection = document.getElementById("gardenStart") || flowerElement;
-
-// A small exit/entry gap prevents accidental repeated restarts as the
-// section crosses one threshold during slow scrolling.
-if ("IntersectionObserver" in window) {
-    const observer = new IntersectionObserver(entries => {
-        const entry = entries[0];
-        if (entry.intersectionRatio >= 0.35) {
-            revealFlowersAgain();
-        } else if (entry.intersectionRatio <= 0.08) {
-            leaveFlowerSection();
-        }
-    }, { threshold: [0, 0.08, 0.35, 1] });
-
-    observer.observe(cameronSection);
+if ('IntersectionObserver' in window) {
+    new IntersectionObserver(entries => {
+        ratio = entries[0].intersectionRatio;
+        updateVisibility();
+    }, { threshold: [0, .08, .35, 1] }).observe(section);
 } else {
-    const onScrollCheck = () => {
-        const rect = cameronSection.getBoundingClientRect();
-        const visible = Math.max(0,
-            Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0));
-        const fraction = visible / Math.max(1, Math.min(rect.height, window.innerHeight));
-
-        if (fraction >= 0.35) revealFlowersAgain();
-        else if (fraction <= 0.08) leaveFlowerSection();
-    };
-    window.addEventListener("scroll", onScrollCheck, { passive: true });
-    window.addEventListener("resize", onScrollCheck);
-    onScrollCheck();
+    function check() {
+        const rect = section.getBoundingClientRect();
+        ratio = Math.max(0, Math.min(rect.bottom, innerHeight) - Math.max(rect.top, 0)) / Math.min(rect.height, innerHeight);
+        updateVisibility();
+    }
+    window.addEventListener('scroll', check, { passive: true });
+    window.addEventListener('resize', check, { passive: true });
+    check();
 }
-
-// Accessibility: reveal immediately when reduced-motion is enabled.
-if (flowerRevealReducedMotion.addEventListener) {
-    flowerRevealReducedMotion.addEventListener("change", event => {
-        if (event.matches && flowerRevealVisible) {
-            flowerRevealGeneration++;
-            completeFlowerReveal();
-        }
-    });
-}
+document.addEventListener('visibilitychange', updateVisibility);
+site.reducedMotion.addEventListener('change', () => {
+    if (visible) { stopReveal(); startReveal(); }
+});
+};
+})();
