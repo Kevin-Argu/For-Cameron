@@ -1,0 +1,98 @@
+/*
+  Peanut-free welcome screen
+  Loaded separately so old cached styles cannot leave the cover unstyled.
+  #peanutGate selectors also keep the design isolated from the rest of the site.
+*/
+
+html.peanut-locked,
+html.peanut-locked body {
+    overflow: hidden !important;
+    overscroll-behavior: none;
+}
+
+#peanutGate {
+    overflow: auto;
+    overscroll-behavior: contain;
+    isolation: isolate;
+    touch-action: none;
+    -webkit-overflow-scrolling: auto;
+}
+
+#peanutGate,
+#peanutGate * {
+    box-sizing: border-box;
+}
+
+#peanutGate .peanut-gate-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 1100px;
+    padding: 8px 0;
+}
+
+#peanutGate .peanut-gate-icon {
+    flex: 0 0 auto;
+    margin-bottom: 31px;
+}
+
+#peanutGate h1 {
+    letter-spacing: -0.7px;
+    text-wrap: balance;
+}
+
+#peanutGate p {
+    letter-spacing: 0;
+    text-wrap: pretty;
+}
+
+#peanutGate .peanut-gate-btn {
+    min-width: 300px;
+    max-width: 100%;
+    box-shadow: none;
+    transition: background-color .18s ease, transform .18s ease;
+}
+
+#peanutGate .peanut-gate-btn:hover {
+    background: #343437;
+    transform: translateY(-2px);
+}
+
+#peanutGate .peanut-gate-btn:active {
+    transform: translateY(0);
+}
+
+#peanutGate .peanut-gate-btn:focus-visible {
+    outline: 3px solid #f5f5f5;
+    outline-offset: 5px;
+}
+
+@media (max-width: 650px) {
+    #peanutGate {
+        padding: 26px 20px !important;
+    }
+    #peanutGate .peanut-gate-icon {
+        margin-bottom: 24px;
+    }
+    #peanutGate h1 {
+        margin-bottom: 22px;
+    }
+    #peanutGate p {
+        margin-bottom: 25px;
+    }
+    #peanutGate .peanut-gate-btn {
+        min-height: 60px;
+        min-width: 0;
+        padding: 16px 30px;
+        border-radius: 19px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #peanutGate,
+    #peanutGate .peanut-gate-btn {
+        transition: none !important;
+    }
+}

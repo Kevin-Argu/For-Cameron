@@ -9,6 +9,23 @@
     <title>Cameron</title>
 
     <link rel="stylesheet" href="css/style.css">
+
+    <!-- Critical styling keeps the welcome screen usable even with a cached old stylesheet. -->
+    <style>
+      html:has(body.peanut-lock) { overflow: hidden !important; }
+      body.peanut-lock { position: fixed !important; inset: 0 !important; width: 100% !important; height: 100% !important; overflow: hidden !important; }
+      #peanutGate { position: fixed !important; inset: 0 !important; z-index: 2147483647 !important; background: #000 !important; color: #f2f2f2 !important; display: flex !important; align-items: center !important; justify-content: center !important; padding: 24px !important; box-sizing: border-box !important; opacity: 1; transition: opacity .45s ease; font-family: Arial, Helvetica, sans-serif !important; text-align: center !important; }
+      #peanutGate .peanut-gate-card { width: 100%; max-width: 1100px; margin: auto; text-align: center; }
+      #peanutGate .peanut-gate-icon { display: block; width: 44px; height: 44px; margin: 0 auto 30px; color: #d1d1d1; }
+      #peanutGate h1 { margin: 0 0 28px; color: #f2f2f2; font: 700 clamp(25px, 3.5vw, 36px)/1.2 Arial, sans-serif; }
+      #peanutGate p { margin: 0 auto 28px; max-width: 1100px; color: #c7c7c7; font: 400 clamp(17px, 2.5vw, 27px)/1.45 Arial, sans-serif; }
+      #peanutGate button { display: inline-block; border: 0; border-radius: 23px; padding: 20px 40px; min-height: 70px; background: #232325; color: #f3f3f3; font: 700 clamp(19px, 2.6vw, 30px)/1.2 Arial, sans-serif; cursor: pointer; }
+      #peanutGate.is-closing { opacity: 0 !important; pointer-events: none !important; }
+      #peanutGate.is-dismissed { display: none !important; }
+    </style>
+    <link rel="stylesheet" href="css/peanut-gate.css?v=2">
+    <script defer src="js/peanut-gate.js?v=2"></script>
+
 </head>
 
 
@@ -18,7 +35,7 @@
     <div id="peanutGate" class="peanut-gate" role="dialog" aria-modal="true"
          aria-labelledby="peanutGateTitle" aria-describedby="peanutGateDescription">
         <div class="peanut-gate-card">
-            <svg class="peanut-gate-icon" viewBox="0 0 24 24" fill="none"
+            <svg class="peanut-gate-icon" width="44" height="44" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
                  stroke-linejoin="round" aria-hidden="true" focusable="false">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
@@ -149,7 +166,8 @@
     <script src="js/heart.js"></script>
 
     <!-- Explore / Done interaction -->
-    <script src="js/main.js"></script>\n    <script src="js/whale.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/whale.js"></script>
 
 
 </body>
