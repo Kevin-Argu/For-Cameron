@@ -8,7 +8,7 @@
 
     <title>Cameron</title>
 
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=3">
 
     <!-- Critical styling keeps the welcome screen usable even with a cached old stylesheet. -->
     <style>
@@ -24,7 +24,7 @@
       #peanutGate.is-dismissed { display: none !important; }
     </style>
     <link rel="stylesheet" href="css/peanut-gate.css?v=2">
-    <script defer src="js/peanut-gate.js?v=2"></script>
+    <script defer src="js/peanut-gate.js?v=3"></script>
 
 </head>
 
@@ -50,20 +50,8 @@
 
     <main>
 
-    <!-- Interactive ASCII lily garden -->
-    <section class="ascii-intro" aria-label="Grow the ASCII lilies">
-        <canvas id="asciiLiliesCanvas" aria-label="Animated lilies drawn entirely from colored ASCII characters. Drag upward to grow them."></canvas>
-        <div class="ascii-intro-controls">
-            <button id="waterLilies" type="button">♡ Water the lilies</button>
-            <button id="colorLilies" type="button">Colors: Pink</button>
-            <button id="replayLilies" type="button">Start again</button>
-            <button id="enterGarden" class="ascii-enter" type="button">Enter the garden ↓</button>
-        </div>
-    </section>
-
-
         <!-- ========================================
-             PAGE 1
+             PAGE 1: FIRST VIEW
              CAMERON + DESMOS FLOWERS
         ========================================= -->
 
@@ -134,6 +122,24 @@
         </section>
 
         <section class="whale-section" id="whaleHome" aria-label="The whale"><div class="whale-stars"></div><div class="whale-words"><h2>A little ocean of wonder.</h2><p>Some things are worth swimming across the world for.</p></div></section>
+        <!-- ========================================
+             FINAL PAGE: INTERACTIVE ASCII LILIES
+        ========================================= -->
+        <section class="ascii-intro" id="lilyFinale" aria-label="Grow the ASCII lilies">
+            <canvas id="asciiLiliesCanvas" aria-label="Animated lilies drawn entirely from colored ASCII characters. Drag upward to grow them."></canvas>
+
+            <div class="ascii-intro-controls">
+                <div class="ascii-actions">
+                    <button id="waterLilies" type="button">♡ Water the lilies</button>
+                    <button id="colorLilies" type="button">Colors: Pink</button>
+                    <button id="replayLilies" type="button">Start again</button>
+                </div>
+                <div class="ascii-enter-row">
+                    <button id="enterGarden" class="ascii-enter" type="button">Enter the garden ↑</button>
+                </div>
+            </div>
+        </section>
+
     </main>
 
 
@@ -156,7 +162,7 @@
          OUR JAVASCRIPT
     ========================================= -->
 
-    <!-- ASCII lilies intro -->
+    <!-- ASCII lilies finale -->
     <script src="js/ascii-lilies.js"></script>
 
     <!-- Flowers -->

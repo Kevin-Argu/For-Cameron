@@ -405,7 +405,7 @@ body {
 
 }
 /* ========================================
-   OPENING: INTERACTIVE ASCII LILIES
+   FINAL PAGE: INTERACTIVE ASCII LILIES
 ======================================== */
 .ascii-intro {
     position: relative;
@@ -434,10 +434,25 @@ body {
     display: flex;
     position: relative;
     z-index: 2;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
-    gap: 10px;
-    max-width: 900px;
+    gap: 14px;
+    width: min(100%, 900px);
+    margin-inline: auto;
+}
+.ascii-actions {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+}
+.ascii-enter-row {
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 .ascii-intro-controls button {
     font: 14px Georgia, "Times New Roman", serif;
@@ -458,6 +473,8 @@ body {
     background: #f2c9dc;
     color: #2b1824;
     border-color: #f2c9dc;
+    min-width: min(100%, 260px);
+    text-align: center;
 }
 .ascii-intro-controls .ascii-enter:hover {
     color: #fff;
@@ -465,8 +482,10 @@ body {
 @media (max-width: 600px) {
     .ascii-intro { padding-top: 34px; }
     #asciiLiliesCanvas { height: 62svh; min-height: 240px; }
-    .ascii-intro-controls { gap: 7px; }
+    .ascii-intro-controls { gap: 10px; }
+    .ascii-actions { flex-wrap: wrap; gap: 7px; }
     .ascii-intro-controls button { padding: 10px 12px; font-size: 13px; }
+    .ascii-enter-row .ascii-enter { min-width: min(100%, 230px); }
 }
 
 /* Persistent whale travels above Desmos and every page section. */
