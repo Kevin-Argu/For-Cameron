@@ -12,7 +12,24 @@
 </head>
 
 
-<body>
+<body class="peanut-lock">
+
+    <!-- Peanut-free entrance (shown before the existing garden) -->
+    <div id="peanutGate" class="peanut-gate" role="dialog" aria-modal="true"
+         aria-labelledby="peanutGateTitle" aria-describedby="peanutGateDescription">
+        <div class="peanut-gate-card">
+            <svg class="peanut-gate-icon" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                <path d="m9 12 2 2 4-4"></path>
+            </svg>
+            <h1 id="peanutGateTitle">Certified Peanut-Free Website</h1>
+            <p id="peanutGateDescription">For your safety, absolutely no peanuts were used in the making of this website.</p>
+            <button id="enterPeanutFree" class="peanut-gate-btn" type="button">Okay, let me in</button>
+        </div>
+    </div>
+
 
     <main>
 

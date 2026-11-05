@@ -476,3 +476,121 @@ body {
 .whale-section p{font:italic clamp(15px,2vw,20px) Georgia,serif;color:#9abacb;margin-top:1rem;}
 .whale-section .whale-stars{position:absolute;inset:0;opacity:.3;pointer-events:none;background-image:radial-gradient(#d3f5ff 1px,transparent 1px);background-size:67px 71px;}
 .whale-section .whale-words{position:relative;z-index:1;transform:translateY(-22vh);pointer-events:none;}
+
+
+/* ========================================
+   PEANUT-FREE ENTRANCE
+   Sits in front of the existing site
+======================================== */
+
+body.peanut-lock {
+    overflow: hidden;
+}
+
+.peanut-gate {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 24px;
+    background: #000;
+    color: #f2f2f2;
+    font-family: Arial, Helvetica, sans-serif;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.45s ease, visibility 0.45s ease;
+}
+
+.peanut-gate.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.peanut-gate-card {
+    width: 100%;
+    max-width: 1050px;
+    text-align: center;
+}
+
+.peanut-gate-icon {
+    display: block;
+    width: 45px;
+    height: 45px;
+    margin: 0 auto 32px;
+    color: #d0d0d0;
+}
+
+.peanut-gate-card h1 {
+    margin: 0 0 30px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    font-size: clamp(27px, 4.5vw, 36px);
+    line-height: 1.2;
+    color: #f2f2f2;
+}
+
+.peanut-gate-card p {
+    margin: 0 auto 26px;
+    max-width: 1050px;
+    font-size: clamp(17px, 3vw, 27px);
+    font-weight: 400;
+    line-height: 1.45;
+    color: #c7c7c7;
+}
+
+.peanut-gate-btn {
+    min-height: 70px;
+    padding: 18px 40px;
+    border: 0;
+    border-radius: 23px;
+    background: #202022;
+    color: #f1f1f1;
+    font: 700 clamp(20px, 3vw, 30px) Arial, Helvetica, sans-serif;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.peanut-gate-btn:hover {
+    background: #303034;
+    transform: translateY(-2px);
+}
+
+.peanut-gate-btn:active {
+    transform: translateY(0);
+}
+
+.peanut-gate-btn:focus-visible {
+    outline: 3px solid #fff;
+    outline-offset: 4px;
+}
+
+@media (max-width: 600px) {
+    .peanut-gate {
+        padding: 20px;
+    }
+    .peanut-gate-card h1 {
+        margin-bottom: 20px;
+    }
+    .peanut-gate-icon {
+        margin-bottom: 24px;
+    }
+    .peanut-gate-card p {
+        margin-bottom: 26px;
+    }
+    .peanut-gate-btn {
+        min-height: 58px;
+        padding: 15px 28px;
+        border-radius: 18px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .peanut-gate,
+    .peanut-gate-btn {
+        transition: none;
+    }
+}
