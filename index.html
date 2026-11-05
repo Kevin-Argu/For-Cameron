@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/style.css?v=4">
     <link rel="stylesheet" href="css/peanut-gate.css?v=4">
     <link rel="stylesheet" href="css/flower-math.css?v=4">
+    <link rel="stylesheet" href="css/birdwatch.css?v=2">
     <!-- Local controls initialize without waiting for the external graph library. -->
     <script defer src="js/main.js?v=4"></script>
     <script defer src="js/peanut-gate.js?v=4"></script>
@@ -17,6 +18,7 @@
     <script defer src="js/flowers.js?v=4"></script>
     <script defer src="js/heart.js?v=4"></script>
     <script defer src="js/graph-loader.js?v=4"></script>
+    <script defer src="js/birdwatch.js?v=2"></script>
 </head>
 <body class="peanut-lock">
     <div id="peanutGate" class="peanut-gate" role="dialog" aria-modal="true"
@@ -81,6 +83,35 @@
                 <h2>A little ocean of wonder.</h2>
                 <p>Some things are worth swimming across the world for.</p>
             </div>
+        </section>
+
+        <section class="birdwatch-experience" aria-label="Birdwatching">
+            <section class="forest" aria-labelledby="birdwatchHeading">
+                <h2 id="birdwatchHeading">In the simplest moments.</h2>
+                <p class="hint">A little birdwatching, just for you.</p>
+                <button class="binoculars" id="binoculars" type="button" aria-controls="sighting" aria-expanded="false">
+                    <span aria-hidden="true">◉ ◉</span><small>Look through the binoculars</small>
+                </button>
+                <div class="view" id="sighting" aria-live="polite">
+                    <div class="branch"></div>
+                    <div class="robin" role="img" aria-label="Illustrated American robin with an orange-red breast">
+                        <span class="tail"></span><span class="body"></span><span class="wing"></span>
+                        <span class="head"></span><span class="beak"></span><span class="eye"></span>
+                    </div>
+                    <div class="scope" aria-hidden="true"></div>
+                    <p class="sighting-label" id="robinLabel">A robin! ♡</p>
+                </div>
+                <p class="scroll-hint">Keep scrolling to see who else is here ↓</p>
+            </section>
+            <section class="meadow" aria-label="Hummingbird in the flowers">
+                <h2>And a little visitor...</h2>
+                <div class="flowers" aria-hidden="true">✿　❀　✿　❀　✿</div>
+                <div class="hummingbird" role="img" aria-label="Illustrated hummingbird hovering above flowers">
+                    <span class="bird-body"></span><span class="bird-wing"></span>
+                    <span class="bird-head"></span><span class="bird-beak"></span>
+                </div>
+                <p>Sometimes all it takes is looking a little closer.</p>
+            </section>
         </section>
 
         <section class="heart-section" id="heartFinale" aria-label="The animated mathematical heart">
