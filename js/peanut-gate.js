@@ -69,7 +69,7 @@
             document.removeEventListener("keydown", handleKeys, true);
             window.scrollTo(0, 0);
 
-            const firstGardenButton = document.getElementById("exploreButton");
+            const firstGardenButton = document.getElementById("waterLilies");
             if (firstGardenButton) firstGardenButton.focus({ preventScroll: true });
         }
 
