@@ -1,193 +1,74 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 210">
-<title>George, a brown-gray lop-eared rabbit drawn from little characters</title>
-<g font-family="Menlo,Consolas,Liberation Mono,monospace" font-size="7.6" font-weight="600" text-anchor="middle">
-<text y="130.5" x="31.5 39.9 48.3 52.5" fill="#dccdb5">**+o</text>
-<text y="130.5" x="35.7 44.1" fill="#d1c2ab">::</text>
-<text y="136.3" x="27.3 31.5 39.9 44.1 48.3" fill="#d1c2ab">+:*+:</text>
-<text y="136.3" x="56.7 60.9 65.1 153.3 157.5 165.9 170.1 174.3 203.7 212.1" fill="#ccb99f">*+:*+o*+*O</text>
-<text y="136.3" x="35.7 52.5" fill="#dccdb5">oo</text>
-<text y="142.1" x="27.3 31.5 35.7 39.9 44.1 48.3 52.5" fill="#d1c2ab">***oooo</text>
-<text y="142.1" x="56.7 60.9" fill="#d8c5a9">oO</text>
-<text y="147.9" x="27.3 39.9 52.5" fill="#d1c2ab">ooo</text>
-<text y="147.9" x="31.5 35.7 44.1 48.3 56.7" fill="#c5b7a1">:*:*:</text>
-<text y="153.7" x="31.5 35.7 39.9 44.1 48.3 52.5 56.7" fill="#c5b7a1">*+o*:o*</text>
-<text y="159.5" x="35.7 39.9" fill="#baac96">::</text>
-<text y="159.5" x="44.1 48.3 52.5" fill="#c5b7a1">Ooo</text>
-<text y="66.7" x="123.9 128.1 132.3 136.5 140.7 144.9" fill="#c0ae96">++***o</text>
-<text y="72.5" x="98.7 102.9 111.3 115.5 119.7 123.9 132.3 136.5 140.7 144.9 153.3 157.5 165.9 170.1" fill="#c0ae96">:*+o:*+*:*+*+o</text>
-<text y="72.5" x="107.1 128.1 149.1" fill="#ccb99f">Ooo</text>
-<text y="72.5" x="161.7" fill="#b4a28c">:</text>
-<text y="78.3" x="86.1 90.3 102.9 115.5 119.7 128.1 132.3 140.7 144.9 153.3 157.5 165.9 170.1" fill="#c0ae96">+::+:+:*:*+*+</text>
-<text y="78.3" x="174.3 182.7 228.9 237.3 241.5 212.1 216.3 224.7 249.9 254.1" fill="#ccb698">:+:*:+:+*+</text>
-<text y="78.3" x="94.5 98.7 107.1 111.3 123.9 136.5 149.1 161.7" fill="#ccb99f">o*o**ooO</text>
-<text y="78.3" x="178.5 233.1 245.7 220.5" fill="#d8c0a1">ooo*</text>
-<text y="84.1" x="77.7 81.9 86.1 90.3 94.5 98.7 102.9 107.1 111.3 115.5 119.7 123.9 128.1 132.3 136.5 140.7 144.9 149.1 153.3 157.5 161.7 165.9 170.1" fill="#ccb99f">ooooooooooooooooooooooo</text>
-<text y="84.1" x="174.3 178.5 182.7 228.9 233.1 237.3 241.5 245.7 212.1 216.3 220.5 224.7 249.9 254.1" fill="#d8c0a1">oooooooooooooo</text>
-<text y="84.1" x="186.9 203.7 207.9" fill="#77685a">iii</text>
-<text y="84.1" x="191.1 195.3 199.5" fill="#9e8c78">iii</text>
-<text y="89.9" x="69.3 81.9 111.3 123.9 140.7 153.3 165.9" fill="#c0ae96">::::+::</text>
-<text y="89.9" x="178.5 220.5" fill="#c0aa8e">::</text>
-<text y="89.9" x="182.7 170.1 174.3 228.9 237.3 241.5 233.1 245.7 212.1 216.3 224.7 249.9 254.1 258.3" fill="#ccb698">++**+*Oo+o+:*o</text>
-<text y="89.9" x="195.3 191.1" fill="#9e8c78">:i</text>
-<text y="89.9" x="73.5 77.7 86.1 90.3 94.5 98.7 102.9 107.1 115.5 119.7 128.1 132.3 136.5 144.9 149.1 157.5 161.7" fill="#ccb99f">+*+*o:*o+o+*O*o*o</text>
-<text y="89.9" x="186.9 199.5 203.7" fill="#77685a">;;i</text>
-<text y="95.7" x="65.1 69.3 77.7 81.9 86.1 90.3 98.7 102.9 107.1 111.3 119.7 123.9 128.1 132.3 140.7 144.9 149.1 153.3 161.7 165.9" fill="#ccb99f">*+*:o+*:o+*:o+*+o**+</text>
-<text y="95.7" x="170.1 174.3 182.7 228.9 216.3 224.7 258.3" fill="#ccb698">o*o+*o*</text>
-<text y="95.7" x="186.9 203.7 199.5" fill="#77685a">;i:</text>
-<text y="95.7" x="191.1 195.3" fill="#9e8c78">|;</text>
-<text y="95.7" x="73.5 94.5" fill="#d8c5a9">oO</text>
-<text y="95.7" x="115.5 136.5 157.5" fill="#c0ae96">:::</text>
-<text y="95.7" x="178.5 212.1 220.5 254.1" fill="#c0aa8e">::::</text>
-<text y="101.5" x="60.9 65.1 69.3 73.5 77.7 81.9 86.1 90.3 94.5 107.1 111.3 115.5 119.7 123.9 128.1 132.3 136.5 149.1 153.3 157.5 161.7 165.9" fill="#ccb99f">***+++:::o***++::oo***</text>
-<text y="101.5" x="170.1 174.3 178.5 182.7 216.3" fill="#c0aa8e">+++:*</text>
-<text y="101.5" x="195.3" fill="#a7947f">i</text>
-<text y="101.5" x="199.5" fill="#9e8c78">i</text>
-<text y="101.5" x="203.7 191.1" fill="#77685a">i:</text>
-<text y="101.5" x="207.9 212.1" fill="#ccb698">**</text>
-<text y="101.5" x="98.7 102.9 144.9" fill="#d8c5a9">ooO</text>
-<text y="101.5" x="140.7" fill="#c0ae96">:</text>
-<text y="101.5" x="186.9" fill="#6a5e51">:</text>
-<text y="107.3" x="60.9 65.1 77.7 81.9 86.1 94.5 98.7 102.9 107.1 115.5 119.7 123.9 128.1 136.5 140.7 144.9 153.3 157.5 161.7 165.9" fill="#ccb99f">+*:+*:+**:+*o:+*:+*o</text>
-<text y="107.3" x="174.3 178.5 182.7 212.1" fill="#c0aa8e">:+*:</text>
-<text y="107.3" x="186.9 199.5 203.7 191.1" fill="#77685a">i;i:</text>
-<text y="107.3" x="195.3" fill="#9e8c78">:</text>
-<text y="107.3" x="207.9 170.1" fill="#ccb698">oO</text>
-<text y="107.3" x="69.3 73.5 90.3 111.3 149.1" fill="#d8c5a9">oOooo</text>
-<text y="107.3" x="132.3" fill="#c0ae96">:</text>
-<text y="113.1" x="56.7 65.1 73.5 77.7 81.9 86.1 90.3 94.5 123.9 128.1 136.5 144.9 153.3 161.7 170.1" fill="#ccb99f">++*:*:*:o+++++*</text>
-<text y="113.1" x="98.7 102.9 107.1 111.3 115.5 119.7" fill="#c9b498">;.;.;.</text>
-<text y="113.1" x="178.5 207.9 212.1" fill="#c0aa8e">*:*</text>
-<text y="113.1" x="186.9 203.7 191.1 199.5" fill="#77685a">;i::</text>
-<text y="113.1" x="195.3" fill="#9e8c78">;</text>
-<text y="113.1" x="60.9 69.3 132.3 140.7 149.1 157.5 165.9" fill="#d8c5a9">oOooooO</text>
-<text y="113.1" x="174.3 182.7" fill="#b59f86">::</text>
-<text y="118.9" x="56.7 77.7 81.9 149.1" fill="#d8c5a9">*o*o</text>
-<text y="118.9" x="98.7 102.9 123.9 86.1 90.3 107.1 111.3 115.5 128.1 132.3" fill="#c9b498">o**;:;::*;</text>
-<text y="118.9" x="195.3" fill="#a7947f">|</text>
-<text y="118.9" x="60.9 65.1 69.3 73.5 136.5 140.7 144.9 153.3 157.5 161.7 165.9 174.3" fill="#ccb99f">*+::+::**+:o</text>
-<text y="118.9" x="94.5 119.7" fill="#beaa90">..</text>
-<text y="118.9" x="178.5 207.9" fill="#c0aa8e">*+</text>
-<text y="118.9" x="182.7" fill="#6a5e51">;</text>
-<text y="118.9" x="186.9 191.1 203.7" fill="#77685a">::;</text>
-<text y="118.9" x="199.5" fill="#9e8c78">i</text>
-<text y="118.9" x="212.1" fill="#b59f86">+</text>
-<text y="118.9" x="170.1" fill="#c0ae96">:</text>
-<text y="124.7" x="56.7 60.9 65.1 69.3 73.5 144.9 157.5 161.7 165.9 170.1 174.3 178.5" fill="#ccb99f">::++*o:++**o</text>
-<text y="124.7" x="90.3 94.5 98.7 123.9 128.1 132.3" fill="#beaa90">..:..:</text>
-<text y="124.7" x="102.9 107.1 111.3 136.5 140.7 77.7 81.9 86.1 115.5 119.7" fill="#c9b498">:;;;;;***o</text>
-<text y="124.7" x="191.1 199.5 182.7" fill="#77685a">:;i</text>
-<text y="124.7" x="195.3" fill="#9e8c78">:</text>
-<text y="124.7" x="203.7 207.9 212.1" fill="#c0aa8e">**o</text>
-<text y="124.7" x="149.1" fill="#d8c5a9">o</text>
-<text y="124.7" x="153.3" fill="#c0ae96">:</text>
-<text y="124.7" x="186.9" fill="#6a5e51">:</text>
-<text y="130.5" x="56.7 65.1 69.3 153.3 157.5 161.7 165.9 174.3 178.5" fill="#ccb99f">+:*+o:**o</text>
-<text y="130.5" x="73.5 77.7 86.1 94.5 102.9 107.1 115.5 123.9 132.3 136.5 144.9 140.7" fill="#beaa90">.;:..;::.;:.</text>
-<text y="130.5" x="98.7 128.1 81.9 90.3 111.3 119.7" fill="#c9b498">;;**o*</text>
-<text y="130.5" x="182.7" fill="#6a5e51">;</text>
-<text y="130.5" x="186.9 191.1 199.5" fill="#77685a">i::</text>
-<text y="130.5" x="195.3" fill="#9e8c78">i</text>
-<text y="130.5" x="203.7 212.1 220.5" fill="#b59f86">*++</text>
-<text y="130.5" x="207.9 216.3" fill="#c0aa8e">Oo</text>
-<text y="130.5" x="60.9 149.1" fill="#d8c5a9">oo</text>
-<text y="130.5" x="170.1" fill="#c0ae96">:</text>
-<text y="136.3" x="73.5 77.7 81.9 90.3 94.5 98.7 102.9 107.1 111.3 119.7 123.9 128.1 136.5 140.7 144.9 86.1" fill="#beaa90">;:.;:.*;.;:.;:.*</text>
-<text y="136.3" x="149.1 69.3 115.5 132.3" fill="#c9b498">**o*</text>
-<text y="136.3" x="182.7 186.9 191.1 195.3" fill="#77685a">i;::</text>
-<text y="136.3" x="199.5" fill="#9e8c78">i</text>
-<text y="136.3" x="161.7 178.5 207.9" fill="#c0ae96">:::</text>
-<text y="142.1" x="65.1 153.3 157.5 203.7 207.9" fill="#ccb99f">:oO+*</text>
-<text y="142.1" x="69.3 73.5 77.7 81.9" fill="#b4a087">....</text>
-<text y="142.1" x="86.1 90.3 94.5 98.7 102.9 107.1 111.3 115.5 119.7 123.9 128.1 132.3 136.5 140.7 144.9 149.1" fill="#beaa90">.:::::;;;;;;****</text>
-<text y="142.1" x="186.9 191.1 199.5" fill="#77685a">::;</text>
-<text y="142.1" x="195.3" fill="#9e8c78">;</text>
-<text y="142.1" x="161.7 165.9 170.1 174.3 178.5" fill="#c0ae96">:::::</text>
-<text y="142.1" x="182.7" fill="#6a5e51">:</text>
-<text y="147.9" x="60.9 157.5 161.7 170.1 174.3 207.9" fill="#ccb99f">**o*Oo</text>
-<text y="147.9" x="69.3 81.9 94.5 90.3 102.9 115.5 128.1 140.7" fill="#b4a087">:::.....</text>
-<text y="147.9" x="73.5 86.1 98.7 107.1 111.3 119.7 123.9 132.3 136.5 144.9 149.1 77.7" fill="#beaa90">;;;:*:*;*;*o</text>
-<text y="147.9" x="182.7 186.9" fill="#6a5e51">i:</text>
-<text y="147.9" x="195.3" fill="#9e8c78">i</text>
-<text y="147.9" x="65.1" fill="#d8c5a9">o</text>
-<text y="147.9" x="153.3 165.9 178.5 199.5 203.7" fill="#c0ae96">:++:+</text>
-<text y="147.9" x="191.1" fill="#77685a">;</text>
-<text y="153.7" x="65.1 153.3 161.7 165.9 174.3 199.5" fill="#ccb99f">o*o*o*</text>
-<text y="153.7" x="69.3 81.9 94.5 107.1 140.7 73.5 86.1 98.7 111.3 119.7 132.3 144.9" fill="#b4a087">;:::;....::.</text>
-<text y="153.7" x="77.7 90.3 102.9 115.5 123.9 128.1 136.5 149.1" fill="#beaa90">**;;o;**</text>
-<text y="153.7" x="186.9 191.1 195.3" fill="#77685a">i;:</text>
-<text y="153.7" x="157.5 170.1 178.5 203.7" fill="#c0ae96">::++</text>
-<text y="153.7" x="182.7" fill="#6a5e51">:</text>
-<text y="159.5" x="69.3 73.5 77.7 81.9 86.1 90.3 94.5 98.7 102.9 107.1 111.3 115.5 119.7 123.9 128.1 132.3 136.5" fill="#b4a087">;;;;;;:::::......</text>
-<text y="159.5" x="140.7 144.9 149.1" fill="#beaa90">o**</text>
-<text y="159.5" x="153.3 157.5 161.7 165.9 170.1" fill="#ccb99f">ooo**</text>
-<text y="159.5" x="174.3 178.5 182.7 186.9 191.1 195.3 199.5" fill="#c0ae96">****+++</text>
-<text y="165.3" x="77.7 90.3 94.5 107.1 111.3 123.9 128.1 140.7 144.9 81.9 86.1 98.7 115.5 132.3 73.5" fill="#b4a087">:.;:;:;:;;o***.</text>
-<text y="165.3" x="102.9 119.7 136.5" fill="#a9967f">...</text>
-<text y="165.3" x="153.3 157.5 161.7 170.1 174.3 178.5 186.9 191.1" fill="#c0ae96">:+*:+*:*</text>
-<text y="165.3" x="149.1 165.9 182.7" fill="#ccb99f">ooO</text>
-<text y="171.1" x="86.1 94.5 102.9 111.3 132.3 140.7 90.3 81.9" fill="#b4a087">:;;*;*o*</text>
-<text y="171.1" x="107.1 115.5 98.7 136.5 77.7" fill="#a9967f">.:..:</text>
-<text y="171.1" x="119.7" fill="#e1cbaa">o</text>
-<text y="171.1" x="123.9 128.1" fill="#d7c0a1">*:</text>
-<text y="171.1" x="144.9 149.1 153.3 161.7 170.1 178.5 182.7" fill="#c0ae96">+o+**o+</text>
-<text y="171.1" x="157.5 165.9 174.3" fill="#b4a28c">::+</text>
-<text y="176.9" x="98.7 102.9 107.1 111.3 128.1 132.3 136.5 140.7 144.9 157.5 94.5" fill="#ccb699">++::*++::**</text>
-<text y="176.9" x="161.7 165.9 170.1" fill="#b4a28c">*+:</text>
-<text y="176.9" x="115.5 119.7 123.9 149.1 153.3 90.3" fill="#d7c0a1">oo*oo*</text>
-<text y="182.7" x="119.7 123.9 144.9 149.1 94.5 98.7 102.9" fill="#ccb699">*o*o*oO</text>
-<text y="182.7" x="140.7 128.1 132.3 136.5 107.1 111.3 115.5 86.1 90.3 153.3 157.5 161.7" fill="#c1ac90">*::+:+*++::+</text>
-<text y="176.9" x="86.1" fill="#b4a087">*</text>
-<text y="188.5" x="98.7 107.1 115.5 123.9 144.9" fill="#b7a187">::::+</text>
-<text y="188.5" x="102.9 111.3 119.7 128.1 132.3 136.5 140.7 149.1" fill="#c1ac90">****O+oo</text>
-<text y="165.3" x="203.7 207.9 212.1 220.5 224.7 228.9 233.1" fill="#d6c2a7">+*o+*o:</text>
-<text y="165.3" x="216.3" fill="#cbb69d">:</text>
-<text y="171.1" x="191.1 195.3 199.5 203.7 212.1 220.5 224.7 228.9 233.1 237.3 241.5" fill="#cbb69d">*:*:+*:*:o+</text>
-<text y="171.1" x="207.9 216.3 245.7" fill="#d6c2a7">ooo</text>
-<text y="176.9" x="191.1 195.3 199.5 203.7 207.9 220.5 224.7 228.9 233.1 237.3 241.5" fill="#c0ab93">*++::**++::</text>
-<text y="176.9" x="212.1 216.3 245.7" fill="#cbb69d">ooo</text>
-<text y="182.7" x="203.7 207.9 212.1 224.7 228.9 233.1" fill="#b4a18a">:+*::+</text>
-<text y="182.7" x="216.3 220.5" fill="#c0ab93">*o</text>
-<text y="60.9" x="224.7" fill="#e4cbaa">O</text>
-<text y="60.9" x="228.9 233.1 195.3 199.5 203.7 207.9 212.1 216.3 220.5" fill="#d8c0a1">o**+:o*+:</text>
-<text y="60.9" x="237.3 241.5" fill="#a5917c">::</text>
-<text y="66.7" x="228.9 233.1 237.3 241.5 186.9 191.1 216.3 220.5 224.7" fill="#d8c0a1">***o*o+++</text>
-<text y="72.5" x="228.9 237.3 182.7 186.9 216.3 249.9" fill="#ccb698">+::+:+</text>
-<text y="72.5" x="233.1 241.5 245.7 178.5 212.1 220.5 224.7" fill="#d8c0a1">**o*o*o</text>
-<text y="95.7" x="237.3 241.5 249.9 233.1" fill="#dbc6ab">:.:.</text>
-<text y="95.7" x="245.7" fill="#e6d1b4">:</text>
-<text y="101.5" x="228.9 233.1 237.3 224.7" fill="#d1bda1">....</text>
-<text y="101.5" x="241.5 245.7 249.9 220.5 254.1 258.3" fill="#dbc6ab">*::.::</text>
-<text y="107.3" x="233.1 237.3 249.9 241.5 216.3 220.5 228.9 254.1 258.3" fill="#d1bda1">...:.:..:</text>
-<text y="107.3" x="245.7 224.7 262.5" fill="#dbc6ab">:::</text>
-<text y="113.1" x="233.1 241.5 249.9 237.3 245.7 220.5 224.7 228.9 254.1 258.3 262.5 266.7" fill="#d1bda1">...:::.::.*:</text>
-<text y="118.9" x="233.1 237.3 241.5 228.9 216.3 254.1 258.3 262.5 266.7" fill="#c6b298">...:.:...</text>
-<text y="118.9" x="245.7 249.9 220.5 224.7" fill="#d1bda1">::::</text>
-<text y="124.7" x="233.1 237.3 241.5 245.7 224.7 228.9 254.1 258.3 262.5" fill="#c6b298">::::.....</text>
-<text y="130.5" x="233.1 245.7 224.7 254.1" fill="#c6b298">::::</text>
-<text y="130.5" x="241.5 237.3 228.9 249.9 258.3" fill="#bca88e">.....</text>
-<text y="136.3" x="237.3 241.5" fill="#6c5e51">;:</text>
-<text y="136.3" x="245.7" fill="#786859">i</text>
-<text y="142.1" x="241.5" fill="#786859">i</text>
-<text y="66.7" x="195.3 199.5" fill="#9e8c78">ii</text>
-<text y="66.7" x="203.7" fill="#6a5e51">:</text>
-<text y="66.7" x="207.9 212.1" fill="#ccb698">::</text>
-<text y="72.5" x="191.1 195.3" fill="#9e8c78">i:</text>
-<text y="72.5" x="199.5 203.7" fill="#77685a">;|</text>
-<text y="72.5" x="207.9" fill="#6a5e51">;</text>
-<text y="78.3" x="186.9 207.9" fill="#6a5e51">:;</text>
-<text y="78.3" x="195.3 191.1" fill="#9e8c78">;i</text>
-<text y="78.3" x="199.5 203.7" fill="#77685a">:i</text>
-<text y="89.9" x="207.9" fill="#6a5e51">:</text>
-<text y="95.7" x="207.9" fill="#6a5e51">;</text>
-<text y="113.1" x="216.3" fill="#c6b298">.</text>
-<text y="124.7" x="220.5 249.9" fill="#bca88e">..</text>
-<text y="124.7" x="216.3" fill="#d1bda1">*</text>
-<text x="240" y="92" fill="#171511" font-size="13">●</text>
-<text x="242" y="89" fill="#f2e4cd" font-size="10">·</text>
-<text x="268" y="114" fill="#b59589" font-size="9">v</text>
-<text x="267" y="121" fill="#d1bda7" font-size="7">.</text>
-<text x="278" y="110" fill="#a39684" font-size="9">´</text>
-<text x="282" y="117" fill="#a39684" font-size="9">—</text>
-<text x="276" y="124" fill="#a39684" font-size="9">`</text>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 250" width="360" height="250">
+  <title>George, a little taupe lop-eared rabbit</title>
+  <desc>A rounded brown-gray rabbit with long floppy ears, a bright dark eye, soft cheeks and a little pale tail. Small printed characters texture his fur.</desc>
+  <defs>
+    <!-- Soft shading follows George's taupe coat; printed characters add fur texture. -->
+    <radialGradient id="george-coat" cx="36%" cy="25%" r="84%">
+      <stop stop-color="#b8aa94"/><stop offset=".48" stop-color="#938572"/><stop offset="1" stop-color="#504943"/>
+    </radialGradient>
+    <radialGradient id="george-face" cx="57%" cy="27%" r="80%">
+      <stop stop-color="#c4b49b"/><stop offset=".55" stop-color="#a0907b"/><stop offset="1" stop-color="#706458"/>
+    </radialGradient>
+    <linearGradient id="george-ear" x1="0" y1="0" x2="1" y2=".7">
+      <stop stop-color="#a4937d"/><stop offset=".45" stop-color="#72665b"/><stop offset="1" stop-color="#514943"/>
+    </linearGradient>
+    <radialGradient id="george-belly" cx="70%" cy="20%" r="85%">
+      <stop stop-color="#c8bdab"/><stop offset="1" stop-color="#8c7e6b"/>
+    </radialGradient>
+    <pattern id="george-fur" width="29" height="23" patternUnits="userSpaceOnUse">
+      <g font-family="Menlo,Consolas,monospace" text-anchor="middle" font-size="6.5">
+        <text x="3" y="6" fill="#f1dfbf" opacity=".57">;</text>
+        <text x="14" y="8" fill="#dcc9aa" opacity=".48">/</text>
+        <text x="26" y="4" fill="#473f38" opacity=".5">:</text>
+        <text x="8" y="19" fill="#4b4238" opacity=".48">,</text>
+        <text x="22" y="20" fill="#eddbbb" opacity=".54">;</text>
+      </g>
+    </pattern>
+    <pattern id="george-ear-fur" width="13" height="19" patternUnits="userSpaceOnUse" patternTransform="rotate(8)">
+      <text x="3" y="12" fill="#d0b99a" opacity=".48" font-family="Menlo,Consolas,monospace" font-size="7">|</text>
+    </pattern>
+    <path id="george-tail-shape" d="M55 163 C38 153 25 165 29 181 C31 195 43 199 57 190 C66 183 64 171 55 163Z"/>
+    <path id="george-body-shape" d="M52 177 C49 148 56 113 80 93 C102 73 137 70 167 84 C184 92 200 111 211 132 C222 150 226 172 222 192 C197 214 86 219 61 199 C54 193 51 186 52 177Z"/>
+    <path id="george-head-shape" d="M193 90 C191 63 210 43 238 44 C265 43 282 58 286 83 C288 94 294 101 300 111 C305 120 300 131 291 137 C279 148 254 154 232 146 C211 139 197 118 193 90Z"/>
+    <path id="george-near-ear-shape" d="M210 65 C197 63 187 76 187 96 C186 115 182 141 183 161 C181 179 187 190 197 190 C208 189 212 173 215 155 L225 107 C229 86 224 69 210 65Z"/>
+    <path id="george-far-ear-shape" d="M251 53 C264 49 274 61 277 78 C280 97 281 126 274 144 C271 153 262 156 258 148 C256 139 260 119 256 101 L248 69Z"/>
+  </defs>
+  <g stroke-linecap="round" stroke-linejoin="round">
+    <!-- Silhouettes stay legible at phone size; type adds the handmade fur. -->
+    <use href="#george-tail-shape" fill="#cec4b2" stroke="#dfd2bb" stroke-width="1.3"/>
+    <use href="#george-tail-shape" fill="url(#george-fur)"/>
+    <use href="#george-body-shape" fill="url(#george-coat)" stroke="#c1ad91" stroke-width="1.2"/>
+    <use href="#george-body-shape" fill="url(#george-fur)"/>
+    <path d="M170 139 C178 124 202 124 218 143 C226 155 229 175 231 193 L244 202 C249 208 244 212 236 212 L209 211 C196 207 193 193 186 181Z" fill="url(#george-belly)"/>
+    <path d="M151 187 C169 189 183 198 183 207 C182 213 168 215 154 215 L94 214 C79 213 75 207 83 201 C97 193 119 198 128 193Z" fill="#b8a68c" stroke="#d0bda0" stroke-width="1.1"/>
+    <path d="M210 175 C208 186 205 198 209 207 C213 214 237 214 252 212 C257 211 256 205 250 202 L234 198 L234 176" fill="url(#george-belly)" stroke="#b5a58e" stroke-width="1.1"/>
+    <path d="M91 198 C75 180 79 151 96 139 C112 126 137 130 151 146 C159 156 162 176 154 190" fill="none" stroke="#675b4f" stroke-width="2" stroke-dasharray="1 4"/>
+    <path d="M99 205 L95 211 M111 205 L108 212 M234 205 L233 211 M244 205 L243 210" fill="none" stroke="#756454" stroke-width="1.2"/>
+    <use href="#george-far-ear-shape" fill="#685c52" stroke="#a6967f" stroke-width="1"/>
+    <use href="#george-far-ear-shape" fill="url(#george-ear-fur)"/>
+    <use href="#george-head-shape" fill="url(#george-face)" stroke="#cebaa0" stroke-width="1.2"/>
+    <use href="#george-head-shape" fill="url(#george-fur)"/>
+    <path d="M268 109 C278 103 294 106 300 115 C301 125 287 138 274 139 C263 139 254 130 256 120 C257 115 262 112 268 109Z" fill="#c0b09a" opacity=".77"/>
+    <path d="M265 135 C256 142 245 141 238 138" fill="none" stroke="#e0cdb0" stroke-width="1.3" opacity=".6"/>
+    <use href="#george-near-ear-shape" fill="url(#george-ear)" stroke="#c5b298" stroke-width="1.3"/>
+    <use href="#george-near-ear-shape" fill="url(#george-ear-fur)"/>
+    <path d="M206 83 C207 107 196 145 195 174" fill="none" stroke="#b39a81" stroke-width="3" opacity=".37"/>
+    <path d="M204 70 Q216 66 222 79" fill="none" stroke="#d6c2a3" stroke-width="1.5" opacity=".7"/>
+    <!-- George's eye is dark with one small reflected catchlight. -->
+    <path d="M256 86 C261 80 269 81 273 87" fill="none" stroke="#73604f" stroke-width="1.6"/>
+    <ellipse cx="265" cy="92" rx="8.3" ry="10.5" transform="rotate(15 265 92)" fill="#161716" stroke="#cfbda0" stroke-width="1.7"/>
+    <ellipse cx="263.5" cy="88.3" rx="2.6" ry="3" fill="#e5e8dc"/>
+    <circle cx="267.7" cy="95.8" r="1.2" fill="#879692"/>
+    <path d="M296 111 Q301 109 304 113 L299 118Z" fill="#987d77" stroke="#5b4943" stroke-width=".8"/>
+    <path d="M299 118 L299 122 M299 122 Q295 125 291 123" fill="none" stroke="#6c574d" stroke-width="1.1"/>
+    <g fill="none" stroke="#d4c7b4" stroke-width=".8" opacity=".8">
+      <path d="M290 118 Q310 107 326 108 M291 122 Q312 119 332 123 M289 127 Q309 130 321 140"/>
+    </g>
+    <g fill="#63564b">
+      <circle cx="284" cy="115" r=".9"/><circle cx="281" cy="121" r=".8"/><circle cx="284" cy="127" r=".8"/>
+    </g>
+    <g fill="#d2bea0" opacity=".8" font-family="Menlo,Consolas,monospace" font-size="8">
+      <text x="93" y="94">' ,</text><text x="130" y="87">· '</text><text x="67" y="128">;</text><text x="82" y="184">,</text>
+    </g>
+  </g>
 </svg>

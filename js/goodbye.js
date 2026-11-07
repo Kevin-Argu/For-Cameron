@@ -1,6 +1,7 @@
 (() => {
     'use strict';
 
+    // Bind only to the goodbye page; other pages can safely load this script too.
     const section = document.getElementById('goodbyeFinale');
     const gift = document.getElementById('takeChocolateMilk');
     const hint = document.getElementById('milkHint');
@@ -14,6 +15,7 @@
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const hasGeorge = meadow && crossing && george && recall;
 
+    // Clear both movement states and restore the rabbit's keyboard accessibility.
     function resetGeorge() {
         if (!hasGeorge) return;
         meadow.classList.remove('is-hopping', 'has-hopped');
@@ -21,6 +23,8 @@
         george.removeAttribute('tabindex');
         recall.hidden = true;
     }
+    // Reveal recall when the crossing ends. Move focus only if it was on George,
+    // so taking the milk never steals focus from the bottle button.
     function finishHop() {
         if (!hasGeorge) return;
         const restoreFocus = document.activeElement === george;
@@ -30,6 +34,7 @@
         status.textContent = 'George hopped off. You can call him back.';
         if (restoreFocus) recall.focus({ preventScroll: true });
     }
+    // Repeated taps cannot restart an active hop or interrupt a completed exit.
     function hopAway() {
         if (!hasGeorge || meadow.classList.contains('is-hopping') || meadow.classList.contains('has-hopped')) return;
         // Keep George present for visitors who prefer reduced motion.
@@ -51,6 +56,7 @@
             status.textContent = 'George is back. ♡';
             george.focus({ preventScroll: true });
         });
+        // Honor a motion-preference change immediately, including during a hop.
         reducedMotion.addEventListener('change', () => {
             if (reducedMotion.matches) {
                 const restoreFocus = document.activeElement === recall;
@@ -58,6 +64,7 @@
                 if (restoreFocus) george.focus({ preventScroll: true });
             }
         });
+        // Return George to a stable position when the visitor switches tabs.
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) resetGeorge();
         });
@@ -69,12 +76,14 @@
         }
     }
 
+    // Taking the bottle starts the goodbye; putting it back brings George back.
+    // Keep the visible hint, spoken status, and pressed state consistent.
     gift.addEventListener('click', () => {
         const taken = section.classList.toggle('has-milk');
         gift.setAttribute('aria-pressed', String(taken));
-        gift.setAttribute('aria-label', taken ? 'Hand the chocolate milk back' : 'Take the chocolate milk');
+        gift.setAttribute('aria-label', taken ? 'Put the chocolate milk back' : 'Take the chocolate milk');
         hint.textContent = taken ? 'all yours. ♡' : 'take it ↑';
-        status.textContent = taken ? 'The chocolate milk is yours. Tap again to hand it back.' : 'Here, chocolate milk.';
+        status.textContent = taken ? 'The chocolate milk is yours. Tap again to put it back.' : 'Here, chocolate milk.';
         if (taken) hopAway();
         else resetGeorge();
     });

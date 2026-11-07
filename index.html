@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="css/peanut-gate.css?v=4">
     <link rel="stylesheet" href="css/flower-math.css?v=7">
     <link rel="stylesheet" href="css/music.css?v=2">
-    <link rel="stylesheet" href="css/goodbye.css?v=2">
+    <link rel="stylesheet" href="css/goodbye.css?v=3">
     <link rel="stylesheet" href="css/pond.css?v=1">
     <!-- Local controls initialize without waiting for the external graph library. -->
     <script defer src="js/main.js?v=5"></script>
@@ -24,7 +24,7 @@
     <script defer src="js/heart.js?v=5"></script>
     <script defer src="js/graph-loader.js?v=5"></script>
     <script defer src="js/music.js?v=2"></script>
-    <script defer src="js/goodbye.js?v=2"></script>
+    <script defer src="js/goodbye.js?v=3"></script>
     <script defer src="js/pond.js?v=1"></script>
 </head>
 <body class="peanut-lock">
@@ -265,59 +265,76 @@
             <p class="goodbye-note">here, chocolate milk.</p>
             <button class="milk-gift" id="takeChocolateMilk" type="button"
                     aria-label="Take the chocolate milk" aria-pressed="false">
-                <svg class="milk-scene" viewBox="0 0 600 430" aria-hidden="true" focusable="false">
+                <!-- The bottle is decorative; its button provides the accessible name and toggle state. -->
+                <svg class="milk-scene" viewBox="0 0 400 400" aria-hidden="true" focusable="false">
+                    <defs>
+                        <!-- Transparent glass stays separate from the opaque chocolate milk inside it. -->
+                        <linearGradient id="milkGlass" x1="0" x2="1">
+                            <stop stop-color="#bdcec3" stop-opacity=".2"/>
+                            <stop offset=".22" stop-color="#dce9dc" stop-opacity=".07"/>
+                            <stop offset=".7" stop-color="#b9d2c5" stop-opacity=".04"/>
+                            <stop offset="1" stop-color="#d2e0cb" stop-opacity=".24"/>
+                        </linearGradient>
+                        <linearGradient id="chocolateMilk" x1="0" x2="1">
+                            <stop stop-color="#71503b"/><stop offset=".4" stop-color="#a47b57"/>
+                            <stop offset=".68" stop-color="#956a49"/><stop offset="1" stop-color="#654732"/>
+                        </linearGradient>
+                        <linearGradient id="milkCap" x1="0" x2="1">
+                            <stop stop-color="#a2747d"/><stop offset=".45" stop-color="#e8c2c8"/><stop offset="1" stop-color="#af7e87"/>
+                        </linearGradient>
+                    </defs>
                     <g class="milk-sparkles" fill="currentColor" text-anchor="middle">
-                        <text x="258" y="145">*</text><text x="510" y="220">+</text>
-                        <text x="286" y="239">·</text><text x="490" y="99">·</text>
+                        <text x="89" y="151">*</text><text x="307" y="249">+</text>
+                        <text x="111" y="289">·</text><text x="282" y="92">·</text>
                     </g>
-                    <ellipse class="milk-shadow" cx="366" cy="391" rx="103" ry="7"/>
-                    <g class="milk-offering-hand" stroke-linecap="round" stroke-linejoin="round">
-                        <path class="milk-hand" d="M170 326 L267 308 Q286 301 301 290 L328 259
-                            Q336 252 342 258 Q348 264 342 273 L328 290 L451 288
-                            Q464 288 464 298 Q463 306 449 309 L384 315 L451 312
-                            Q464 312 463 322 Q462 330 448 333 L382 338 L432 336
-                            Q444 338 442 347 Q441 354 428 356 L355 368
-                            Q315 376 285 366 L191 375 Z"/>
-                        <path class="milk-hand-detail" d="M286 321 Q304 311 322 314 M325 342 Q340 349 353 344"/>
-                        <path class="milk-sleeve" d="M30 329 L168 316 L194 379 L30 394 Z"/>
-                        <path class="milk-cuff" d="M153 318 L170 316 L195 379 L176 381 Z"/>
-                        <path class="milk-stitches" d="M44 341 L143 331 M45 380 L165 369 M160 328 L177 371"/>
-                        <text class="milk-sleeve-dots" x="58" y="363">· · · · ·</text>
-                    </g>
-                    <g class="milk-carton" stroke-linecap="round" stroke-linejoin="round">
-                        <path class="milk-straw" d="M410 127 L440 48 L470 48"/>
-                        <path class="milk-straw-stripes" d="M410 127 L440 48 L470 48"/>
-                        <path class="milk-carton-side" d="M430 150 L465 130 L465 291 L430 315 Z"/>
-                        <path class="milk-carton-roof-side" d="M365 95 L400 75 L465 130 L430 150 Z"/>
-                        <path class="milk-carton-roof" d="M300 150 L365 95 L430 150 Z"/>
-                        <path class="milk-carton-seal" d="M365 95 L365 80 L400 60 L400 75 Z"/>
-                        <path class="milk-carton-front" d="M300 150 L430 150 L430 315 L300 315 Z"/>
-                        <path class="milk-carton-fold" d="M300 150 L365 137 L430 150 M365 99 L365 137"/>
-                        <path class="milk-carton-label" d="M310 183 Q364 178 420 183 L420 273 Q364 278 310 273 Z"/>
-                        <g class="milk-carton-type" text-anchor="middle">
-                            <text x="365" y="210">chocolate</text>
-                            <text class="milk-carton-word" x="365" y="236">milk</text>
-                            <text class="milk-carton-heart" x="365" y="261">&lt;3</text>
+                    <ellipse class="milk-shadow" cx="200" cy="371" rx="77" ry="7"/>
+                    <!-- Move the whole bottle group so every reflection stays attached when it is taken. -->
+                    <g class="milk-bottle" stroke-linecap="round" stroke-linejoin="round">
+                        <path class="milk-glass" d="M171 64 L171 111 Q171 127 155 143
+                            L140 160 Q129 174 129 194 L129 340 Q129 359 148 362
+                            Q200 369 252 362 Q271 359 271 340 L271 194 Q271 174 260 160
+                            L245 143 Q229 127 229 111 L229 64Z"/>
+                        <!-- Fill stops below the neck, leaving the empty glass and shoulders visible. -->
+                        <path class="milk-liquid" d="M141 169 Q200 165 259 169 Q264 180 264 195
+                            L264 338 Q264 352 249 355 Q200 361 151 355 Q136 352 136 338
+                            L136 195 Q136 180 141 169Z"/>
+                        <ellipse class="milk-surface" cx="200" cy="169" rx="59" ry="5"/>
+                        <!-- Narrow highlights make the glass readable against the dark background. -->
+                        <path class="milk-glass-edge" d="M176 89 L176 114 Q177 132 158 151
+                            M224 90 L224 114 Q224 130 240 145 M141 343 Q146 357 199 357 Q248 357 259 346"/>
+                        <path class="milk-glass-glint" d="M180 91 L180 112 M153 163 Q143 179 143 199 L143 285"/>
+                        <path class="milk-glass-glint milk-glass-glint-small" d="M257 197 L257 313 M147 320 L147 337"/>
+                        <path class="milk-glass-shine" d="M148 186 Q151 177 154 178 L154 328 Q154 340 149 337Z"/>
+                        <!-- The paper label leaves the milk and glass visible on both sides. -->
+                        <rect class="milk-label" x="156" y="216" width="88" height="91" rx="8"/>
+                        <rect class="milk-label-border" x="161" y="221" width="78" height="81" rx="5"/>
+                        <g class="milk-label-type" text-anchor="middle">
+                            <text x="200" y="242">chocolate</text>
+                            <text class="milk-label-word" x="200" y="270">milk</text>
+                            <text class="milk-label-heart" x="200" y="291">&lt;3</text>
                         </g>
-                        <path class="milk-carton-hatching" d="M440 165 L455 157 M440 177 L455 169
-                            M440 189 L455 181 M440 201 L455 193 M440 213 L455 205
-                            M440 225 L455 217 M440 237 L455 229 M440 249 L455 241
-                            M440 261 L455 253 M440 273 L455 265 M440 285 L455 277"/>
-                        <text class="milk-carton-dots" x="318" y="299">· · · · ·</text>
+                        <rect class="milk-neck-ring" x="166" y="77" width="68" height="9" rx="4"/>
+                        <path class="milk-bottle-cap" d="M165 63 Q166 57 173 57 L227 57
+                            Q234 57 235 63 L235 77 Q201 82 165 77Z"/>
+                        <ellipse class="milk-cap-top" cx="200" cy="59" rx="34" ry="5"/>
+                        <path class="milk-cap-ridges" d="M172 65 L172 75 M181 66 L181 76 M190 66 L190 77
+                            M200 66 L200 77 M210 66 L210 77 M219 65 L219 76 M228 64 L228 75"/>
+                        <text class="milk-bottle-dots" x="173" y="333">· · · ·</text>
                     </g>
                     <g class="milk-thanks" fill="currentColor" text-anchor="middle">
-                        <text x="286" y="145">♡</text><text x="497" y="170">*</text>
-                        <text x="482" y="310">·</text>
+                        <text x="107" y="112">♡</text><text x="292" y="165">*</text>
+                        <text x="297" y="320">·</text>
                     </g>
                 </svg>
                 <span class="milk-hint" id="milkHint">take it ↑</span>
             </button>
+            <!-- The outer wrapper travels sideways; George's image handles the upward hop. -->
             <div class="george-meadow" id="georgeMeadow">
                 <div class="george-grass" aria-hidden="true">,  .   ,,     .   ,    ,,  .    ,   .   ,,    .  ,</div>
                 <div class="george-crossing" id="georgeCrossing">
                     <span class="george-shadow" aria-hidden="true"></span>
                     <button class="george-button" id="georgeHop" type="button" aria-label="George, Cameron's lop-eared rabbit. Tap to watch him hop away.">
-                        <img class="george-sprite" src="assets/george.svg" alt="" width="300" height="210" loading="lazy">
+                        <img class="george-sprite" src="assets/george.svg?v=2" alt="" width="360" height="250" loading="lazy">
                         <span class="george-name" aria-hidden="true">george ♡</span>
                     </button>
                 </div>
