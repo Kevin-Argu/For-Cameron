@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="css/peanut-gate.css?v=4">
     <link rel="stylesheet" href="css/flower-math.css?v=7">
     <link rel="stylesheet" href="css/music.css?v=2">
+    <link rel="stylesheet" href="css/goodbye.css?v=1">
     <!-- Local controls initialize without waiting for the external graph library. -->
     <script defer src="js/main.js?v=5"></script>
     <script defer src="js/flower-notes.js?v=5"></script>
@@ -22,6 +23,7 @@
     <script defer src="js/heart.js?v=5"></script>
     <script defer src="js/graph-loader.js?v=5"></script>
     <script defer src="js/music.js?v=2"></script>
+    <script defer src="js/goodbye.js?v=1"></script>
 </head>
 <body class="peanut-lock">
     <div id="peanutGate" class="peanut-gate" role="dialog" aria-modal="true"
@@ -93,16 +95,6 @@
                 <img class="binocular-art" src="assets/binoculars.svg" width="630" height="408" alt="">
                 <span class="binocular-prompt">take a little look <span aria-hidden="true">↗</span></span>
             </a>
-        </section>
-
-        <section class="heart-section" id="heartFinale" aria-label="The animated mathematical heart">
-            <div class="heart-stage">
-                <div id="heartCalculator"></div>
-                <div class="graph-status" id="heartStatus">
-                    <p role="status">Opening the heart…</p>
-                    <button type="button" data-retry="heart" hidden>Try again</button>
-                </div>
-            </div>
         </section>
 
         <section class="music-section" id="musicFinale" aria-labelledby="musicHeading" tabindex="-1">
@@ -241,6 +233,71 @@
                 <p id="musicStatus" class="music-status" role="status">tap or hold a note to begin</p>
             </div>
             <noscript><p class="music-status">Enable JavaScript to play the instruments.</p></noscript>
+        </section>
+
+        <section class="heart-section" id="heartFinale" aria-label="The animated mathematical heart">
+            <div class="heart-stage">
+                <div id="heartCalculator"></div>
+                <div class="graph-status" id="heartStatus">
+                    <p role="status">Opening the heart…</p>
+                    <button type="button" data-retry="heart" hidden>Try again</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="goodbye-section" id="goodbyeFinale" aria-labelledby="goodbyeHeading">
+            <h2 id="goodbyeHeading">okay bye</h2>
+            <p class="goodbye-note">here, chocolate milk.</p>
+            <button class="milk-gift" id="takeChocolateMilk" type="button"
+                    aria-label="Take the chocolate milk" aria-pressed="false">
+                <svg class="milk-scene" viewBox="0 0 600 430" aria-hidden="true" focusable="false">
+                    <g class="milk-sparkles" fill="currentColor" text-anchor="middle">
+                        <text x="258" y="145">*</text><text x="510" y="220">+</text>
+                        <text x="286" y="239">·</text><text x="490" y="99">·</text>
+                    </g>
+                    <ellipse class="milk-shadow" cx="366" cy="391" rx="103" ry="7"/>
+                    <g class="milk-offering-hand" stroke-linecap="round" stroke-linejoin="round">
+                        <path class="milk-hand" d="M170 326 L267 308 Q286 301 301 290 L328 259
+                            Q336 252 342 258 Q348 264 342 273 L328 290 L451 288
+                            Q464 288 464 298 Q463 306 449 309 L384 315 L451 312
+                            Q464 312 463 322 Q462 330 448 333 L382 338 L432 336
+                            Q444 338 442 347 Q441 354 428 356 L355 368
+                            Q315 376 285 366 L191 375 Z"/>
+                        <path class="milk-hand-detail" d="M286 321 Q304 311 322 314 M325 342 Q340 349 353 344"/>
+                        <path class="milk-sleeve" d="M30 329 L168 316 L194 379 L30 394 Z"/>
+                        <path class="milk-cuff" d="M153 318 L170 316 L195 379 L176 381 Z"/>
+                        <path class="milk-stitches" d="M44 341 L143 331 M45 380 L165 369 M160 328 L177 371"/>
+                        <text class="milk-sleeve-dots" x="58" y="363">· · · · ·</text>
+                    </g>
+                    <g class="milk-carton" stroke-linecap="round" stroke-linejoin="round">
+                        <path class="milk-straw" d="M410 127 L440 48 L470 48"/>
+                        <path class="milk-straw-stripes" d="M410 127 L440 48 L470 48"/>
+                        <path class="milk-carton-side" d="M430 150 L465 130 L465 291 L430 315 Z"/>
+                        <path class="milk-carton-roof-side" d="M365 95 L400 75 L465 130 L430 150 Z"/>
+                        <path class="milk-carton-roof" d="M300 150 L365 95 L430 150 Z"/>
+                        <path class="milk-carton-seal" d="M365 95 L365 80 L400 60 L400 75 Z"/>
+                        <path class="milk-carton-front" d="M300 150 L430 150 L430 315 L300 315 Z"/>
+                        <path class="milk-carton-fold" d="M300 150 L365 137 L430 150 M365 99 L365 137"/>
+                        <path class="milk-carton-label" d="M310 183 Q364 178 420 183 L420 273 Q364 278 310 273 Z"/>
+                        <g class="milk-carton-type" text-anchor="middle">
+                            <text x="365" y="210">chocolate</text>
+                            <text class="milk-carton-word" x="365" y="236">milk</text>
+                            <text class="milk-carton-heart" x="365" y="261">&lt;3</text>
+                        </g>
+                        <path class="milk-carton-hatching" d="M440 165 L455 157 M440 177 L455 169
+                            M440 189 L455 181 M440 201 L455 193 M440 213 L455 205
+                            M440 225 L455 217 M440 237 L455 229 M440 249 L455 241
+                            M440 261 L455 253 M440 273 L455 265 M440 285 L455 277"/>
+                        <text class="milk-carton-dots" x="318" y="299">· · · · ·</text>
+                    </g>
+                    <g class="milk-thanks" fill="currentColor" text-anchor="middle">
+                        <text x="286" y="145">♡</text><text x="497" y="170">*</text>
+                        <text x="482" y="310">·</text>
+                    </g>
+                </svg>
+                <span class="milk-hint" id="milkHint">take it ↑</span>
+            </button>
+            <p class="goodbye-status" id="milkStatus" role="status" aria-live="polite"></p>
         </section>
     </main>
 </body>

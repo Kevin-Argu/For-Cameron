@@ -1,0 +1,125 @@
+.goodbye-section {
+    --milk-cream: #ead7bb;
+    --milk-pink: #e9b9cf;
+    position: relative;
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: clamp(56px, 9vh, 100px) 20px max(40px, env(safe-area-inset-bottom));
+    background: #040609;
+    color: var(--milk-cream);
+    text-align: center;
+}
+.goodbye-section h2 {
+    color: var(--milk-pink);
+    font: italic normal clamp(58px, 9vw, 108px)/1.1 var(--serif);
+    letter-spacing: -.045em;
+}
+.goodbye-note {
+    margin-top: 20px;
+    color: #a6b59f;
+    font: 13px/1.6 Menlo, Consolas, "Liberation Mono", monospace;
+    letter-spacing: .04em;
+}
+.goodbye-section .milk-gift {
+    display: block;
+    width: min(600px, 100%);
+    margin-top: clamp(12px, 3vh, 28px);
+    padding: 0 0 10px;
+    border: 0;
+    border-radius: 24px;
+    background: transparent;
+    color: var(--milk-cream);
+    transform: none;
+    -webkit-tap-highlight-color: transparent;
+}
+.goodbye-section .milk-gift:focus-visible {
+    outline: 2px dashed var(--milk-pink);
+    outline-offset: 10px;
+}
+.milk-scene { display: block; width: 100%; height: auto; overflow: visible; }
+.milk-sparkles { color: #a6b59f; font: 18px Menlo, Consolas, monospace; opacity: .65; }
+.milk-shadow { fill: #b39375; opacity: .09; transition: opacity .65s ease; }
+.milk-offering-hand {
+    transform: translateX(0);
+    transition: transform 1s cubic-bezier(.22, .75, .2, 1), opacity .65s ease;
+}
+.milk-hand { fill: #291f1c; stroke: #c7a78e; stroke-width: 2; }
+.milk-hand-detail { fill: none; stroke: #967661; stroke-width: 1.5; }
+.milk-sleeve { fill: #17221e; stroke: #a6b59f; stroke-width: 2; }
+.milk-cuff { fill: #26352a; stroke: #a6b59f; stroke-width: 1.5; }
+.milk-stitches { fill: none; stroke: #82947f; stroke-width: 1; stroke-dasharray: 2 5; }
+.milk-sleeve-dots { fill: #82947f; font: 15px Menlo, Consolas, monospace; }
+.milk-carton {
+    transform-origin: 380px 195px;
+    transition: transform .85s cubic-bezier(.22, .75, .2, 1), filter .65s ease;
+    filter: drop-shadow(0 4px 10px #0006);
+    stroke: #d4b89a;
+    stroke-width: 1.8;
+}
+.milk-straw { fill: none; stroke: #efd7d9; stroke-width: 9; }
+.milk-straw-stripes { fill: none; stroke: #b1788e; stroke-width: 7; stroke-dasharray: 5 10; }
+.milk-carton-side { fill: #30231d; }
+.milk-carton-roof-side { fill: #6e5543; }
+.milk-carton-roof { fill: #bda185; }
+.milk-carton-seal { fill: #ead7bb; }
+.milk-carton-front { fill: #62432f; }
+.milk-carton-fold { fill: none; stroke: #7e624b; stroke-width: 1; }
+.milk-carton-label { fill: #ead7bb; stroke: none; }
+.milk-carton-type { fill: #503625; stroke: none; font: 13px Menlo, Consolas, "Liberation Mono", monospace; }
+.milk-carton-word { font: italic 27px Georgia, "Times New Roman", serif; }
+.milk-carton-heart { fill: #9b4d5b; font-size: 15px; }
+.milk-carton-hatching { fill: none; stroke: #9b7c61; stroke-width: 1; stroke-dasharray: 1 3; }
+.milk-carton-dots { fill: #d4b89a; stroke: none; font: 15px Menlo, Consolas, monospace; }
+.milk-thanks {
+    opacity: 0;
+    transform: translateY(12px);
+    color: var(--milk-pink);
+    font: 25px Georgia, serif;
+    transition: opacity .55s ease, transform .7s ease;
+}
+.milk-hint {
+    display: block;
+    min-height: 24px;
+    color: #c7aa92;
+    font: 12px/2 Menlo, Consolas, "Liberation Mono", monospace;
+    letter-spacing: .04em;
+}
+.goodbye-section.has-milk .milk-carton {
+    transform: translate(-70px, -18px) rotate(-8deg) scale(1.16);
+    filter: drop-shadow(0 8px 18px #d4a87c20);
+}
+.goodbye-section.has-milk .milk-offering-hand { transform: translate(-160px, 35px); opacity: 0; }
+.goodbye-section.has-milk .milk-shadow { opacity: 0; }
+.goodbye-section.has-milk .milk-thanks { opacity: 1; transform: translateY(0); }
+.goodbye-section.has-milk .milk-hint { color: var(--milk-pink); }
+@media (hover: hover) {
+    .goodbye-section .milk-gift:hover { background: transparent; transform: none; }
+    .goodbye-section:not(.has-milk) .milk-gift:hover .milk-carton { transform: translateY(-5px) rotate(-2deg); }
+    .goodbye-section .milk-gift:hover .milk-hint { color: var(--milk-pink); }
+}
+.goodbye-status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+}
+@media (max-width: 600px) {
+    .goodbye-section { padding-inline: 12px; }
+    .goodbye-note { font-size: 12px; }
+    .milk-hint { margin-top: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .milk-carton, .milk-offering-hand, .milk-shadow, .milk-thanks { transition: none; }
+    .goodbye-section:not(.has-milk) .milk-gift:hover .milk-carton { transform: none; }
+    .goodbye-section.has-milk .milk-carton { transform: translateX(-70px); }
+}
