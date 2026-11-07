@@ -4,7 +4,9 @@
   'use strict';
   const home = document.getElementById('whaleHome');
   const roamButton = document.getElementById('whaleRoam');
-  if (!home || !roamButton) return;
+  const dropButton = document.getElementById('whaleDrop');
+  const status = document.getElementById('whaleStatus');
+  if (!home || !roamButton || !dropButton || !status) return;
   const canvas = document.createElement('canvas');
   canvas.id = 'roamingWhale';
   canvas.setAttribute('role', 'img');
@@ -21,6 +23,9 @@
   let frameId = 0, layoutDirty = true, lastDraw = 0, lastRect = null;
   let roaming = false, homeVisible = false, atHome = true, atIntro = false, heartTimer;
   let darkRects = [];
+  // The entrance shares the swimming clock, so leaving the page also pauses the fall.
+  let entrance = 'waiting', entranceMs = 0, dropHadFocus = false;
+  const fallDuration = 1100, impactDuration = 820;
   canvas.setAttribute('aria-hidden', 'true');
 
   const columns = 144, rows = 55, cellWidth = 5.8, rowHeight = 8.5;
@@ -167,8 +172,35 @@
   }, { passive: true });
   resize();
 
+  function setEntrance(state) {
+    entrance = state;
+    home.setAttribute('data-whale-state', state);
+  }
+  function finishLanding() {
+    setEntrance('swimming');
+    roamButton.hidden = false;
+    status.textContent = reduced ? 'The whale is here.' : 'The whale has landed. Now it is swimming.';
+    // Restore keyboard access after the trigger disappears, without stealing focus from another control.
+    if (dropHadFocus && (document.activeElement === dropButton || document.activeElement === document.body))
+      roamButton.focus({ preventScroll: true });
+    dropHadFocus = false;
+  }
+  dropButton.addEventListener('click', () => {
+    if (!site.entered || entrance !== 'waiting') return;
+    dropHadFocus = document.activeElement === dropButton;
+    dropButton.hidden = true;
+    entranceMs = 0;
+    elapsed = 0;
+    direction = 1;
+    setEntrance('falling');
+    status.textContent = 'Here comes the whale!';
+    // Reduced motion still requires the click, but skips falling, squashing, and shaking.
+    if (reduced) finishLanding();
+    updateActivity();
+  });
+
   roamButton.addEventListener('click', () => {
-    if (!site.entered) return;
+    if (!site.entered || entrance !== 'swimming') return;
     const previousBounds = canvas.getBoundingClientRect();
     const viewportX = previousBounds.left+x, viewportY = previousBounds.top+y;
     roaming = !roaming;
@@ -192,7 +224,7 @@
   });
 
   addEventListener('click', event => {
-    if (!site.entered || event.target.closest('button, a, input, textarea, select, summary, .flower-note-card')) return;
+    if (!site.entered || entrance !== 'swimming' || event.target.closest('button, a, input, textarea, select, summary, .flower-note-card')) return;
     if (!roaming && (!homeVisible || !home.contains(event.target))) return;
     const bounds = canvas.getBoundingClientRect();
     if (Math.abs(event.clientX-bounds.left-x) < spriteWidth*scale/2 &&
@@ -209,8 +241,9 @@
 
   function draw(dark) {
     const skin = getTextures(dark);
+    const still = reduced || entrance === 'falling';
     const phase = elapsed * .027;
-    const wave = col => reduced ? 0 : Math.sin(phase - col*.018) *
+    const wave = col => still ? 0 : Math.sin(phase - col*.018) *
       11 * Math.max(0, (101-col)/76)**2;
     const ox = -spriteWidth/2, oy = -spriteHeight/2;
     const paint = layer => ctx.drawImage(layer.image, layer.left, layer.top, layer.width, layer.height);
@@ -226,9 +259,9 @@
     ctx.save();
     ctx.translate(ox, oy);
     // Tail stock and flukes share a moving joint with the body's travelling wave.
-    joint(skin.tail, 27, 26, reduced ? 0 : Math.sin(phase-.48)*.15,
-      reduced ? 1 : .94 + .09*Math.cos(phase));
-    joint(skin.dorsal, 57, 18, reduced ? 0 : Math.sin(phase-1)*.025);
+    joint(skin.tail, 27, 26, still ? 0 : Math.sin(phase-.48)*.15,
+      still ? 1 : .94 + .09*Math.cos(phase));
+    joint(skin.dorsal, 57, 18, still ? 0 : Math.sin(phase-1)*.025);
     // Narrow cached strips bend the rear smoothly without redrawing the glyphs.
     const body = skin.body;
     for (let sx = 0; sx < body.image.width; sx += 24) {
@@ -237,8 +270,10 @@
       ctx.drawImage(body.image, sx, 0, sw, body.image.height,
         dx, body.top + wave((dx+6)/cellWidth), sw/textureScale, body.height);
     }
-    joint(skin.flipper, 85, 33, reduced ? -.06 : -.08 + Math.sin(phase-.85)*.17,
-      reduced ? 1 : .94 + .07*Math.cos(phase-.85));
+    // Tuck the flipper during the fall, then unfold it as the whale lifts off the ground.
+    const tuck = entrance === 'falling' ? 1 : entrance === 'impact' ? 1-clamp(entranceMs/impactDuration, 0, 1) : 0;
+    joint(skin.flipper, 85, 33, tuck*.95 + (1-tuck)*(still ? -.06 : -.08 + Math.sin(phase-.85)*.17),
+      still ? 1 : .94 + .07*Math.cos(phase-.85));
     ctx.font = font;
     ctx.textBaseline = 'top';
     ctx.textAlign = 'left';
@@ -249,7 +284,7 @@
 
     // An occasional quiet breath, still drawn from characters like the skin.
     const breath = (elapsed/60) % 8;
-    if (!reduced && breath < 1.65) {
+    if (!reduced && entrance === 'swimming' && breath < 1.65) {
       const rise = breath/1.65;
       ctx.globalAlpha = Math.sin(rise*Math.PI)*.72;
       ctx.fillStyle = dark ? '#bed9e2' : '#577f91';
@@ -271,9 +306,41 @@
     }
   }
 
+  // Paint the ground in the same coordinate space as the whale, so contact stays aligned at every screen size.
+  function drawGround(shake) {
+    ctx.save();
+    ctx.font = '16px Menlo, Consolas, monospace';
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillStyle = '#789aaa';
+    ctx.globalAlpha = .7;
+    for (let i = 0, gx = w*.06; gx < w*.94; gx += 21, i++)
+      ctx.fillText(i%4 === 1 ? '.' : '_', gx, h*.83+shake-2);
+    ctx.restore();
+  }
+
+  // A burst of punctuation makes the landing feel heavy without adding another illustration style.
+  function drawImpact(progress) {
+    ctx.save();
+    ctx.font = "16px Menlo, Consolas, monospace";
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#b2cbd3';
+    ctx.globalAlpha = Math.max(0, 1-progress*1.3);
+    const spread = Math.min(w*.3, spriteWidth*scale*.35);
+    for (let i = 0; i < 22; i++) {
+      const side = i%2 ? 1 : -1;
+      const distance = spread*.55 + progress*(28 + (i%6)*17);
+      const lift = Math.sin(progress*Math.PI)*(18 + (i%5)*13);
+      ctx.fillText([".", "'", '*', '_'][i%4], w/2+side*distance, h*.83-lift);
+    }
+    ctx.fillStyle = '#d6c1ba';
+    ctx.font = "13px Menlo, Consolas, monospace";
+    ctx.fillText('* thump *', w/2, h*.83+32);
+    ctx.restore();
+  }
+
   function frame(now) {
     frameId = 0;
-    if (!site.entered || document.hidden) return;
+    if (!site.entered || document.hidden || entrance === 'waiting') return;
     if (layoutDirty) {
       const r = home.getBoundingClientRect();
       const introRect = intro && intro.getBoundingClientRect();
@@ -288,26 +355,53 @@
     if (!roaming && !homeVisible) { last = 0; lastDraw = 0; return; }
     if (!reduced && lastDraw && now-lastDraw < 1000/30-.5) { requestFrame(); return; }
     lastDraw = now;
-    const dt = Math.min((now-last || 16.67)/16.67, 2);
+    const dt = Math.min((last ? now-last : 16.67)/16.67, 2);
     last = now;
     if (!reduced) elapsed += dt;
-    if (lastRect) ctx.clearRect(lastRect.x, lastRect.y, lastRect.width, lastRect.height);
+    const entering = entrance !== 'swimming';
+    // Impact particles can extend beyond the whale's bounds; clear the whole stage during the entrance.
+    if (entering) ctx.clearRect(0, 0, w, h);
+    else if (lastRect) ctx.clearRect(lastRect.x, lastRect.y, lastRect.width, lastRect.height);
     const fitScale = Math.max(.1, (w-32)/(spriteWidth+24));
     const goalScale = Math.min(atHome ? 1.08 : .66, fitScale, h*.45/spriteHeight);
     const goalY = h*(atHome ? .65 : atIntro ? .58 : .64);
-    if (reduced) {
+    let compression = 0, shake = 0;
+    if (entering) {
+      scale = goalScale;
+      x = w/2;
+      entranceMs += dt*16.67;
+      const groundY = h*.83;
+      const landingY = groundY-84*scale;
+      if (entrance === 'falling') {
+        const t = clamp(entranceMs/fallDuration, 0, 1);
+        const startY = -spriteHeight*scale*.6;
+        // Accelerate from above this section, then stop at the floor in one distinct impact.
+        y = startY+(landingY-startY)*t*t;
+        if (t === 1) { setEntrance('impact'); entranceMs = 0; }
+      }
+      if (entrance === 'impact') {
+        const t = clamp(entranceMs/impactDuration, 0, 1);
+        const rise = clamp((t-.3)/.7, 0, 1);
+        y = landingY-Math.sin(Math.min(1, t/.42)*Math.PI)*24-(landingY-goalY)*rise*rise*(3-2*rise);
+        compression = Math.exp(-t*9)*Math.cos(t*15);
+        // Lower the squashed body by exactly the height it loses, keeping its belly against the ground.
+        y += 84*scale*.25*compression;
+        shake = Math.sin(t*60)*4*(1-t)**3;
+        if (t === 1) finishLanding();
+      }
+    } else if (reduced) {
       scale = goalScale;
       const half = (spriteWidth/2+12)*scale;
       x = clamp(atHome ? w*.5 : w*.72, half+12, w-half-12);
       y = goalY;
     } else {
+      // After landing, retain the original swimming, turns, scroll response, and roaming behavior.
       scale = Math.min(fitScale, scale+(goalScale-scale)*Math.min(1,.04*dt));
       y += (goalY+scrollNudge-y)*Math.min(1,.038*dt);
       scrollNudge *= Math.pow(.90, dt);
       const half = (spriteWidth/2+12)*scale+12;
       const travel = Math.max(0, w-half*2);
       if (travel < 90) {
-        // On phones, float in place instead of flipping at both edges every second.
         x += (w/2 + Math.sin(elapsed*.012)*travel*.25-x)*Math.min(1,.08*dt);
         x = clamp(x, half, w-half);
       } else {
@@ -316,14 +410,17 @@
         if (x > w-half) { x = w-half; direction = -1; }
       }
     }
+    if (entrance === 'falling' || entrance === 'impact') drawGround(shake);
     ctx.save();
-    ctx.translate(x, y+(reduced ? 0 : Math.sin(elapsed*.019)*5));
+    const bob = reduced || entering ? 0 : Math.sin(elapsed*.019)*5;
+    ctx.translate(x+shake, y+bob);
     if (direction < 0) ctx.scale(-1,1);
-    ctx.scale(scale,scale);
-    ctx.rotate(reduced ? 0 : Math.sin(elapsed*.014)*.012);
+    ctx.scale(scale*(1+.12*compression), scale*(1-.25*compression));
+    ctx.rotate(reduced || entering ? 0 : Math.sin(elapsed*.014)*.012);
     draw(!roaming || darkRects.some(rect => rect.top <= y && rect.bottom > y));
     ctx.restore();
-    // Include fin rotation, the breath and hearts in the cleared rectangle.
+    if (entrance === 'impact') drawImpact(entranceMs/impactDuration);
+    // Include fin rotation, the breath and hearts in the cleared rectangle once swimming resumes.
     lastRect = { x: x-spriteWidth*scale/2-32,
       y: y-spriteHeight*scale/2-80*scale-32,
       width: spriteWidth*scale+64, height: (spriteHeight+160)*scale+64 };
@@ -331,7 +428,8 @@
     if (!reduced) requestFrame();
   }
   function requestFrame() {
-    if (!frameId && site.entered && !document.hidden) frameId = requestAnimationFrame(frame);
+    if (!frameId && entrance !== 'waiting' && site.entered && !document.hidden)
+      frameId = requestAnimationFrame(frame);
   }
   function updateActivity() {
     cancelAnimationFrame(frameId);
@@ -339,13 +437,19 @@
     last = 0;
     lastDraw = 0;
     layoutDirty = true;
-    canvas.setAttribute('aria-hidden', String(!site.entered || (!roaming && !homeVisible)));
+    canvas.setAttribute('aria-hidden', String(entrance === 'waiting' || !site.entered || (!roaming && !homeVisible)));
     requestFrame();
   }
   document.addEventListener('cameron:entered', updateActivity);
   document.addEventListener('visibilitychange', updateActivity);
   site.reducedMotion.addEventListener('change', () => {
     reduced = site.reducedMotion.matches;
+    if (reduced && (entrance === 'falling' || entrance === 'impact')) {
+      // Switching the preference mid-fall immediately resolves the entrance and removes all debris.
+      ctx.clearRect(0, 0, w, h);
+      lastRect = null;
+      finishLanding();
+    }
     updateActivity();
   });
   if ('ResizeObserver' in window) {

@@ -252,7 +252,7 @@ test('settled lilies stop drawing, resume on interaction, and pause offscreen', 
     h.get('replayLilies').click(); h.advance(100); assert.equal(h.frames.size, 0);
 });
 
-test('the whale stays in its ocean and stops drawing while the ocean is offscreen', () => {
+test('the whale waits for BALLENAS and pauses its entrance when the ocean is offscreen', () => {
     const h = start();
     const home = h.get('whaleHome');
     home.rect = { ...home.rect, top: 1800, bottom: 2700 };
@@ -266,7 +266,12 @@ test('the whale stays in its ocean and stops drawing while the ocean is offscree
     assert.equal(canvas.getAttribute('aria-hidden'), 'true');
     home.rect = { ...home.rect, top: 0, bottom: 900 };
     h.windowEvent('scroll'); h.advance(100);
-    assert.ok(calls.fills > 0); assert.ok(calls.translations[0][1] > 0);
+    // Visiting the section alone must never release the whale or start an animation loop.
+    assert.equal(calls.fills, 0); assert.equal(h.frames.size, 0);
+    assert.equal(h.get('whaleRoam').hidden, true);
+    h.get('whaleDrop').click(); h.advance(100);
+    assert.ok(calls.fills > 0); assert.ok(calls.translations[0][1] < 0);
+    assert.equal(home.getAttribute('data-whale-state'), 'falling');
     assert.equal(canvas.getAttribute('aria-hidden'), 'false');
     home.rect = { ...home.rect, top: -900, bottom: 0 };
     h.windowEvent('scroll'); h.advance(100);
@@ -274,10 +279,42 @@ test('the whale stays in its ocean and stops drawing while the ocean is offscree
     h.advance(1000);
     assert.equal(calls.fills, paused); assert.equal(h.frames.size, 0);
     assert.equal(canvas.getAttribute('aria-hidden'), 'true');
+    home.rect = { ...home.rect, top: 0, bottom: 900 };
+    h.windowEvent('scroll'); h.advance(100);
+    assert.equal(home.getAttribute('data-whale-state'), 'falling');
+});
+
+test('BALLENAS falls from above, lands once, then unlocks the existing swimming controls', () => {
+    const h = start(); h.run('whale.js');
+    const home = h.get('whaleHome'), drop = h.get('whaleDrop'), roam = h.get('whaleRoam');
+    // Neither the welcome gate nor a forced click on the hidden roam control can bypass the entrance.
+    drop.click(); h.advance(2000);
+    assert.equal(home.getAttribute('data-whale-state'), 'waiting');
+    h.enter(); roam.click();
+    assert.equal(h.get('roamingWhale').parent, home);
+    drop.focus(); drop.click(); h.advance(500);
+    const calls = h.canvasCalls.get(h.get('roamingWhale'));
+    const positions = calls.translations.filter(([x]) => x === 720).map(([, y]) => y);
+    assert.ok(positions[0] < 0);
+    assert.ok(positions.at(-1) > positions[0]);
+    assert.equal(drop.hidden, true); assert.equal(roam.hidden, true);
+    h.hidden(true); h.advance(5000);
+    assert.equal(home.getAttribute('data-whale-state'), 'falling');
+    h.hidden(false); h.advance(700);
+    assert.equal(home.getAttribute('data-whale-state'), 'impact');
+    assert.equal(roam.hidden, true);
+    h.advance(900);
+    assert.equal(home.getAttribute('data-whale-state'), 'swimming');
+    assert.equal(roam.hidden, false); assert.equal(h.document.activeElement, roam);
+    const swimming = calls.fills; h.advance(100);
+    assert.ok(calls.fills > swimming);
+    drop.click();
+    assert.equal(home.getAttribute('data-whale-state'), 'swimming');
 });
 
 test('roaming is opt-in, the return control travels with the whale, and returning contains it again', () => {
-    const h = start(); h.run('whale.js'); h.enter(); h.advance(100);
+    const h = start(); h.run('whale.js'); h.enter();
+    h.get('whaleDrop').click(); h.advance(2300);
     const home = h.get('whaleHome'), canvas = h.get('roamingWhale');
     const button = h.get('whaleRoam'), calls = h.canvasCalls.get(canvas);
     assert.equal(button.getAttribute('aria-pressed'), 'false');
@@ -306,8 +343,12 @@ test('roaming is opt-in, the return control travels with the whale, and returnin
 });
 
 test('the contained and roaming whale respect reduced motion through resizing and scrolling', () => {
-    const h = start({ reduced: true }); h.run('whale.js'); h.enter(); h.advance(17);
+    const h = start({ reduced: true }); h.run('whale.js'); h.enter();
+    // The visitor still chooses when the whale appears, but no falling frames are rendered.
+    h.get('whaleDrop').click(); h.advance(17);
     const canvas = h.get('roamingWhale'), calls = h.canvasCalls.get(canvas);
+    assert.equal(h.get('whaleHome').getAttribute('data-whale-state'), 'swimming');
+    assert.ok(calls.translations[0][1] > 0);
     const previous = calls.fills; assert.equal(h.frames.size, 0);
     h.context.innerWidth = 390; h.context.innerHeight = 844;
     h.resize('whaleHome', 390, 844); h.windowEvent('resize'); h.advance(17);
@@ -319,6 +360,15 @@ test('the contained and roaming whale respect reduced motion through resizing an
     assert.ok(calls.fills > released); assert.equal(h.frames.size, 0);
     h.get('whaleRoam').click(); h.advance(17);
     assert.equal(canvas.parent, h.get('whaleHome'));
+    assert.equal(h.frames.size, 0);
+});
+
+test('changing to reduced motion during the drop resolves the landing without leaving a loop', () => {
+    const h = start(); h.run('whale.js'); h.enter();
+    h.get('whaleDrop').click(); h.advance(400);
+    h.setReduced(true); h.advance(17);
+    assert.equal(h.get('whaleHome').getAttribute('data-whale-state'), 'swimming');
+    assert.equal(h.get('whaleRoam').hidden, false);
     assert.equal(h.frames.size, 0);
 });
 

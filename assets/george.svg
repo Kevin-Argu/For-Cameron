@@ -1,74 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 250" width="360" height="250">
-  <title>George, a little taupe lop-eared rabbit</title>
-  <desc>A rounded brown-gray rabbit with long floppy ears, a bright dark eye, soft cheeks and a little pale tail. Small printed characters texture his fur.</desc>
-  <defs>
-    <!-- Soft shading follows George's taupe coat; printed characters add fur texture. -->
-    <radialGradient id="george-coat" cx="36%" cy="25%" r="84%">
-      <stop stop-color="#b8aa94"/><stop offset=".48" stop-color="#938572"/><stop offset="1" stop-color="#504943"/>
-    </radialGradient>
-    <radialGradient id="george-face" cx="57%" cy="27%" r="80%">
-      <stop stop-color="#c4b49b"/><stop offset=".55" stop-color="#a0907b"/><stop offset="1" stop-color="#706458"/>
-    </radialGradient>
-    <linearGradient id="george-ear" x1="0" y1="0" x2="1" y2=".7">
-      <stop stop-color="#a4937d"/><stop offset=".45" stop-color="#72665b"/><stop offset="1" stop-color="#514943"/>
-    </linearGradient>
-    <radialGradient id="george-belly" cx="70%" cy="20%" r="85%">
-      <stop stop-color="#c8bdab"/><stop offset="1" stop-color="#8c7e6b"/>
-    </radialGradient>
-    <pattern id="george-fur" width="29" height="23" patternUnits="userSpaceOnUse">
-      <g font-family="Menlo,Consolas,monospace" text-anchor="middle" font-size="6.5">
-        <text x="3" y="6" fill="#f1dfbf" opacity=".57">;</text>
-        <text x="14" y="8" fill="#dcc9aa" opacity=".48">/</text>
-        <text x="26" y="4" fill="#473f38" opacity=".5">:</text>
-        <text x="8" y="19" fill="#4b4238" opacity=".48">,</text>
-        <text x="22" y="20" fill="#eddbbb" opacity=".54">;</text>
-      </g>
-    </pattern>
-    <pattern id="george-ear-fur" width="13" height="19" patternUnits="userSpaceOnUse" patternTransform="rotate(8)">
-      <text x="3" y="12" fill="#d0b99a" opacity=".48" font-family="Menlo,Consolas,monospace" font-size="7">|</text>
-    </pattern>
-    <path id="george-tail-shape" d="M55 163 C38 153 25 165 29 181 C31 195 43 199 57 190 C66 183 64 171 55 163Z"/>
-    <path id="george-body-shape" d="M52 177 C49 148 56 113 80 93 C102 73 137 70 167 84 C184 92 200 111 211 132 C222 150 226 172 222 192 C197 214 86 219 61 199 C54 193 51 186 52 177Z"/>
-    <path id="george-head-shape" d="M193 90 C191 63 210 43 238 44 C265 43 282 58 286 83 C288 94 294 101 300 111 C305 120 300 131 291 137 C279 148 254 154 232 146 C211 139 197 118 193 90Z"/>
-    <path id="george-near-ear-shape" d="M210 65 C197 63 187 76 187 96 C186 115 182 141 183 161 C181 179 187 190 197 190 C208 189 212 173 215 155 L225 107 C229 86 224 69 210 65Z"/>
-    <path id="george-far-ear-shape" d="M251 53 C264 49 274 61 277 78 C280 97 281 126 274 144 C271 153 262 156 258 148 C256 139 260 119 256 101 L248 69Z"/>
-  </defs>
-  <g stroke-linecap="round" stroke-linejoin="round">
-    <!-- Silhouettes stay legible at phone size; type adds the handmade fur. -->
-    <use href="#george-tail-shape" fill="#cec4b2" stroke="#dfd2bb" stroke-width="1.3"/>
-    <use href="#george-tail-shape" fill="url(#george-fur)"/>
-    <use href="#george-body-shape" fill="url(#george-coat)" stroke="#c1ad91" stroke-width="1.2"/>
-    <use href="#george-body-shape" fill="url(#george-fur)"/>
-    <path d="M170 139 C178 124 202 124 218 143 C226 155 229 175 231 193 L244 202 C249 208 244 212 236 212 L209 211 C196 207 193 193 186 181Z" fill="url(#george-belly)"/>
-    <path d="M151 187 C169 189 183 198 183 207 C182 213 168 215 154 215 L94 214 C79 213 75 207 83 201 C97 193 119 198 128 193Z" fill="#b8a68c" stroke="#d0bda0" stroke-width="1.1"/>
-    <path d="M210 175 C208 186 205 198 209 207 C213 214 237 214 252 212 C257 211 256 205 250 202 L234 198 L234 176" fill="url(#george-belly)" stroke="#b5a58e" stroke-width="1.1"/>
-    <path d="M91 198 C75 180 79 151 96 139 C112 126 137 130 151 146 C159 156 162 176 154 190" fill="none" stroke="#675b4f" stroke-width="2" stroke-dasharray="1 4"/>
-    <path d="M99 205 L95 211 M111 205 L108 212 M234 205 L233 211 M244 205 L243 210" fill="none" stroke="#756454" stroke-width="1.2"/>
-    <use href="#george-far-ear-shape" fill="#685c52" stroke="#a6967f" stroke-width="1"/>
-    <use href="#george-far-ear-shape" fill="url(#george-ear-fur)"/>
-    <use href="#george-head-shape" fill="url(#george-face)" stroke="#cebaa0" stroke-width="1.2"/>
-    <use href="#george-head-shape" fill="url(#george-fur)"/>
-    <path d="M268 109 C278 103 294 106 300 115 C301 125 287 138 274 139 C263 139 254 130 256 120 C257 115 262 112 268 109Z" fill="#c0b09a" opacity=".77"/>
-    <path d="M265 135 C256 142 245 141 238 138" fill="none" stroke="#e0cdb0" stroke-width="1.3" opacity=".6"/>
-    <use href="#george-near-ear-shape" fill="url(#george-ear)" stroke="#c5b298" stroke-width="1.3"/>
-    <use href="#george-near-ear-shape" fill="url(#george-ear-fur)"/>
-    <path d="M206 83 C207 107 196 145 195 174" fill="none" stroke="#b39a81" stroke-width="3" opacity=".37"/>
-    <path d="M204 70 Q216 66 222 79" fill="none" stroke="#d6c2a3" stroke-width="1.5" opacity=".7"/>
-    <!-- George's eye is dark with one small reflected catchlight. -->
-    <path d="M256 86 C261 80 269 81 273 87" fill="none" stroke="#73604f" stroke-width="1.6"/>
-    <ellipse cx="265" cy="92" rx="8.3" ry="10.5" transform="rotate(15 265 92)" fill="#161716" stroke="#cfbda0" stroke-width="1.7"/>
-    <ellipse cx="263.5" cy="88.3" rx="2.6" ry="3" fill="#e5e8dc"/>
-    <circle cx="267.7" cy="95.8" r="1.2" fill="#879692"/>
-    <path d="M296 111 Q301 109 304 113 L299 118Z" fill="#987d77" stroke="#5b4943" stroke-width=".8"/>
-    <path d="M299 118 L299 122 M299 122 Q295 125 291 123" fill="none" stroke="#6c574d" stroke-width="1.1"/>
-    <g fill="none" stroke="#d4c7b4" stroke-width=".8" opacity=".8">
-      <path d="M290 118 Q310 107 326 108 M291 122 Q312 119 332 123 M289 127 Q309 130 321 140"/>
-    </g>
-    <g fill="#63564b">
-      <circle cx="284" cy="115" r=".9"/><circle cx="281" cy="121" r=".8"/><circle cx="284" cy="127" r=".8"/>
-    </g>
-    <g fill="#d2bea0" opacity=".8" font-family="Menlo,Consolas,monospace" font-size="8">
-      <text x="93" y="94">' ,</text><text x="130" y="87">· '</text><text x="67" y="128">;</text><text x="82" y="184">,</text>
-    </g>
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="188" viewBox="0 0 360 188">
+  <title>George, a little lop-eared rabbit made of ASCII characters</title>
+  <!-- Hand-composed rows form two drooping ears, a round back, and tucked feet. -->
+  <!-- Set white-space on each text element: browsers otherwise collapse the spaces that align the drawing. -->
+  <g fill="#c9bca9" font-family="'Courier New', monospace" font-size="16" xml:space="preserve">
+    <text style="white-space: pre" x="8" y="18">                         _     _</text>
+    <text style="white-space: pre" x="8" y="34">                        / \.-./ \</text>
+    <text style="white-space: pre" x="8" y="50">           _..---.._   / / o o \ \</text>
+    <text style="white-space: pre" x="8" y="66">        .-'         '-/ |  Y  |  |</text>
+    <text style="white-space: pre" x="8" y="82">      .'    .   .      \ \ =w= / /</text>
+    <text style="white-space: pre" x="8" y="98">     /     .      .     \_) (_/</text>
+    <text style="white-space: pre" x="8" y="114">    ;    .     .        /</text>
+    <text style="white-space: pre" x="8" y="130">    |       .          /</text>
+    <text style="white-space: pre" x="8" y="146"> .-.\       __        .'</text>
+    <text style="white-space: pre" x="8" y="162">(   ) '._.-'  '-.   _.'</text>
+    <text style="white-space: pre" x="8" y="178"> '---'---\______/--'(___)</text>
   </g>
 </svg>

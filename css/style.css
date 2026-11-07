@@ -87,6 +87,32 @@ button:not(:disabled):active { transform: translateY(0); }
 .whale-section h2 { font: normal clamp(38px,7vw,80px)/1.12 var(--serif); letter-spacing: .025em; text-wrap: balance; }
 .whale-section p { font: italic clamp(15px,2vw,20px)/1.5 var(--serif); color: #9abacb; margin-top: 1rem; text-wrap: balance; }
 .whale-stars { position: absolute; inset: 0; opacity: .3; pointer-events: none; background-image: radial-gradient(#d3f5ff 1px, transparent 1px); background-size: 67px 71px; }
+/* Before the click, the empty stage gives BALLENAS the whole page. */
+.whale-section[data-whale-state="waiting"] { background: #060e1b; }
+.whale-section[data-whale-state="waiting"] .whale-stars { opacity: 0; }
+.whale-drop-button {
+    position: relative; z-index: 26; padding: 18px 28px;
+    border: 1px dashed #8aafbf; border-radius: 3px;
+    background: transparent; color: #d1e6ec;
+    font: 18px/1.3 Menlo, Consolas, monospace; letter-spacing: .16em;
+    --focus: #f2c9dc;
+}
+.whale-drop-button:hover { background: #162a38; }
+/* Only the scenery jolts on impact, so adjacent sections and controls do not shift. */
+.whale-section[data-whale-state="impact"] .whale-stars { animation: whale-impact .38s ease-out; }
+@keyframes whale-impact {
+    18% { transform: translateY(7px); }
+    42% { transform: translateY(-4px); }
+    66% { transform: translateY(2px); }
+    100% { transform: translateY(0); }
+}
+.whale-status {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip-path: inset(50%); white-space: nowrap;
+}
+@media (prefers-reduced-motion: reduce) {
+    .whale-section[data-whale-state="impact"] .whale-stars { animation: none; }
+}
 .whale-words { position: relative; z-index: 1; transform: translateY(-18vh); transform: translateY(-18svh); pointer-events: none; }
 .whale-roam-button {
     position: absolute; left: 0; right: 0; bottom: max(24px, env(safe-area-inset-bottom));

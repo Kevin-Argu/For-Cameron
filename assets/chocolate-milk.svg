@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="320" viewBox="0 0 240 320">
+  <title>A glass bottle of chocolate milk, drawn in ASCII</title>
+  <!-- Only text is painted: the empty neck and double edge suggest glass, and colons are milk. -->
+  <g fill="#b7c6bb" font-family="'Courier New', monospace" font-size="16" xml:space="preserve" style="white-space: pre">
+    <text style="white-space: pre" x="0" y="19" fill="#d8aebd">        _________</text>
+    <text style="white-space: pre" x="0" y="34" fill="#d8aebd">       [_________]</text>
+    <text style="white-space: pre" x="0" y="49">        |       |</text>
+    <text style="white-space: pre" x="0" y="64">        |       |</text>
+    <text style="white-space: pre" x="0" y="79">       /         \</text>
+    <text style="white-space: pre" x="0" y="94">      /           \</text>
+    <text style="white-space: pre" x="0" y="109">     /             \</text>
+    <text style="white-space: pre" x="0" y="124">    |  <tspan style="white-space: pre" fill="#b88e68">.~~~~~~~~~.</tspan>  |</text>
+    <text style="white-space: pre" x="0" y="139">    |  <tspan style="white-space: pre" fill="#b88e68">: : : : : :</tspan>  |</text>
+    <text style="white-space: pre" x="0" y="154">    |  <tspan style="white-space: pre" fill="#b88e68">: : : : : :</tspan>  |</text>
+    <!-- The little paper label is lettering, too; no glossy fills or decorative shapes. -->
+    <text style="white-space: pre" x="0" y="169">    |  <tspan style="white-space: pre" fill="#ead7bb">.---------.</tspan>  |</text>
+    <text style="white-space: pre" x="0" y="184">    |  <tspan style="white-space: pre" fill="#ead7bb">|chocolate|</tspan>  |</text>
+    <text style="white-space: pre" x="0" y="199">    |  <tspan style="white-space: pre" fill="#ead7bb">|  milk   |</tspan>  |</text>
+    <text style="white-space: pre" x="0" y="214">    |  <tspan style="white-space: pre" fill="#ead7bb">|   <tspan style="white-space: pre" fill="#d8aebd">&lt;3</tspan>    |</tspan>  |</text>
+    <text style="white-space: pre" x="0" y="229">    |  <tspan style="white-space: pre" fill="#ead7bb">'---------'</tspan>  |</text>
+    <text style="white-space: pre" x="0" y="244">    |  <tspan style="white-space: pre" fill="#b88e68">: : : : : :</tspan>  |</text>
+    <text style="white-space: pre" x="0" y="259">    |  <tspan style="white-space: pre" fill="#b88e68">: : : : : :</tspan>  |</text>
+    <text style="white-space: pre" x="0" y="274">    |  '---------'  |</text>
+    <text style="white-space: pre" x="0" y="289">     \_____________/</text>
+    <text style="white-space: pre" x="0" y="304">      '-----------'</text>
+  </g>
+</svg>

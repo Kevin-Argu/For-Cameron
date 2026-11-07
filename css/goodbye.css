@@ -29,7 +29,7 @@
 /* A generous tap target also gets a visible outline when focused from the keyboard. */
 .goodbye-section .milk-gift {
     display: block;
-    width: min(340px, 100%);
+    width: min(260px, 100%);
     margin-top: 12px;
     padding: 0 0 10px;
     border: 0;
@@ -43,39 +43,18 @@
     outline: 2px dashed var(--milk-pink);
     outline-offset: 10px;
 }
-.milk-scene { display: block; width: 100%; height: auto; overflow: visible; }
-.milk-sparkles { color: #a6b59f; font: 18px Menlo, Consolas, monospace; opacity: .65; }
-.milk-shadow { fill: #b39375; opacity: .12; transition: opacity .65s ease; }
-/* One transform moves the bottle, label, and all glass highlights together. */
+/* The SVG contains only monospaced text; keep the glyphs large enough to read as characters. */
+.milk-scene { position: relative; display: block; width: 100%; padding: 12px 10px 6px; }
 .milk-bottle {
-    transform-origin: 200px 235px;
-    transition: transform .85s cubic-bezier(.22, .75, .2, 1), filter .65s ease;
-    filter: drop-shadow(0 4px 12px #0006);
+    display: block; width: 100%; height: auto;
+    transform-origin: 50% 65%;
+    transition: transform .7s cubic-bezier(.22, .75, .2, 1);
 }
-/* Gradients are defined in the SVG; transparent glass surrounds the opaque milk fill. */
-.milk-glass { fill: url(#milkGlass); stroke: #c8d7c7; stroke-width: 2; }
-.milk-liquid { fill: url(#chocolateMilk); }
-.milk-surface { fill: #b58d66; stroke: #d3b18a; stroke-width: 1; }
-.milk-glass-edge { fill: none; stroke: #b9cbbb; stroke-width: 1; opacity: .5; }
-.milk-glass-glint { fill: none; stroke: #f0f4df; stroke-width: 3; opacity: .85; }
-.milk-glass-glint-small { stroke-width: 1.5; opacity: .54; }
-.milk-glass-shine { fill: #f0f4df; opacity: .14; }
-.milk-neck-ring { fill: #cbdac144; stroke: #cbdac1; stroke-width: 1.2; }
-.milk-bottle-cap { fill: url(#milkCap); stroke: #e7c5c9; stroke-width: 1.3; }
-.milk-cap-top { fill: #edd1d1; stroke: #c1929a; stroke-width: 1; }
-.milk-cap-ridges { fill: none; stroke: #8c626e; stroke-width: 1; opacity: .6; }
-.milk-label { fill: #eee0c5; }
-.milk-label-border { fill: none; stroke: #a38d6c; stroke-width: .7; stroke-dasharray: 1 3; }
-.milk-label-type { fill: #5b4230; font: 11px Menlo, Consolas, "Liberation Mono", monospace; }
-.milk-label-word { font: italic 29px Georgia, "Times New Roman", serif; }
-.milk-label-heart { fill: #9b4d5b; font-size: 13px; }
-.milk-bottle-dots { fill: #d7b98e; font: 12px Menlo, Consolas, monospace; opacity: .65; }
 .milk-thanks {
-    opacity: 0;
-    transform: translateY(12px);
-    color: var(--milk-pink);
-    font: 25px Georgia, serif;
-    transition: opacity .55s ease, transform .7s ease;
+    position: absolute; top: 16%; right: 0;
+    opacity: 0; transform: translateY(10px);
+    color: var(--milk-pink); font: 18px/1 Menlo, Consolas, monospace;
+    transition: opacity .45s ease, transform .6s ease;
 }
 .milk-hint {
     display: block;
@@ -87,9 +66,7 @@
 /* goodbye.js toggles has-milk. Taking the bottle lifts it toward the visitor. */
 .goodbye-section.has-milk .milk-bottle {
     transform: translateY(-14px) rotate(-7deg) scale(1.08);
-    filter: drop-shadow(0 8px 18px #d4a87c24);
 }
-.goodbye-section.has-milk .milk-shadow { opacity: 0; }
 .goodbye-section.has-milk .milk-thanks { opacity: 1; transform: translateY(0); }
 .goodbye-section.has-milk .milk-hint { color: var(--milk-pink); }
 @media (hover: hover) {
@@ -111,7 +88,7 @@
 }
 /* Reserve enough height so George's hops do not collide with the milk button. */
 .george-meadow {
-    position: relative; flex: 0 0 auto; width: min(820px, 100%); height: 205px;
+    position: relative; flex: 0 0 auto; width: min(820px, 100%); height: 225px;
     margin-top: 6px; text-align: left;
 }
 .george-grass {
@@ -120,11 +97,7 @@
     font: 14px/1 Menlo, Consolas, monospace; letter-spacing: .45em;
     white-space: nowrap; overflow: hidden;
 }
-.george-crossing { position: absolute; left: 25%; bottom: 24px; width: 280px; }
-.george-shadow {
-    position: absolute; left: 12%; bottom: 24px; width: 77%; height: 10px;
-    background: #a7927020; border-radius: 50%; filter: blur(3px);
-}
+.george-crossing { position: absolute; left: calc(50% - 175px); bottom: 24px; width: 350px; }
 .goodbye-section .george-button {
     position: relative; display: block; width: 100%; padding: 0; border: 0;
     border-radius: 15px; background: transparent; color: #b8a38c; transform: none;
@@ -133,7 +106,7 @@
 .goodbye-section .george-button:hover { background: transparent; transform: none; }
 .george-button:focus-visible { outline: 2px dashed var(--milk-pink); outline-offset: 3px; }
 .george-sprite { display: block; width: 100%; height: auto; transform-origin: 45% 85%; }
-.george-name { display: block; margin-top: -4px; text-align: center; font: 10px/1.4 Menlo, Consolas, monospace; letter-spacing: .1em; }
+.george-name { display: block; margin-top: 8px; text-align: center; font: 10px/1.4 Menlo, Consolas, monospace; letter-spacing: .1em; }
 .goodbye-section .george-recall {
     position: absolute; left: 50%; bottom: 0; transform: translateX(-50%);
     padding: 10px 14px; background: transparent; border-color: transparent;
@@ -143,7 +116,6 @@
 /* Seven 0.64-second bounds match the 4.48-second crossing. Keep these durations in sync. */
 .george-meadow.is-hopping .george-crossing { animation: george-leaves 4.48s linear .3s forwards; }
 .george-meadow.is-hopping .george-sprite { animation: george-bound .64s ease-in-out .3s 7; }
-.george-meadow.is-hopping .george-shadow { animation: george-shadow .64s ease-in-out .3s 7; }
 .george-meadow.is-hopping .george-name { opacity: 0; }
 .george-meadow.is-hopping .george-button { pointer-events: none; }
 .george-meadow.has-hopped .george-crossing { visibility: hidden; }
@@ -155,23 +127,21 @@
     62% { transform: translateY(-29px) rotate(2deg); }
     87% { transform: translateY(2px) rotate(3deg) scale(1.03, .94); }
 }
-@keyframes george-shadow { 45%, 62% { transform: scale(.65); opacity: .3; } }
 /* Phone sizing preserves the bottle's proportions and keeps George's face readable. */
 @media (max-width: 600px) {
     .goodbye-section { padding-inline: 12px; }
     .goodbye-note { font-size: 12px; }
     .milk-hint { margin-top: 12px; }
-    .goodbye-section .milk-gift { width: min(300px, 100%); }
-    .george-meadow { height: 180px; }
-    .george-crossing { width: 235px; left: 8%; }
+    .goodbye-section .milk-gift { width: min(230px, 100%); }
+    .george-meadow { height: 205px; }
+    .george-crossing { width: min(310px, 100%); left: 50%; margin-left: max(-155px, -50%); }
     .george-grass { letter-spacing: .1em; }
 }
 /* Preserve controls and feedback while removing bouncing and bottle movement. */
 @media (prefers-reduced-motion: reduce) {
-    .milk-bottle, .milk-shadow, .milk-thanks { transition: none; }
+    .milk-bottle, .milk-thanks { transition: none; }
     .goodbye-section:not(.has-milk) .milk-gift:hover .milk-bottle,
     .goodbye-section.has-milk .milk-bottle { transform: none; }
     .george-meadow.is-hopping .george-crossing,
-    .george-meadow.is-hopping .george-sprite,
-    .george-meadow.is-hopping .george-shadow { animation: none; }
+    .george-meadow.is-hopping .george-sprite { animation: none; }
 }
