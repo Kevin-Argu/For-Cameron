@@ -38,7 +38,8 @@ test('bouquet imports preserve source geometry, colors, layers and domains', () 
     assert.equal(calc.expressions.get('chrysanthemum_989').color, '#f7d839');
     assert.equal(calc.expressions.get('marigold_1182').color, '#f5771d');
     assert.equal(calc.expressions.get('daisy_1233').color, '#fcf8eb');
-    assert.equal(calc.expressions.get('petuniaOuter').color, '#faaff0');
+    // Petunia retains its earlier pink gradient after the visual refinement.
+    assert.equal(calc.expressions.get('petuniaOuter').color, '#f7b6dc');
     assert.equal(calc.expressions.get('hibiscusNice').color, '#8f70c4');
     assert.equal(calc.expressions.get('sakuraMiddle1').fillOpacity, .2);
     assert.equal(calc.settings.showXAxis, false);

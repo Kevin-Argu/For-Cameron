@@ -36,8 +36,7 @@ flowerCalculator.setMathBounds({
 
 const initialExpressions = [];
 
-// Store the original opacity of each individual Desmos curve.
-// The actual equations remain unchanged. We animate only their visibility.
+// Preserve each layer's intended transparency during the reveal animation.
 const flowerRevealGroups = {
     sakura: [],
     petunia: [],
@@ -184,28 +183,36 @@ addLineCurve(
     "petuniaInner1",
     String.raw`(P_{tu}\sqrt{\log_{1.7}(\tan(2.5(t-1.9))-2)}\cos(t)+X_{pet},P_{tu}\sqrt{\log_{1.7}(\tan(2.5(t-1.9))-2)}\sin(t)+Y_{pet})`,
     "#8d246d",
-    4
+    1.35,
+    "12\\pi",
+    0.38
 );
 
 addLineCurve(
     "petuniaInner2",
     String.raw`(P_{tu}\sqrt{\log_{1.7}(-\tan(2.5(t-1.9))-2)}\cos(t)+X_{pet},P_{tu}\sqrt{\log_{1.7}(-\tan(2.5(t-1.9))-2)}\sin(t)+Y_{pet})`,
     "#8d246d",
-    4
+    1.35,
+    "12\\pi",
+    0.38
 );
 
 addLineCurve(
     "petuniaInner3",
     String.raw`(P_{tu}\sqrt{\log_{3}(\tan(10(t-1.9))+1)}\cos(t)+X_{pet},P_{tu}\sqrt{\log_{3}(\tan(10(t-1.9))+1)}\sin(t)+Y_{pet})`,
     "#7b1f62",
-    4
+    1.15,
+    "12\\pi",
+    0.28
 );
 
 addLineCurve(
     "petuniaInner4",
     String.raw`(P_{tu}\sqrt{\log_{3}(-\tan(10(t-1.9))+1)}\cos(t)+X_{pet},P_{tu}\sqrt{\log_{3}(-\tan(10(t-1.9))+1)}\sin(t)+Y_{pet})`,
     "#7b1f62",
-    4
+    1.15,
+    "12\\pi",
+    0.28
 );
 
 addFilledCurve(
@@ -672,12 +679,10 @@ const flowerClickAreas = [
 
 
 // Match the source graph's RGB definitions, including translucent shading.
+// Petunia keeps its earlier pink gradient, with softer, finer veins above.
 const palette = window.CameronBouquet.palette;
 const colorKeys = {
     sakuraOuter: '2', sakuraMiddle1: '1', sakuraMiddle2: '1', sakuraCenter: '1',
-    petuniaOuter: 'pet', petuniaSecond: 'pet1', petuniaThird: 'pet3',
-    petuniaInner1: 'pet4', petuniaInner2: 'pet4', petuniaInner3: 'pet5', petuniaInner4: 'pet5',
-    petuniaCenter: 'pet6',
     hibiscusNice: 'hi', hibiscusSpice: 'hi6', hibiscusPrice: 'hi1', hibiscusDice: 'hi2',
     hibiscusHi: 'hi3', hibiscusBi: 'hi3', hibiscusLie: 'hi3', hibiscusSigh: 'hi3',
     hibiscusPie: 'hi3', hibiscusHigh: 'hi3', hibiscusHello: 'hi4', hibiscusBye: 'hi5',
@@ -687,7 +692,6 @@ const colorKeys = {
 initialExpressions.forEach(expression => {
     const id = expression.id;
     let key = colorKeys[id];
-    if (id.startsWith('petuniaCenterLayer')) key = 'pet5';
     if (id.startsWith('lilac_')) key = id.endsWith('_outer') ? 'lil' : /_detail/.test(id) || id.endsWith('_p20') ? 'lil2' : 'lil1';
     if (id.startsWith('wisteria_')) {
         if (id.endsWith('_petals')) key = 'wist';
@@ -698,7 +702,6 @@ initialExpressions.forEach(expression => {
     if (key) expression.color = palette[key];
     let opacity;
     if (/^sakuraMiddle/.test(id)) opacity = .2;
-    if (id.startsWith('petuniaCenterLayer')) opacity = .1;
     if (id === 'plumeriaPink') opacity = .25;
     if (id === 'plumeriaOrange') opacity = .4;
     if (id.endsWith('_inner')) opacity = .2;
@@ -732,20 +735,21 @@ window.CameronBouquet.flowers.forEach(flower => {
     flowerClickAreas.push({ id: flower.id, cx: 0, cy: 0, width: flower.width, height: flower.height });
 });
 
-// A wide wreath on desktop and a taller arrangement on phones. Both layouts
-// keep the name clear and move the tap targets with the actual curves.
+// Stable, asymmetrical placements feel scattered without jumping on refresh.
+// Vary heights and sizes, leave room around the name, and keep tap targets
+// attached to their curves in both the wide and tall compositions.
 const gardenLayouts = {
     wide: {
-        sakura: [-10, 4, .85], pansy: [-5.2, 4.3, 1], wisteria: [0, 4.3, 1],
-        petunia: [5.2, 4.3, 1], sunflower: [10, 4.1, 1],
-        plumeria: [-10, -4.1, 1], marigold: [-6, -4.3, 1], hibiscus: [-2, -4.3, 1],
-        chrysanthemum: [2, -4.3, 1], daisy: [6, -4.3, 1], lilac: [10, -3.8, .8]
+        sakura: [-8.9, 5.7, .78], pansy: [-10.3, .2, .85], wisteria: [-.1, 5.4, .95],
+        petunia: [4.45, 4.5, 1.10], sunflower: [9.8, 3.2, 1.05],
+        plumeria: [-4.9, 3.15, .93], marigold: [-3.4, -6, .88], hibiscus: [-7.4, -3.55, 1.08],
+        chrysanthemum: [1, -4.5, 1.13], daisy: [6, -5.5, .96], lilac: [10, -2, .8]
     },
     tall: {
-        pansy: [-4, 7.3, .9], wisteria: [0, 6.7, .8], sunflower: [4, 7.1, .85],
-        sakura: [-3.7, 3.3, .85], petunia: [3.7, 3.3, 1],
-        plumeria: [-4, -3.3, .85], hibiscus: [0, -3.4, 1], daisy: [4, -3.3, 1],
-        lilac: [-4, -7.5, .67], chrysanthemum: [0, -7.5, 1], marigold: [4, -7.4, 1]
+        pansy: [-3.9, 8, .75], wisteria: [.3, 7.7, .72], sunflower: [4.1, 5.7, .82],
+        sakura: [-3.8, 4.5, .80], petunia: [.2, 3.3, .82],
+        plumeria: [-4.6, -.9, .65], hibiscus: [4.5, -1.5, .72], daisy: [.7, -4.2, .91],
+        lilac: [-1.8, -8, .75], chrysanthemum: [4, -7.1, 1.05], marigold: [-3.7, -4.7, .9]
     }
 };
 const originalAreas = new Map(flowerClickAreas.map(flower => [flower.id, { ...flower }]));
@@ -843,7 +847,7 @@ function fitGarden() {
     if (!width || !height) return;
     const tall = width / height < .85;
     arrangeFlowers(tall ? 'tall' : 'wide');
-    const unitsPerPixel = Math.max((tall ? 13 : 26) / width, (tall ? 20 : 14) / height);
+    const unitsPerPixel = Math.max((tall ? 13 : 26) / width, (tall ? 20 : 16) / height);
     flowerCalculator.setMathBounds({
         left: -width * unitsPerPixel / 2, right: width * unitsPerPixel / 2,
         bottom: -height * unitsPerPixel / 2, top: height * unitsPerPixel / 2
