@@ -26,30 +26,27 @@
     font: 13px/1.6 Menlo, Consolas, "Liberation Mono", monospace;
     letter-spacing: .04em;
 }
-/* The pickle is a quiet companion beside the gift, with space around the rocking-chair silhouette. */
+/* Center the chair itself; the little bottle sits beside its right rocker without shifting the pickle. */
 .goodbye-gifts {
-    width: min(700px, 100%); display: flex; align-items: center; justify-content: center;
-    gap: clamp(36px, 6vw, 76px); margin-top: 12px;
+    --pickle-size: clamp(220px, 55vw, 290px);
+    position: relative; width: min(460px, 100%);
+    display: grid; justify-items: center; margin-top: 12px;
 }
-.goodbye-gifts .milk-gift { flex: 0 0 260px; margin-top: 0; }
-.dillbillies { flex: 0 0 270px; width: 270px; margin: 0; }
+.dillbillies { width: var(--pickle-size); margin: 0; }
 .dillbillies img { display: block; width: 100%; height: auto; }
 .dillbillies figcaption {
     margin-top: 0; color: #a9b678; text-align: center;
     font: 12px/1.5 Menlo, Consolas, monospace; letter-spacing: .14em;
 }
-@media (max-width: 620px) {
-    /* Preserve the legible character art instead of squeezing two illustrations into a narrow row. */
-    .goodbye-gifts { flex-direction: column; gap: 24px; }
-    .goodbye-gifts .milk-gift { flex-basis: auto; width: min(230px, 100%); }
-    .dillbillies { flex-basis: auto; width: min(280px, 100%); }
-}
-/* A generous tap target also gets a visible outline when focused from the keyboard. */
+/* Keep the miniature gift beside the chair even on phones, with a tap target wider than 44px. */
 .goodbye-section .milk-gift {
+    position: absolute;
+    left: calc(50% + var(--pickle-size) * .34);
+    bottom: clamp(8px, 2vw, 14px);
     display: block;
-    width: min(260px, 100%);
-    margin-top: 12px;
-    padding: 0 0 10px;
+    width: clamp(58px, 14vw, 82px);
+    margin: 0;
+    padding: 0;
     border: 0;
     border-radius: 24px;
     background: transparent;
@@ -61,8 +58,8 @@
     outline: 2px dashed var(--milk-pink);
     outline-offset: 10px;
 }
-/* The SVG contains only monospaced text; keep the glyphs large enough to read as characters. */
-.milk-scene { position: relative; display: block; width: 100%; padding: 12px 10px 6px; }
+/* Trim empty padding so the small bottle remains recognizable beside the much taller chair. */
+.milk-scene { position: relative; display: block; width: 100%; padding: 3px 4px; }
 .milk-bottle {
     display: block; width: 100%; height: auto;
     transform-origin: 50% 65%;
@@ -76,10 +73,10 @@
 }
 .milk-hint {
     display: block;
-    min-height: 24px;
+    min-height: 18px;
     color: #c7aa92;
-    font: 12px/2 Menlo, Consolas, "Liberation Mono", monospace;
-    letter-spacing: .04em;
+    font: 10px/1.8 Menlo, Consolas, "Liberation Mono", monospace;
+    white-space: nowrap;
 }
 /* goodbye.js toggles has-milk. Taking the bottle lifts it toward the visitor. */
 .goodbye-section.has-milk .milk-bottle {
@@ -145,12 +142,10 @@
     62% { transform: translateY(-29px) rotate(2deg); }
     87% { transform: translateY(2px) rotate(3deg) scale(1.03, .94); }
 }
-/* Phone sizing preserves the bottle's proportions and keeps George's face readable. */
+/* Phone sizing keeps the existing George scene readable below the chair and bottle. */
 @media (max-width: 600px) {
     .goodbye-section { padding-inline: 12px; }
     .goodbye-note { font-size: 12px; }
-    .milk-hint { margin-top: 12px; }
-    .goodbye-section .milk-gift { width: min(230px, 100%); }
     .george-meadow { height: 205px; }
     .george-crossing { width: min(310px, 100%); left: 50%; margin-left: max(-155px, -50%); }
     .george-grass { letter-spacing: .1em; }

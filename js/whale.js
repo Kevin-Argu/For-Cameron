@@ -148,6 +148,7 @@
   let scale = .65, direction = 1, last = 0, elapsed = 0;
   let scrollNudge = 0, previousScroll = scrollY, hearts = 0;
   let trick = null, nextTrick = 0;
+  let hasReacted = false;
 
   function cancelTrick() {
     trick = null;
@@ -235,6 +236,7 @@
 
   function reactToTap() {
     if (!site.entered || entrance !== 'swimming' || trick || (!roaming && !homeVisible)) return;
+    hasReacted = true;
     hearts = 1;
     if (reduced) {
       // Keep the response visible without spinning or moving for reduced-motion visitors.
@@ -462,8 +464,22 @@
     if (direction < 0) ctx.scale(-1,1);
     ctx.scale(scale*(1+.12*compression), scale*(1-.25*compression));
     ctx.rotate(doingTrick ? turn : reduced || entering ? 0 : Math.sin(elapsed*.014)*.012);
-    draw(!roaming || darkRects.some(rect => rect.top <= y && rect.bottom > y));
+    const dark = !roaming || darkRects.some(rect => rect.top <= y && rect.bottom > y);
+    draw(dark);
     ctx.restore();
+    // Draw the hint outside the sprite transform so it stays readable on phones and never flips backward.
+    // Once the visitor discovers the reaction, leave the swimming whale free of extra text.
+    if (entrance === 'swimming' && !hasReacted) {
+      ctx.save();
+      ctx.font = '12px Menlo, Consolas, monospace';
+      ctx.textAlign = 'center';
+      ctx.fillStyle = dark ? '#c0d7df' : '#35586b';
+      const hintX = clamp(x+direction*spriteWidth*scale*.22, 44, w-44);
+      const hintY = Math.max(26, y-spriteHeight*scale*.34-18);
+      ctx.fillText('click me', hintX, hintY);
+      ctx.fillText('v', hintX, hintY+15);
+      ctx.restore();
+    }
     if (entrance === 'impact') drawImpact(entranceMs/impactDuration);
     // Include fin rotation, the breath and hearts in the cleared rectangle once swimming resumes.
     lastRect = { x: x-spriteWidth*scale/2-32,

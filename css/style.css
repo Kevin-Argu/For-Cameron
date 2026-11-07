@@ -48,18 +48,18 @@ button:not(:disabled):active { transform: translateY(0); }
     z-index: 50; font-style: italic;
     box-shadow: 0 4px 20px rgba(36,33,31,.08);
 }
-/* Center the primary invitation and give it enough contrast to stand out against the graph grid. */
+/* Cover the trial notice behind the locked garden with a wider, lower, fully opaque invitation. */
 .explore-button {
-    left: 50%; right: auto; bottom: max(34px, env(safe-area-inset-bottom));
+    left: 50%; right: auto; bottom: max(10px, env(safe-area-inset-bottom));
     display: inline-flex; align-items: center; justify-content: center; gap: 20px;
-    min-width: 194px; min-height: 62px; padding: 15px 28px;
-    transform: translateX(-50%); border: 2px solid #773545;
-    background: #9b4d5b; color: #fff8f1; font: italic bold 22px/1.2 var(--serif);
+    width: min(320px, calc(100% - 24px)); min-height: 88px; padding: 18px 32px;
+    transform: translateX(-50%); border: 2px solid #773545; border-radius: 24px;
+    background: #9b4d5b; color: #fff8f1; font: italic bold 26px/1.2 var(--serif);
     box-shadow: 0 5px 0 #773545, 0 10px 22px #77354526;
 }
 .explore-button svg { display: block; flex: 0 0 22px; }
 .explore-button:focus-visible { outline-color: #773545; outline-offset: 7px; }
-.explore-button:disabled { opacity: .65; }
+.explore-button:disabled { opacity: 1; background: #ac7680; }
 .explore-button:not(:disabled):active { transform: translate(-50%, 3px); box-shadow: 0 2px 0 #773545; }
 @media (hover: hover) {
     .explore-button:not(:disabled):hover { background: #843d4c; transform: translate(-50%, -2px); }
