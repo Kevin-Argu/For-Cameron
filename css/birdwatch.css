@@ -1,17 +1,100 @@
-:root { color-scheme: light; }
+:root {
+  color-scheme: dark;
+  --night: #040609;
+  --petal: #f9bfd2;
+  --muted: #a9b6a3;
+}
 * { box-sizing: border-box; }
-html,body { margin: 0; min-height: 100%; }
-body { background: linear-gradient(#9dcced 0%, #badbf0 62%, #e7eddf 100%); color: #273f36; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; overflow-x: hidden; }
+[hidden] { display: none !important; }
+html, body { margin: 0; min-height: 100%; }
+body {
+  background: var(--night);
+  color: #f7e9ef;
+  font-family: Menlo, Consolas, "Liberation Mono", monospace;
+}
 a { color: inherit; }
-.back-nav { position: absolute; top: max(18px, env(safe-area-inset-top)); left: max(20px, env(safe-area-inset-left)); z-index: 2; font-size: clamp(12px,1.4vw,15px); letter-spacing: .035em; }
-.back-nav a { text-decoration: none; border-bottom: 1px dotted currentColor; padding-bottom: 4px; }
-.back-nav a:hover { border-bottom-style: solid; }
-.back-nav a:focus-visible { outline: 3px solid #314d62; outline-offset: 6px; }
-.little-field { min-height: 100vh; min-height: 100svh; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: clamp(64px,8vh,100px) 18px 36px; }
-.flower-horse { display: flex; flex-direction: column; align-items: center; width: min(100%, 850px); margin: 0; }
-.flower-horse canvas { display: block; width: min(100%, 850px); height: auto; aspect-ratio: 546 / 460; }
-.flower-horse figcaption { width: 100%; text-align: center; padding: 12px 0 0; font-size: clamp(10px,1.15vw,12px); letter-spacing: .07em; color: #446954; }
-.flower-horse figcaption span:first-child, .flower-horse figcaption span:last-child { color: #a34f8c; }
-.art-status { font-size: 13px; color: #506b58; text-align: center; }
-.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
-@media(max-width:560px) { .little-field { padding: 82px 3px 28px; justify-content: center; } .flower-horse figcaption { padding-inline: 10px; } }
+.back-nav {
+  position: absolute;
+  top: max(18px, env(safe-area-inset-top));
+  left: max(20px, env(safe-area-inset-left));
+  z-index: 2;
+  font-size: 12px;
+  letter-spacing: .035em;
+}
+.back-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--muted);
+  text-decoration: none;
+}
+.back-nav a:hover { color: var(--petal); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--petal); outline-offset: 5px; }
+.little-field {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 70px 18px max(26px, env(safe-area-inset-bottom));
+}
+.flower-horse {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(100%, 840px, calc((100svh - 190px) * .936));
+  min-width: min(100%, 280px);
+  margin: 0;
+}
+.flower-horse canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 146 / 156;
+}
+.flower-horse figcaption {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.6;
+  letter-spacing: .09em;
+  text-align: center;
+}
+.flower-horse figcaption span { color: var(--petal); }
+.art-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 22px;
+}
+.art-controls button {
+  min-height: 44px;
+  padding: 10px 19px;
+  border: 1px solid #68515f;
+  border-radius: 999px;
+  background: #17151b;
+  color: #f9e5ed;
+  font: 14px/1.3 Georgia, "Times New Roman", serif;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+@media (hover: hover) {
+  .art-controls button:hover { background: #382432; border-color: #dcb5c7; }
+}
+.art-status { max-width: 32ch; font-size: 13px; color: var(--muted); text-align: center; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+@media (max-width: 560px) {
+  .little-field { padding-inline: 10px; }
+  .flower-horse { width: 100%; }
+  .art-controls { margin-top: 24px; }
+}
+@media (max-height: 550px) and (min-width: 561px) {
+  .little-field { padding-top: 62px; }
+  .flower-horse { width: 340px; }
+}
+

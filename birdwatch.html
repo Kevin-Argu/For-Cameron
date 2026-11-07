@@ -3,19 +3,24 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#9dcced">
+  <meta name="theme-color" content="#040609">
   <title>A Little Birdwatching · Cameron</title>
-  <link rel="stylesheet" href="css/birdwatch.css?v=4">
-  <script src="js/birdwatch.js?v=4" defer></script>
+  <link rel="stylesheet" href="css/birdwatch.css?v=5">
+  <script src="js/birdwatch.js?v=5" defer></script>
 </head>
 <body>
   <nav class="back-nav" aria-label="Page navigation"><a href="index.html">← the garden</a></nav>
   <main class="little-field">
     <h1 class="sr-only">The flower-covered Split-Rocker</h1>
     <figure class="flower-horse">
-      <canvas id="splitRockerCanvas" width="1092" height="920" role="img" aria-label="An enormous, half-pony half-dinosaur head made from thousands of green leaves and colorful flowers, recreated as a field of tiny characters. The left side has a long snout; the right side has a round, colorful cheek, and the sculpture sits on a pale stone base beneath a blue sky."></canvas>
-      <figcaption><span aria-hidden="true">✿ ˚ · ✳</span> <span>split-rocker, in little characters</span> <span aria-hidden="true">✳ · ˚ ✿</span></figcaption>
+      <canvas id="splitRockerCanvas" width="876" height="936" role="img" aria-label="Split-Rocker drawn entirely from glowing text characters: a flower-covered pony and dinosaur head, with pink blossoms, green leaves and two little eyes against the night."></canvas>
+      <figcaption><span aria-hidden="true">* ·</span> split-rocker <span aria-hidden="true">· *</span></figcaption>
     </figure>
+    <div class="art-controls" role="group" aria-label="Flower sculpture controls">
+      <button id="colorSculpture" type="button" aria-controls="splitRockerCanvas">Colors: Pink</button>
+      <button id="replaySculpture" type="button" aria-controls="splitRockerCanvas">Bloom again</button>
+    </div>
+    <noscript><p class="art-status">Enable JavaScript to see the character flowers bloom.</p></noscript>
     <p id="artStatus" class="art-status" role="status" hidden></p>
   </main>
 </body>
