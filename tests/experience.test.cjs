@@ -1,30 +1,63 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
 const { harness } = require('./harness.cjs');
 const flush = async () => { for (let i = 0; i < 8; i++) await Promise.resolve(); };
-function start(options) { const h = harness(options); h.run('main.js'); h.run('flower-notes.js'); return h; }
+function start(options) { const h = harness(options); h.run('main.js'); h.run('flower-notes.js'); h.run('bouquet-data.js'); return h; }
 function flowers(h) { h.run('flower-details.js'); h.run('flowers.js'); h.context.CameronGraphs.flowers(); h.get('exploreButton').disabled = false; }
 function heart(h) { h.run('heart.js'); h.context.CameronGraphs.heart(); }
 
-test('all original flower expressions, colors, domains and layers are preserved', () => {
-    const h = start(); flowers(h);
-    const expressions = h.calculators[0].getExpressions().sort((a,b) => a.id.localeCompare(b.id));
-    assert.equal(expressions.length, 183);
-    assert.equal(crypto.createHash('sha256').update(JSON.stringify(expressions)).digest('hex'),
-        '0f8dd56ec693e273d3055eecb14ec9995d3ee58d030fd738c90dde851d14c74b');
-    assert.equal(h.calculators[0].settings.showXAxis, false);
-    assert.equal(h.calculators[0].settings.showYAxis, false);
+test('bouquet imports preserve source geometry, colors, layers and domains', () => {
+    const h = start({ reduced: true }); flowers(h); h.intersect('gardenStart', 1);
+    const calc = h.calculators[0];
+    assert.equal(calc.getExpressions().length, 357);
+    const expectedLayers = { pansy: 15, sunflower: 6, chrysanthemum: 20, marigold: 18, daisy: 4 };
+    const definitions = new Set();
+    for (const flower of h.context.CameronBouquet.flowers) {
+        const curves = flower.expressions.filter(e => e.parametricDomain);
+        assert.equal(curves.length, expectedLayers[flower.id]);
+        for (const source of flower.expressions) {
+            const actual = calc.expressions.get(source.id);
+            assert.ok(actual.latex.includes(source.latex));
+            if (source.parametricDomain) {
+                assert.deepEqual(actual.parametricDomain, source.parametricDomain);
+                assert.equal(actual.color, source.color);
+                assert.equal(actual.fillOpacity, source.fillOpacity);
+                assert.equal(actual.lineOpacity, source.lines ? source.lineOpacity : 0);
+            } else {
+                const variable = source.latex.split('=')[0].replace(/\\ /g, '').trim();
+                assert.ok(!definitions.has(variable), 'No conflicting definition: ' + variable);
+                definitions.add(variable);
+            }
+        }
+    }
+    // Exact RGB values from the graph's Colors folder, not Desmos fallback colors.
+    assert.equal(calc.expressions.get('pansy_257').color, '#473499');
+    assert.equal(calc.expressions.get('sunflower_403').color, '#7d6e43');
+    assert.equal(calc.expressions.get('chrysanthemum_989').color, '#f7d839');
+    assert.equal(calc.expressions.get('marigold_1182').color, '#f5771d');
+    assert.equal(calc.expressions.get('daisy_1233').color, '#fcf8eb');
+    assert.equal(calc.expressions.get('petuniaOuter').color, '#faaff0');
+    assert.equal(calc.expressions.get('hibiscusNice').color, '#8f70c4');
+    assert.equal(calc.expressions.get('sakuraMiddle1').fillOpacity, .2);
+    assert.equal(calc.settings.showXAxis, false);
+    assert.equal(calc.settings.showYAxis, false);
 });
 
-test('garden framing contains all original bounds with equal axis scale across device sizes', () => {
+test('every flower fits the viewport with equal axis scale on phones, tablets and desktops', () => {
     for (const [width, height] of [[320,568],[390,844],[844,390],[768,1024],[1440,900]]) {
         const h = start(); h.resize('flowerCalculator', width, height); flowers(h);
         const b = h.calculators[0].bounds;
-        assert.ok(b.left <= -10 && b.right >= 10 && b.bottom <= -6 && b.top >= 6);
         assert.ok(Math.abs(width / (b.right - b.left) - height / (b.top - b.bottom)) < .00001);
+        const zones = h.document.querySelector('.flower-click-layer').querySelectorAll('button');
+        assert.equal(zones.length, 11);
+        for (const zone of zones) {
+            const left = parseFloat(zone.style.left), top = parseFloat(zone.style.top);
+            assert.ok(left >= 0 && top >= 0, zone.title + ' begins inside the viewport');
+            assert.ok(left + parseFloat(zone.style.width) <= width + .01, zone.title + ' fits horizontally');
+            assert.ok(top + parseFloat(zone.style.height) <= height + .01, zone.title + ' fits vertically');
+        }
     }
 });
 
@@ -69,7 +102,7 @@ test('every flower opens its note with expanded live math, its original layers, 
     const layer = h.document.querySelector('.flower-click-layer');
     const buttons = layer.querySelectorAll('button');
     const card = h.get('flowerNotePanel');
-    assert.equal(buttons.length, 6);
+    assert.equal(buttons.length, 11);
     const names = [];
     for (const button of buttons) {
         button.click();
@@ -91,7 +124,7 @@ test('every flower opens its note with expanded live math, its original layers, 
         // Switching flowers cleans up the preceding live calculator.
         if (h.calculators.length > 2) assert.equal(h.calculators.at(-2).destroyed, true);
     }
-    assert.deepEqual(names.sort(), ['Hibiscus', 'Lilac', 'Petunia', 'Plumeria', 'Sakura', 'Wisteria']);
+    assert.deepEqual(names.sort(), ['Chrysanthemum', 'Daisy', 'Hibiscus', 'Lilac', 'Marigold', 'Pansy', 'Petunia', 'Plumeria', 'Sakura', 'Sunflower', 'Wisteria']);
     h.context.CameronNotes.entries.lilac.note = 'A personal line.\n<em>Kept as plain text.</em>';
     buttons.find(button => button.getAttribute('aria-label') === 'Read the note for Lilac').click();
     const note = card.querySelector('.flower-note-text');

@@ -9,7 +9,12 @@
         plumeria: { title: 'Plumeria', note: '' },
         hibiscus: { title: 'Hibiscus', note: '' },
         lilac:    { title: 'Lilac',    note: '' },
-        wisteria: { title: 'Wisteria', note: '' }
+        wisteria: { title: 'Wisteria', note: '' },
+        pansy: { title: 'Pansy', note: '' },
+        sunflower: { title: 'Sunflower', note: '' },
+        chrysanthemum: { title: 'Chrysanthemum', note: '' },
+        marigold: { title: 'Marigold', note: '' },
+        daisy: { title: 'Daisy', note: '' }
     };
 
     function createCard(container, id, onClose = () => {}) {
@@ -88,3 +93,4 @@
         }
     }
 })();
+

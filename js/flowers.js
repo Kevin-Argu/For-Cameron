@@ -16,7 +16,7 @@ const flowerCalculator = Desmos.GraphingCalculator(flowerElement, {
     pointsOfInterest: false,
     trace: false,
     border: false,
-    graphDescription: "Sakura, petunia, plumeria, hibiscus, lilac and wisteria surround Cameron."
+    graphDescription: "Eleven flowers surround Cameron: sakura, pansy, sunflower, petunia, plumeria, hibiscus, lilac, wisteria, chrysanthemum, marigold and daisy."
 });
 
 flowerCalculator.updateSettings({
@@ -44,7 +44,12 @@ const flowerRevealGroups = {
     plumeria: [],
     hibiscus: [],
     lilac: [],
-    wisteria: []
+    wisteria: [],
+    pansy: [],
+    sunflower: [],
+    chrysanthemum: [],
+    marigold: [],
+    daisy: []
 };
 
 function registerFlowerReveal(id, kind, opacity) {
@@ -53,7 +58,12 @@ function registerFlowerReveal(id, kind, opacity) {
         : Object.keys(flowerRevealGroups).find(name => id.startsWith(name));
 
     if (group) {
-        flowerRevealGroups[group].push({ id, kind, opacity });
+        let curve = flowerRevealGroups[group].find(entry => entry.id === id);
+        if (!curve) {
+            curve = { id, opacities: {} };
+            flowerRevealGroups[group].push(curve);
+        }
+        curve.opacities[kind === 'fill' ? 'fillOpacity' : 'lineOpacity'] = opacity;
     }
 }
 
@@ -661,6 +671,104 @@ const flowerClickAreas = [
 
 
 
+// Match the source graph's RGB definitions, including translucent shading.
+const palette = window.CameronBouquet.palette;
+const colorKeys = {
+    sakuraOuter: '2', sakuraMiddle1: '1', sakuraMiddle2: '1', sakuraCenter: '1',
+    petuniaOuter: 'pet', petuniaSecond: 'pet1', petuniaThird: 'pet3',
+    petuniaInner1: 'pet4', petuniaInner2: 'pet4', petuniaInner3: 'pet5', petuniaInner4: 'pet5',
+    petuniaCenter: 'pet6',
+    hibiscusNice: 'hi', hibiscusSpice: 'hi6', hibiscusPrice: 'hi1', hibiscusDice: 'hi2',
+    hibiscusHi: 'hi3', hibiscusBi: 'hi3', hibiscusLie: 'hi3', hibiscusSigh: 'hi3',
+    hibiscusPie: 'hi3', hibiscusHigh: 'hi3', hibiscusHello: 'hi4', hibiscusBye: 'hi5',
+    plumeriaOuter: 'plum1', plumeriaPink: '2', plumeriaCoral: '2',
+    plumeriaOrange: 'plum3', plumeriaYellow: 'plum2', plumeriaCenter: 'plum2'
+};
+initialExpressions.forEach(expression => {
+    const id = expression.id;
+    let key = colorKeys[id];
+    if (id.startsWith('petuniaCenterLayer')) key = 'pet5';
+    if (id.startsWith('lilac_')) key = id.endsWith('_outer') ? 'lil' : /_detail/.test(id) || id.endsWith('_p20') ? 'lil2' : 'lil1';
+    if (id.startsWith('wisteria_')) {
+        if (id.endsWith('_petals')) key = 'wist';
+        if (id.endsWith('_inner')) key = 'wist1';
+        if (id.endsWith('_throat')) key = 'dai1';
+        if (id.endsWith('_pollen')) key = 'wist2';
+    }
+    if (key) expression.color = palette[key];
+    let opacity;
+    if (/^sakuraMiddle/.test(id)) opacity = .2;
+    if (id.startsWith('petuniaCenterLayer')) opacity = .1;
+    if (id === 'plumeriaPink') opacity = .25;
+    if (id === 'plumeriaOrange') opacity = .4;
+    if (id.endsWith('_inner')) opacity = .2;
+    if (id.endsWith('_throat')) opacity = .5;
+    if (opacity !== undefined) registerFlowerReveal(id, 'fill', opacity);
+});
+
+const flowerParameters = {
+    petunia: ['Xpet', 'Ypet', 'Pet', 'Ptu', 'Ppetunia', 'Ps'],
+    hibiscus: ['Xhib', 'Yhib', 'Hlove', 'Hlover', 'Hlovers'],
+    plumeria: ['Xplum', 'Yplum', 'Pplum']
+};
+// Keep the five complete flowers' layer order, domains and dependencies.
+// Normalize only their position and uniform scale.
+window.CameronBouquet.flowers.forEach(flower => {
+    flowerParameters[flower.id] = [];
+    flower.expressions.forEach(source => {
+        const expression = { ...source };
+        if (source.parametricDomain) {
+            const [x, y] = flower.sourceCenter;
+            expression.latex = String.raw`${flower.scale}\left(${source.latex}-\left(${x},${y}\right)\right)`;
+            if (source.fill) registerFlowerReveal(source.id, 'fill', source.fillOpacity);
+            if (source.lines) registerFlowerReveal(source.id, 'line', source.lineOpacity);
+            expression.fillOpacity = 0;
+            expression.lineOpacity = 0;
+        } else {
+            flowerParameters[flower.id].push(source.id);
+        }
+        initialExpressions.push(expression);
+    });
+    flowerClickAreas.push({ id: flower.id, cx: 0, cy: 0, width: flower.width, height: flower.height });
+});
+
+// A wide wreath on desktop and a taller arrangement on phones. Both layouts
+// keep the name clear and move the tap targets with the actual curves.
+const gardenLayouts = {
+    wide: {
+        sakura: [-10, 4, .85], pansy: [-5.2, 4.3, 1], wisteria: [0, 4.3, 1],
+        petunia: [5.2, 4.3, 1], sunflower: [10, 4.1, 1],
+        plumeria: [-10, -4.1, 1], marigold: [-6, -4.3, 1], hibiscus: [-2, -4.3, 1],
+        chrysanthemum: [2, -4.3, 1], daisy: [6, -4.3, 1], lilac: [10, -3.8, .8]
+    },
+    tall: {
+        pansy: [-4, 7.3, .9], wisteria: [0, 6.7, .8], sunflower: [4, 7.1, .85],
+        sakura: [-3.7, 3.3, .85], petunia: [3.7, 3.3, 1],
+        plumeria: [-4, -3.3, .85], hibiscus: [0, -3.4, 1], daisy: [4, -3.3, 1],
+        lilac: [-4, -7.5, .67], chrysanthemum: [0, -7.5, 1], marigold: [4, -7.4, 1]
+    }
+};
+const originalAreas = new Map(flowerClickAreas.map(flower => [flower.id, { ...flower }]));
+const originalCurves = new Map(initialExpressions.filter(expression => expression.parametricDomain)
+    .map(expression => [expression.id, expression.latex]));
+let currentLayout = '';
+function arrangeFlowers(layoutName) {
+    if (layoutName === currentLayout) return;
+    currentLayout = layoutName;
+    const updates = [];
+    flowerClickAreas.forEach(flower => {
+        const original = originalAreas.get(flower.id);
+        const [cx, cy, scale] = gardenLayouts[layoutName][flower.id];
+        Object.assign(flower, { cx, cy, width: original.width * scale, height: original.height * scale });
+        const ids = new Set(flowerRevealGroups[flower.id].map(curve => curve.id));
+        initialExpressions.filter(expression => ids.has(expression.id)).forEach(expression => {
+            expression.latex = String.raw`\left(${cx},${cy}\right)+${scale}\left(${originalCurves.get(expression.id)}-\left(${original.cx},${original.cy}\right)\right)`;
+            updates.push({ id: expression.id, latex: expression.latex });
+        });
+    });
+    flowerCalculator.setExpressions(updates);
+}
+
 flowerCalculator.setExpressions(initialExpressions);
 const site = window.CameronSite;
 const section = document.getElementById('gardenStart');
@@ -686,17 +794,12 @@ const notePanel = window.CameronNotes.createCard(wrapper, 'flowerNotePanel', () 
 function openNote(flower, button) {
     flowerDetail?.destroy();
     notePanel.open(flower.id, button);
-    const parameters = {
-        petunia: ['Xpet', 'Ypet', 'Pet', 'Ptu', 'Ppetunia', 'Ps'],
-        hibiscus: ['Xhib', 'Yhib', 'Hlove', 'Hlover', 'Hlovers'],
-        plumeria: ['Xplum', 'Yplum', 'Pplum']
-    };
     const curves = new Map(flowerRevealGroups[flower.id].map(curve => [curve.id, curve]));
     const expressions = initialExpressions
-        .filter(expression => curves.has(expression.id) || parameters[flower.id]?.includes(expression.id))
+        .filter(expression => curves.has(expression.id) || flowerParameters[flower.id]?.includes(expression.id))
         .map(expression => {
             const curve = curves.get(expression.id);
-            return curve ? { ...expression, [curve.kind === 'fill' ? 'fillOpacity' : 'lineOpacity']: curve.opacity } : { ...expression };
+            return curve ? { ...expression, ...curve.opacities } : { ...expression };
         });
     flowerDetail = window.CameronFlowerDetails(notePanel.element,
         { ...flower, title: flowerNotes[flower.id].title }, expressions);
@@ -738,8 +841,9 @@ function fitGarden() {
     if (interactive) return;
     const { width, height } = flowerElement.getBoundingClientRect();
     if (!width || !height) return;
-    // Contain the original composition with equal horizontal and vertical units.
-    const unitsPerPixel = Math.max(20 / width, 12 / height);
+    const tall = width / height < .85;
+    arrangeFlowers(tall ? 'tall' : 'wide');
+    const unitsPerPixel = Math.max((tall ? 13 : 26) / width, (tall ? 20 : 14) / height);
     flowerCalculator.setMathBounds({
         left: -width * unitsPerPixel / 2, right: width * unitsPerPixel / 2,
         bottom: -height * unitsPerPixel / 2, top: height * unitsPerPixel / 2
@@ -765,8 +869,9 @@ site.flowerUI = {
     }
 };
 
-// Preserve the six groups and replay order; only changed opacities are sent to Desmos.
-const revealOrder = ['sakura', 'petunia', 'plumeria', 'hibiscus', 'lilac', 'wisteria'];
+// Reveal all eleven groups in a short sequence; stop sending updates when done.
+const revealOrder = ['sakura', 'pansy', 'wisteria', 'petunia', 'sunflower',
+    'plumeria', 'marigold', 'hibiscus', 'chrysanthemum', 'daisy', 'lilac'];
 const lastProgress = new Map();
 let revealFrame = 0;
 let visible = false;
@@ -779,7 +884,7 @@ function updateReveal(values) {
         lastProgress.set(name, progress);
         flowerRevealGroups[name].forEach(curve => updates.push({
             id: curve.id,
-            [curve.kind === 'fill' ? 'fillOpacity' : 'lineOpacity']: curve.opacity * progress
+            ...Object.fromEntries(Object.entries(curve.opacities).map(([key, opacity]) => [key, opacity * progress]))
         }));
     });
     if (updates.length) flowerCalculator.setExpressions(updates);
@@ -803,7 +908,7 @@ function startReveal() {
     }
     let started = null;
     let lastTick = -1;
-    const duration = 860, stagger = 540;
+    const duration = 760, stagger = 250;
     const total = duration + stagger * (revealOrder.length - 1);
     function frame(now) {
         if (!visible) return;
@@ -847,4 +952,5 @@ site.reducedMotion.addEventListener('change', () => {
 });
 };
 })();
+
 
