@@ -77,7 +77,8 @@ button:not(:disabled):active { transform: translateY(0); }
     .ascii-intro-controls .ascii-enter:hover { background: #ffdfec; color: #2b1824; }
 }
 
-#roamingWhale { position: fixed; inset: 0; z-index: 15; pointer-events: none; }
+#roamingWhale { position: absolute; inset: 0; z-index: 15; pointer-events: none; }
+#roamingWhale.is-roaming { position: fixed; z-index: 24; }
 .whale-section {
     min-height: 100vh; min-height: 100svh; display: flex; align-items: center; justify-content: center;
     text-align: center; background: radial-gradient(ellipse at 50% 55%, #15334b, #060e1b 75%);
@@ -87,6 +88,22 @@ button:not(:disabled):active { transform: translateY(0); }
 .whale-section p { font: italic clamp(15px,2vw,20px)/1.5 var(--serif); color: #9abacb; margin-top: 1rem; text-wrap: balance; }
 .whale-stars { position: absolute; inset: 0; opacity: .3; pointer-events: none; background-image: radial-gradient(#d3f5ff 1px, transparent 1px); background-size: 67px 71px; }
 .whale-words { position: relative; z-index: 1; transform: translateY(-18vh); transform: translateY(-18svh); pointer-events: none; }
+.whale-roam-button {
+    position: absolute; left: 0; right: 0; bottom: max(24px, env(safe-area-inset-bottom));
+    width: max-content; max-width: calc(100% - 32px); margin-inline: auto; z-index: 26;
+    color: #e1f5fa; background: #102537; border-color: #66899e;
+    font-style: italic; --focus: #f2c9dc;
+}
+.whale-roam-button.is-roaming {
+    position: fixed; left: max(16px, env(safe-area-inset-left)); right: auto;
+    bottom: max(16px, env(safe-area-inset-bottom)); margin: 0; z-index: 65;
+    color: #f8deeb; background: #201c29; border-color: #ad869d;
+    box-shadow: 0 4px 18px #0003;
+}
+@media (hover: hover) {
+    .whale-roam-button:hover { background: #233e51; border-color: #acd1e3; }
+    .whale-roam-button.is-roaming:hover { background: #392b3b; border-color: #f2c9dc; }
+}
 
 .birdwatch-entry {
     position: relative; z-index: 20; min-height: 82vh; min-height: 82svh;
@@ -158,4 +175,5 @@ button:not(:disabled):active { transform: translateY(0); }
     .binocular-link:hover .binocular-art, .binocular-link:focus-visible .binocular-art,
     .binocular-link:active .binocular-art, .binocular-link:hover .binocular-prompt span { transform: none; }
 }
+
 

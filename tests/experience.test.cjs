@@ -217,20 +217,74 @@ test('settled lilies stop drawing, resume on interaction, and pause offscreen', 
     h.get('replayLilies').click(); h.advance(100); assert.equal(h.frames.size, 0);
 });
 
-test('whale entrance waits for entry and reduced-motion whale repaints on resize/scroll', () => {
-    const h = start(); h.run('whale.js');
-    const calls = h.canvasCalls.get(h.get('roamingWhale'));
+test('the whale stays in its ocean and stops drawing while the ocean is offscreen', () => {
+    const h = start();
+    const home = h.get('whaleHome');
+    home.rect = { ...home.rect, top: 1800, bottom: 2700 };
+    h.run('whale.js');
+    const canvas = h.get('roamingWhale'), calls = h.canvasCalls.get(canvas);
+    assert.equal(canvas.parent, home);
+    assert.equal(canvas.classList.contains('is-roaming'), false);
     h.advance(5000); assert.equal(calls.fills, 0);
-    h.enter(); h.advance(17); assert.ok(calls.translations[0][1] < 0);
+    h.enter(); h.advance(100);
+    assert.equal(calls.fills, 0); assert.equal(h.frames.size, 0);
+    assert.equal(canvas.getAttribute('aria-hidden'), 'true');
+    home.rect = { ...home.rect, top: 0, bottom: 900 };
+    h.windowEvent('scroll'); h.advance(100);
+    assert.ok(calls.fills > 0); assert.ok(calls.translations[0][1] > 0);
+    assert.equal(canvas.getAttribute('aria-hidden'), 'false');
+    home.rect = { ...home.rect, top: -900, bottom: 0 };
+    h.windowEvent('scroll'); h.advance(100);
+    const paused = calls.fills;
+    h.advance(1000);
+    assert.equal(calls.fills, paused); assert.equal(h.frames.size, 0);
+    assert.equal(canvas.getAttribute('aria-hidden'), 'true');
+});
+
+test('roaming is opt-in, the return control travels with the whale, and returning contains it again', () => {
+    const h = start(); h.run('whale.js'); h.enter(); h.advance(100);
+    const home = h.get('whaleHome'), canvas = h.get('roamingWhale');
+    const button = h.get('whaleRoam'), calls = h.canvasCalls.get(canvas);
+    assert.equal(button.getAttribute('aria-pressed'), 'false');
+    button.click(); h.advance(100);
+    assert.equal(canvas.parent, h.document.body);
+    assert.equal(button.parent, h.document.body);
+    assert.equal(canvas.classList.contains('is-roaming'), true);
+    assert.equal(button.getAttribute('aria-pressed'), 'true');
+    assert.equal(button.textContent, 'Bring the whale back');
+    assert.equal(h.document.activeElement, button);
+    home.rect = { ...home.rect, top: -900, bottom: 0 };
+    h.windowEvent('scroll');
+    const released = calls.fills; h.advance(100);
+    assert.ok(calls.fills > released);
     h.hidden(true); assert.equal(h.frames.size, 0);
-    const reduced = start({ reduced: true }); reduced.run('whale.js'); reduced.enter(); reduced.advance(17);
-    const staticCalls = reduced.canvasCalls.get(reduced.get('roamingWhale'));
-    const previous = staticCalls.fills; assert.equal(reduced.frames.size, 0);
-    reduced.context.innerWidth = 390; reduced.context.innerHeight = 844;
-    reduced.windowEvent('resize'); reduced.advance(17);
-    assert.ok(staticCalls.fills > previous); assert.equal(reduced.frames.size, 0);
-    const afterResize = staticCalls.fills; reduced.windowEvent('scroll'); reduced.advance(17);
-    assert.ok(staticCalls.fills > afterResize);
+    h.hidden(false); h.advance(100);
+    button.click(); h.advance(100);
+    assert.equal(canvas.parent, home); assert.equal(button.parent, home);
+    assert.equal(canvas.classList.contains('is-roaming'), false);
+    assert.equal(button.getAttribute('aria-pressed'), 'false');
+    assert.equal(button.textContent, 'Let the whale roam');
+    assert.equal(home.scrolledIntoView, true);
+    assert.equal(h.frames.size, 0);
+    assert.equal(h.document.querySelectorAll('#roamingWhale').length, 1);
+    assert.equal(h.document.querySelectorAll('#whaleRoam').length, 1);
+});
+
+test('the contained and roaming whale respect reduced motion through resizing and scrolling', () => {
+    const h = start({ reduced: true }); h.run('whale.js'); h.enter(); h.advance(17);
+    const canvas = h.get('roamingWhale'), calls = h.canvasCalls.get(canvas);
+    const previous = calls.fills; assert.equal(h.frames.size, 0);
+    h.context.innerWidth = 390; h.context.innerHeight = 844;
+    h.resize('whaleHome', 390, 844); h.windowEvent('resize'); h.advance(17);
+    assert.equal(canvas.width, 390); assert.equal(canvas.height, 844);
+    assert.ok(calls.fills > previous); assert.equal(h.frames.size, 0);
+    h.get('whaleRoam').click(); h.advance(17);
+    const released = calls.fills;
+    h.windowEvent('scroll'); h.advance(17);
+    assert.ok(calls.fills > released); assert.equal(h.frames.size, 0);
+    h.get('whaleRoam').click(); h.advance(17);
+    assert.equal(canvas.parent, h.get('whaleHome'));
+    assert.equal(h.frames.size, 0);
 });
 
 test('heart math stays open without extra buttons and its native slider controls playback', () => {
@@ -270,4 +324,5 @@ test('HTML has unique IDs and all referenced local scripts/styles exist', () => 
         if (!url.startsWith('http')) assert.ok(fs.existsSync(path.join(root, url.split('?')[0])), url);
     }
 });
+
 

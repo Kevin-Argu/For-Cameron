@@ -2,22 +2,26 @@
 // keep the detailed skin inexpensive while the tail and flipper swim freely.
 (() => {
   'use strict';
+  const home = document.getElementById('whaleHome');
+  const roamButton = document.getElementById('whaleRoam');
+  if (!home || !roamButton) return;
   const canvas = document.createElement('canvas');
   canvas.id = 'roamingWhale';
   canvas.setAttribute('role', 'img');
   canvas.setAttribute('aria-label', 'An animated, shaded ASCII whale with a forked tail and a long swimming flipper');
-  document.body.appendChild(canvas);
+  home.appendChild(canvas);
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
-  const home = document.getElementById('whaleHome');
   const intro = document.querySelector('.ascii-intro');
+  const darkSections = document.querySelectorAll('.ascii-intro, .whale-section, .birdwatch-entry, .music-section');
   const site = window.CameronSite;
   const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
   const mix = (a, b, t) => a.map((v, i) => Math.round(v + (b[i] - v) * t));
   let reduced = site.reducedMotion.matches;
   let frameId = 0, layoutDirty = true, lastDraw = 0, lastRect = null;
-  let atHome = false, atIntro = true, heartTimer;
-  canvas.setAttribute('aria-hidden', String(!site.entered));
+  let roaming = false, homeVisible = false, atHome = true, atIntro = false, heartTimer;
+  let darkRects = [];
+  canvas.setAttribute('aria-hidden', 'true');
 
   const columns = 144, rows = 55, cellWidth = 5.8, rowHeight = 8.5;
   const spriteWidth = columns * cellWidth, spriteHeight = rows * rowHeight;
@@ -133,12 +137,14 @@
   }
 
   let w = innerWidth, h = innerHeight, dpr = 1;
-  let x = w*.32, y = reduced ? h*.65 : -190;
+  let x = w*.5, y = h*.65;
   let scale = .65, direction = 1, last = 0, elapsed = 0;
   let scrollNudge = 0, previousScroll = scrollY, hearts = 0;
 
   function resize() {
-    w = innerWidth; h = innerHeight;
+    const bounds = home.getBoundingClientRect();
+    w = roaming ? innerWidth : bounds.width;
+    h = roaming ? innerHeight : bounds.height;
     dpr = Math.min(devicePixelRatio || 1, 2);
     canvas.width = Math.round(w*dpr);
     canvas.height = Math.round(h*dpr);
@@ -146,6 +152,7 @@
     canvas.style.height = h + 'px';
     ctx.setTransform(dpr,0,0,dpr,0,0);
     x = clamp(x,0,w);
+    if (!roaming) y = h*.65;
     lastRect = null;
     layoutDirty = true;
     requestFrame();
@@ -153,17 +160,43 @@
   addEventListener('resize', resize, { passive: true });
   addEventListener('scroll', () => {
     const current = scrollY;
-    scrollNudge = clamp(scrollNudge + (current-previousScroll)*.28, -50, 75);
+    if (roaming) scrollNudge = clamp(scrollNudge + (current-previousScroll)*.28, -50, 75);
     previousScroll = current;
     layoutDirty = true;
     requestFrame();
   }, { passive: true });
   resize();
 
+  roamButton.addEventListener('click', () => {
+    if (!site.entered) return;
+    const previousBounds = canvas.getBoundingClientRect();
+    const viewportX = previousBounds.left+x, viewportY = previousBounds.top+y;
+    roaming = !roaming;
+    const container = roaming ? document.body : home;
+    container.appendChild(canvas);
+    container.appendChild(roamButton);
+    canvas.classList.toggle('is-roaming', roaming);
+    roamButton.classList.toggle('is-roaming', roaming);
+    roamButton.setAttribute('aria-pressed', String(roaming));
+    roamButton.textContent = roaming ? 'Bring the whale back' : 'Let the whale roam';
+    scrollNudge = 0;
+    hearts = 0;
+    resize();
+    x = roaming ? clamp(viewportX, 0, w) : w*.5;
+    y = roaming ? viewportY : h*.65;
+    updateActivity();
+    roamButton.focus({ preventScroll: true });
+    const bounds = home.getBoundingClientRect();
+    if (!roaming && (bounds.top < 0 || bounds.bottom > innerHeight))
+      home.scrollIntoView({ behavior: reduced ? 'instant' : 'smooth', block: 'start' });
+  });
+
   addEventListener('click', event => {
     if (!site.entered || event.target.closest('button, a, input, textarea, select, summary, .flower-note-card')) return;
-    if (Math.abs(event.clientX-x) < spriteWidth*scale/2 &&
-        Math.abs(event.clientY-y) < spriteHeight*scale/2) {
+    if (!roaming && (!homeVisible || !home.contains(event.target))) return;
+    const bounds = canvas.getBoundingClientRect();
+    if (Math.abs(event.clientX-bounds.left-x) < spriteWidth*scale/2 &&
+        Math.abs(event.clientY-bounds.top-y) < spriteHeight*scale/2) {
       hearts = 1;
       if (!reduced) direction *= -1;
       else {
@@ -241,18 +274,23 @@
   function frame(now) {
     frameId = 0;
     if (!site.entered || document.hidden) return;
+    if (layoutDirty) {
+      const r = home.getBoundingClientRect();
+      const introRect = intro && intro.getBoundingClientRect();
+      homeVisible = r.bottom > 0 && r.top < innerHeight;
+      atHome = !roaming || (r.top < innerHeight*.75 && r.bottom > innerHeight*.25);
+      atIntro = roaming && !!introRect && introRect.top < innerHeight*.75 && introRect.bottom > innerHeight*.25;
+      darkRects = roaming ? Array.from(darkSections, section => section.getBoundingClientRect()) : [];
+      canvas.setAttribute('aria-hidden', String(!roaming && !homeVisible));
+      layoutDirty = false;
+    }
+    // A contained whale scrolls with its section and sleeps when that section leaves view.
+    if (!roaming && !homeVisible) { last = 0; lastDraw = 0; return; }
     if (!reduced && lastDraw && now-lastDraw < 1000/30-.5) { requestFrame(); return; }
     lastDraw = now;
     const dt = Math.min((now-last || 16.67)/16.67, 2);
     last = now;
     if (!reduced) elapsed += dt;
-    if (layoutDirty) {
-      const r = home && home.getBoundingClientRect();
-      const introRect = intro && intro.getBoundingClientRect();
-      atHome = !!r && r.top < h*.75 && r.bottom > h*.25;
-      atIntro = !!introRect && introRect.top < h*.75 && introRect.bottom > h*.25;
-      layoutDirty = false;
-    }
     if (lastRect) ctx.clearRect(lastRect.x, lastRect.y, lastRect.width, lastRect.height);
     const fitScale = Math.max(.1, (w-32)/(spriteWidth+24));
     const goalScale = Math.min(atHome ? 1.08 : .66, fitScale, h*.45/spriteHeight);
@@ -283,7 +321,7 @@
     if (direction < 0) ctx.scale(-1,1);
     ctx.scale(scale,scale);
     ctx.rotate(reduced ? 0 : Math.sin(elapsed*.014)*.012);
-    draw(atHome || atIntro);
+    draw(!roaming || darkRects.some(rect => rect.top <= y && rect.bottom > y));
     ctx.restore();
     // Include fin rotation, the breath and hearts in the cleared rectangle.
     lastRect = { x: x-spriteWidth*scale/2-32,
@@ -301,7 +339,7 @@
     last = 0;
     lastDraw = 0;
     layoutDirty = true;
-    canvas.setAttribute('aria-hidden', String(!site.entered));
+    canvas.setAttribute('aria-hidden', String(!site.entered || (!roaming && !homeVisible)));
     requestFrame();
   }
   document.addEventListener('cameron:entered', updateActivity);
@@ -311,7 +349,7 @@
     updateActivity();
   });
   if ('ResizeObserver' in window) {
-    const observer = new ResizeObserver(() => { layoutDirty = true; requestFrame(); });
+    const observer = new ResizeObserver(resize);
     if (home) observer.observe(home);
     if (intro) observer.observe(intro);
   }

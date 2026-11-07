@@ -48,7 +48,7 @@ function harness({ reduced = false, desmos = true, hash = '', root = path.resolv
         }
         getAttribute(key) { return key === 'class' ? this.className : this.attributes[key] ?? null; }
         removeAttribute(key) { delete this.attributes[key]; }
-        appendChild(child) { this.children.push(child); child.parent = this; return child; }
+        appendChild(child) { child.remove(); this.children.push(child); child.parent = this; return child; }
         remove() { if (this.parent) this.parent.children = this.parent.children.filter(x => x !== this); }
         contains(node) { return this === node || this.children.some(child => child.contains(node)); }
         matches(selector) {
@@ -174,4 +174,5 @@ function harness({ reduced = false, desmos = true, hash = '', root = path.resolv
     };
 }
 module.exports = { harness };
+
 
