@@ -16,7 +16,7 @@ const flowerCalculator = Desmos.GraphingCalculator(flowerElement, {
     pointsOfInterest: false,
     trace: false,
     border: false,
-    graphDescription: "Eleven flowers surround Cameron: sakura, pansy, sunflower, petunia, plumeria, hibiscus, lilac, wisteria, chrysanthemum, marigold and daisy."
+    graphDescription: "Twelve flowers surround Cameron: sakura, pansy, sunflower, petunia, plumeria, hibiscus, lilac, wisteria, chrysanthemum, marigold, daisy and forget-me-nots."
 });
 
 flowerCalculator.updateSettings({
@@ -48,7 +48,8 @@ const flowerRevealGroups = {
     sunflower: [],
     chrysanthemum: [],
     marigold: [],
-    daisy: []
+    daisy: [],
+    forgetmenots: []
 };
 
 function registerFlowerReveal(id, kind, opacity) {
@@ -538,82 +539,6 @@ addLilacBloom({
 
 
 // ============================================================
-// WISTERIA 1–16 — a tapered hanging cluster above Cameron.
-// Each bloom is a four-petal parametric flower, not concentric circles.
-// Wisteria stays a single reveal group, like the Lilac.
-// ============================================================
-
-// Each entry is [x, y, radius, rotation in radians] in Desmos coordinates.
-// The staggered positions taper toward the hanging tip.
-const wisteriaBlooms = [
-    [-0.78, 5.14, 0.48, 0.10], [ 0.04, 5.31, 0.52, 0.32],
-    [ 0.87, 5.12, 0.48, 0.02], [-1.15, 4.66, 0.48, 0.27],
-    [-0.33, 4.71, 0.52, 0.08], [ 0.49, 4.65, 0.50, 0.24],
-    [ 1.15, 4.55, 0.44, 0.19], [-0.86, 4.13, 0.46, 0.22],
-    [-0.03, 4.16, 0.48, 0.04], [ 0.78, 4.02, 0.45, 0.35],
-    [-0.54, 3.59, 0.42, 0.13], [ 0.27, 3.56, 0.43, 0.31],
-    [ 0.82, 3.41, 0.36, 0.16], [-0.24, 3.05, 0.37, 0.35],
-    [ 0.37, 2.94, 0.35, 0.03], [ 0.07, 2.55, 0.30, 0.25]
-];
-
-function wisteriaOffset(value) {
-    // Desmos accepts +0.5 and -0.5, but not '+-0.5'.
-    return value < 0 ? value.toFixed(3) : "+" + value.toFixed(3);
-}
-
-function wisteriaEllipse(x, y, rx, ry) {
-    return "(" + rx.toFixed(3) + "\\cos(t)" + wisteriaOffset(x) +
-        "," + ry.toFixed(3) + "\\sin(t)" + wisteriaOffset(y) + ")";
-}
-
-// A gently curved vine, plotted behind the flowers.
-addLineCurve("wisteria_vine",
-    "(0.08+0.13\\sin(1.3t),5.80-t)",
-    "#76936b", 2.2, "3.35", 0.70);
-
-function addWisteriaBloom(number, x, y, r, phase) {
-    const id = "wisteria_" + number;
-
-    // Join every blossom back to the vine with a short, thin stalk.
-    const vineX = 0.08 + 0.13 * Math.sin(1.3 * (5.80 - y));
-    const stalk = "(" + (x - vineX).toFixed(3) + "t" +
-        wisteriaOffset(vineX) + "," +
-        (y - (y + 0.24)).toFixed(3) + "t" +
-        wisteriaOffset(y + 0.24) + ")";
-    addLineCurve(id + "_stalk", stalk, "#82a078", 1.25, "1", 0.8);
-
-    // A radial quatrefoil with deep indentations between the petals.
-    // This produces a recognizable blossom, not a circular disk.
-    function petal(factor, rotation) {
-        const radial = (r * factor).toFixed(3) +
-            "(0.54+0.46\\cos(4(t-" + rotation.toFixed(3) + ")))";
-        return "(" + radial + "\\cos(t)" + wisteriaOffset(x) +
-            "," + radial + "\\sin(t)" + wisteriaOffset(y) + ")";
-    }
-
-    const outerColor = number % 4 === 0 ? "#9964be" : "#ae7bd1";
-    const innerColor = number % 3 === 0 ? "#e1bff1" : "#cfa7e8";
-
-    addFilledCurve(id + "_petals", petal(1, phase), outerColor, "2\\pi");
-    addFilledCurve(id + "_inner", petal(0.72, phase), innerColor, "2\\pi", 0.96);
-
-    // Soft centers: tiny circles, not rings around the flowers.
-    addFilledCurve(id + "_throat", wisteriaEllipse(x, y, r * 0.14, r * 0.14),
-        "#fff7df", "2\\pi");
-    addFilledCurve(id + "_pollen", wisteriaEllipse(x, y, r * 0.066, r * 0.066),
-        "#ecd57e", "2\\pi");
-}
-
-// Make each of the sixteen blossoms a little fuller, keeping the
-// same positions, equations, vine, and synchronized fade animation.
-const wisteriaSizeBoost = 1.17;
-wisteriaBlooms.forEach(([x, y, radius, rotation], index) => {
-    addWisteriaBloom(index + 1, x, y, radius * wisteriaSizeBoost, rotation);
-});
-
-
-// ============================================================
-// ============================================================
 // CLICKABLE FLOWER NOTES
 // ============================================================
 
@@ -664,14 +589,6 @@ const flowerClickAreas = [
         cy: -2.3,
         width: 6.0,
         height: 5.1
-    },
-
-    {
-        id: "wisteria",
-        cx: 0,
-        cy: 4.0,
-        width: 3.7,
-        height: 4.0
     }
 
 ];
@@ -693,19 +610,11 @@ initialExpressions.forEach(expression => {
     const id = expression.id;
     let key = colorKeys[id];
     if (id.startsWith('lilac_')) key = id.endsWith('_outer') ? 'lil' : /_detail/.test(id) || id.endsWith('_p20') ? 'lil2' : 'lil1';
-    if (id.startsWith('wisteria_')) {
-        if (id.endsWith('_petals')) key = 'wist';
-        if (id.endsWith('_inner')) key = 'wist1';
-        if (id.endsWith('_throat')) key = 'dai1';
-        if (id.endsWith('_pollen')) key = 'wist2';
-    }
     if (key) expression.color = palette[key];
     let opacity;
     if (/^sakuraMiddle/.test(id)) opacity = .2;
     if (id === 'plumeriaPink') opacity = .25;
     if (id === 'plumeriaOrange') opacity = .4;
-    if (id.endsWith('_inner')) opacity = .2;
-    if (id.endsWith('_throat')) opacity = .5;
     if (opacity !== undefined) registerFlowerReveal(id, 'fill', opacity);
 });
 
@@ -714,7 +623,7 @@ const flowerParameters = {
     hibiscus: ['Xhib', 'Yhib', 'Hlove', 'Hlover', 'Hlovers'],
     plumeria: ['Xplum', 'Yplum', 'Pplum']
 };
-// Keep the five complete flowers' layer order, domains and dependencies.
+// Keep the seven imported flower groups' layer order, domains and dependencies.
 // Normalize only their position and uniform scale.
 window.CameronBouquet.flowers.forEach(flower => {
     flowerParameters[flower.id] = [];
@@ -743,13 +652,15 @@ const gardenLayouts = {
         sakura: [-8.9, 5.7, .78], pansy: [-10.3, .2, .85], wisteria: [-.1, 5.4, .95],
         petunia: [4.45, 4.5, 1.10], sunflower: [9.8, 3.2, 1.05],
         plumeria: [-4.9, 3.15, .93], marigold: [-3.4, -6, .88], hibiscus: [-7.4, -3.55, 1.08],
-        chrysanthemum: [1, -4.5, 1.13], daisy: [6, -5.5, .96], lilac: [10, -2, .8]
+        chrysanthemum: [1, -4.5, 1.13], daisy: [6, -5.5, .96], lilac: [10, -2, .8],
+        forgetmenots: [-10.3, -6.35, .95]
     },
     tall: {
         pansy: [-3.9, 8, .75], wisteria: [.3, 7.7, .72], sunflower: [4.1, 5.7, .82],
         sakura: [-3.8, 4.5, .80], petunia: [.2, 3.3, .82],
         plumeria: [-4.6, -.9, .65], hibiscus: [4.5, -1.5, .72], daisy: [.7, -4.2, .91],
-        lilac: [-1.8, -8, .75], chrysanthemum: [4, -7.1, 1.05], marigold: [-3.7, -4.7, .9]
+        lilac: [-.8, -8, .75], chrysanthemum: [4, -7.1, 1.05], marigold: [-3.7, -4.7, .9],
+        forgetmenots: [-4.8, -8.2, .7]
     }
 };
 const originalAreas = new Map(flowerClickAreas.map(flower => [flower.id, { ...flower }]));
@@ -873,9 +784,9 @@ site.flowerUI = {
     }
 };
 
-// Reveal all eleven groups in a short sequence; stop sending updates when done.
+// Reveal all twelve groups in a short sequence; stop sending updates when done.
 const revealOrder = ['sakura', 'pansy', 'wisteria', 'petunia', 'sunflower',
-    'plumeria', 'marigold', 'hibiscus', 'chrysanthemum', 'daisy', 'lilac'];
+    'plumeria', 'marigold', 'hibiscus', 'forgetmenots', 'chrysanthemum', 'daisy', 'lilac'];
 const lastProgress = new Map();
 let revealFrame = 0;
 let visible = false;

@@ -1575,6 +1575,1585 @@ window.CameronBouquet = {
           "color": "#ebcd3d"
         }
       ]
+    },
+    {
+      "id": "forgetmenots",
+      "sourceCenter": [
+        255,
+        225
+      ],
+      "scale": 0.1,
+      "width": 3.2,
+      "height": 3.2,
+      "expressions": [
+        {
+          "id": "forgetmenots_580",
+          "latex": "F_{orget}=-15",
+          "hidden": true
+        },
+        {
+          "id": "forgetmenots_581",
+          "latex": "X_{y}=255",
+          "hidden": true
+        },
+        {
+          "id": "forgetmenots_582",
+          "latex": "Y_{x}=225",
+          "hidden": true
+        },
+        {
+          "id": "forgetmenots_583",
+          "latex": "M_{e}=\\frac{F_{orget}}{10}",
+          "hidden": true
+        },
+        {
+          "id": "forgetmenots_598",
+          "latex": "N_{ot}=\\frac{M_{e}}{1.5}",
+          "hidden": true
+        },
+        {
+          "id": "forgetmenots_584",
+          "latex": "x_{for}=\\left(F_{orget}\\sqrt{\\log_{2}\\left(\\cos2.5t+1\\right)}\\right)\\cos t",
+          "hidden": true
+        },
+        {
+          "id": "forgetmenots_585",
+          "latex": "y_{for}=\\left(F_{orget}\\sqrt{\\log_{2}\\left(\\cos2.5t+1\\right)}\\right)\\sin t",
+          "hidden": true
+        },
+        {
+          "id": "forgetmenots_586",
+          "latex": "x_{get}=\\left(M_{e}\\sqrt{\\log_{1.5}\\left(\\tan2.5\\left(t+0.1\\right)+1\\right)}\\right)\\cos t",
+          "hidden": true
+        },
+        {
+          "id": "forgetmenots_587",
+          "latex": "y_{get}=\\left(M_{e}\\sqrt{\\log_{1.5}\\left(\\tan2.5\\left(t+0.1\\right)+1\\right)}\\right)\\sin t",
+          "hidden": true
+        },
+        {
+          "id": "forgetmenots_588",
+          "latex": "x_{me}=\\left(M_{e}\\sqrt{\\log_{1.5}\\left(-\\tan2.5\\left(t+0.1\\right)+1\\right)}\\right)\\cos t",
+          "hidden": true
+        },
+        {
+          "id": "forgetmenots_589",
+          "latex": "y_{me}=\\left(M_{e}\\sqrt{\\log_{1.5}\\left(-\\tan2.5\\left(t+0.1\\right)+1\\right)}\\right)\\sin t",
+          "hidden": true
+        },
+        {
+          "id": "forgetmenots_590",
+          "latex": "x_{not}=\\left(M_{e}\\sqrt{\\log_{1.3}\\left(\\tan2.5\\left(\\frac{t}{2}\\right)-2\\right)}\\right)\\cos t",
+          "hidden": true
+        },
+        {
+          "id": "forgetmenots_591",
+          "latex": "y_{not}=\\left(M_{e}\\sqrt{\\log_{1.3}\\left(\\tan2.5\\left(\\frac{t}{2}\\right)-2\\right)}\\right)\\sin t",
+          "hidden": true
+        },
+        {
+          "id": "forgetmenots_592",
+          "latex": "x_{or}=\\left(M_{e}\\sqrt{\\log_{1.3}\\left(-\\tan2.5\\left(\\frac{t}{2}\\right)-2\\right)}\\right)\\cos t",
+          "hidden": true
+        },
+        {
+          "id": "forgetmenots_593",
+          "latex": "y_{or}=\\left(M_{e}\\sqrt{\\log_{1.3}\\left(-\\tan2.5\\left(\\frac{t}{2}\\right)-2\\right)}\\right)\\sin t",
+          "hidden": true
+        },
+        {
+          "id": "forgetmenots_594",
+          "latex": "x_{maybe}=\\left(M_{e}\\sqrt{\\log_{2}\\left(\\cos2.5t+2\\right)}\\right)\\cos t",
+          "hidden": true
+        },
+        {
+          "id": "forgetmenots_595",
+          "latex": "y_{maybe}=\\left(M_{e}\\sqrt{\\log_{2}\\left(\\cos2.5t+2\\right)}\\right)\\sin t",
+          "hidden": true
+        },
+        {
+          "id": "forgetmenots_596",
+          "latex": "x_{do}=\\left(N_{ot}\\right)\\cos t",
+          "hidden": true
+        },
+        {
+          "id": "forgetmenots_597",
+          "latex": "y_{do}=\\left(N_{ot}\\right)\\sin t",
+          "hidden": true
+        },
+        {
+          "id": "forgetmenots_599",
+          "latex": "\\left(x_{for}+X_{y},y_{for}+Y_{x}\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1.0,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#5a94d1"
+        },
+        {
+          "id": "forgetmenots_600",
+          "latex": "\\left(x_{get}+X_{y},y_{get}+Y_{x}\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.9,
+          "lineOpacity": 1.0,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#b3c4e3"
+        },
+        {
+          "id": "forgetmenots_601",
+          "latex": "\\left(x_{me}+X_{y},y_{me}+Y_{x}\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.9,
+          "lineOpacity": 1.0,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#b3c4e3"
+        },
+        {
+          "id": "forgetmenots_602",
+          "latex": "\\left(x_{not}+X_{y},y_{not}+Y_{x}\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.5,
+          "lineOpacity": 1.0,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#e6edfa"
+        },
+        {
+          "id": "forgetmenots_603",
+          "latex": "\\left(x_{or}+X_{y},y_{or}+Y_{x}\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.6,
+          "lineOpacity": 1.0,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#e6edfa"
+        },
+        {
+          "id": "forgetmenots_607",
+          "latex": "\\left(x_{maybe}+X_{y},y_{maybe}+Y_{x}\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1.0,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#e0b53f"
+        },
+        {
+          "id": "forgetmenots_606",
+          "latex": "\\left(x_{do}+X_{y},y_{do}+Y_{x}\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1.0,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#463214"
+        }
+      ]
+    },
+    {
+      "id": "wisteria",
+      "sourceCenter": [
+        412.841,
+        212.1221
+      ],
+      "scale": 0.045,
+      "width": 2.9126,
+      "height": 4.6137,
+      "sourceFolders": [
+        "1247",
+        "1576",
+        "1513",
+        "1555",
+        "1534",
+        "1492",
+        "1408",
+        "1471",
+        "1450",
+        "1429",
+        "1324",
+        "1387",
+        "1366",
+        "1345",
+        "1303",
+        "1282"
+      ],
+      "expressions": [
+        {
+          "id": "wisteria_1262",
+          "latex": "\\left(\\left(12\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\cos t\\right)+420,\\left(12\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\sin t\\right)+170\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#c694eb"
+        },
+        {
+          "id": "wisteria_1270",
+          "latex": "\\left(\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(12\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\cos t\\right)+420,\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(12\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\sin t\\right)+170\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.2,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#f7dcef"
+        },
+        {
+          "id": "wisteria_1269",
+          "latex": "\\left(\\left(\\left(\\frac{12}{5}\\right)\\log_{2}\\left(\\sin t+2\\right)\\cos t\\right)+420,\\left(\\left(\\frac{12}{5}\\right)\\log_{2}\\left(\\sin t+2\\right)\\sin t\\right)+170\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.5,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#fcf8eb"
+        },
+        {
+          "id": "wisteria_1268",
+          "latex": "\\left(\\left(\\left(\\frac{12}{5}\\right)\\log_{2}\\left(\\cos\\left(\\sin t\\right)\\right)\\cos t\\right)+420,\\left(\\left(\\frac{12}{5}\\right)\\log_{2}\\left(\\cos\\left(\\sin t\\right)\\right)\\sin t\\right)+170\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#ede6a1"
+        },
+        {
+          "id": "wisteria_1267",
+          "latex": "\\left(\\left(\\left(12\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\cos t\\right)+420,\\left(\\left(12\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\sin t\\right)+170\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#c28dd6"
+        },
+        {
+          "id": "wisteria_1275",
+          "latex": "\\left(\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(\\left(12\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\cos t\\right)+420,\\left(\\left(12\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\sin t\\right)+170\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.4,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#b967c2"
+        },
+        {
+          "id": "wisteria_1591",
+          "latex": "\\left(\\left(12\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\cos t\\right)+\\left(420+5\\right),\\left(12\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\sin t\\right)+\\left(170+10\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#c694eb"
+        },
+        {
+          "id": "wisteria_1592",
+          "latex": "\\left(\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(12\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\cos t\\right)+\\left(420+5\\right),\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(12\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\sin t\\right)+\\left(170+10\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.2,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#f7dcef"
+        },
+        {
+          "id": "wisteria_1593",
+          "latex": "\\left(\\left(\\left(\\frac{12}{5}\\right)\\log_{2}\\left(\\sin t+2\\right)\\cos t\\right)+\\left(420+5\\right),\\left(\\left(\\frac{12}{5}\\right)\\log_{2}\\left(\\sin t+2\\right)\\sin t\\right)+\\left(170+10\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.5,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#fcf8eb"
+        },
+        {
+          "id": "wisteria_1594",
+          "latex": "\\left(\\left(\\left(\\frac{12}{5}\\right)\\log_{2}\\left(\\cos\\left(\\sin t\\right)\\right)\\cos t\\right)+\\left(420+5\\right),\\left(\\left(\\frac{12}{5}\\right)\\log_{2}\\left(\\cos\\left(\\sin t\\right)\\right)\\sin t\\right)+\\left(170+10\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#ede6a1"
+        },
+        {
+          "id": "wisteria_1595",
+          "latex": "\\left(\\left(\\left(12\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\cos t\\right)+\\left(420+5\\right),\\left(\\left(12\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\sin t\\right)+\\left(170+10\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#c28dd6"
+        },
+        {
+          "id": "wisteria_1596",
+          "latex": "\\left(\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(\\left(12\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\cos t\\right)+\\left(420+5\\right),\\left(\\left(12\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\sin t\\right)+\\left(170+10\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.4,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#b967c2"
+        },
+        {
+          "id": "wisteria_1528",
+          "latex": "\\left(\\left(14\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\cos t\\right)+\\left(420-14\\right),\\left(14\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\sin t\\right)+\\left(170+20\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#c694eb"
+        },
+        {
+          "id": "wisteria_1529",
+          "latex": "\\left(\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(14\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\cos t\\right)+\\left(420-14\\right),\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(14\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\sin t\\right)+\\left(170+20\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.2,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#f7dcef"
+        },
+        {
+          "id": "wisteria_1530",
+          "latex": "\\left(\\left(\\left(\\frac{14}{5}\\right)\\log_{2}\\left(\\sin t+2\\right)\\cos t\\right)+\\left(420-14\\right),\\left(\\left(\\frac{14}{5}\\right)\\log_{2}\\left(\\sin t+2\\right)\\sin t\\right)+\\left(170+20\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.5,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#fcf8eb"
+        },
+        {
+          "id": "wisteria_1531",
+          "latex": "\\left(\\left(\\left(\\frac{14}{5}\\right)\\log_{2}\\left(\\cos\\left(\\sin t\\right)\\right)\\cos t\\right)+\\left(420-14\\right),\\left(\\left(\\frac{14}{5}\\right)\\log_{2}\\left(\\cos\\left(\\sin t\\right)\\right)\\sin t\\right)+\\left(170+20\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#ede6a1"
+        },
+        {
+          "id": "wisteria_1532",
+          "latex": "\\left(\\left(\\left(14\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\cos t\\right)+\\left(420-14\\right),\\left(\\left(14\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\sin t\\right)+\\left(170+20\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#c28dd6"
+        },
+        {
+          "id": "wisteria_1533",
+          "latex": "\\left(\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(\\left(14\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\cos t\\right)+\\left(420-14\\right),\\left(\\left(14\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\sin t\\right)+\\left(170+20\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.4,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#b967c2"
+        },
+        {
+          "id": "wisteria_1570",
+          "latex": "\\left(\\left(13\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\cos t\\right)+\\left(420-8\\right),\\left(13\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\sin t\\right)+\\left(170+7\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#c694eb"
+        },
+        {
+          "id": "wisteria_1571",
+          "latex": "\\left(\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(13\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\cos t\\right)+\\left(420-8\\right),\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(13\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\sin t\\right)+\\left(170+7\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.2,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#f7dcef"
+        },
+        {
+          "id": "wisteria_1572",
+          "latex": "\\left(\\left(\\left(\\frac{13}{5}\\right)\\log_{2}\\left(\\sin t+2\\right)\\cos t\\right)+\\left(420-8\\right),\\left(\\left(\\frac{13}{5}\\right)\\log_{2}\\left(\\sin t+2\\right)\\sin t\\right)+\\left(170+7\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.5,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#fcf8eb"
+        },
+        {
+          "id": "wisteria_1573",
+          "latex": "\\left(\\left(\\left(\\frac{13}{5}\\right)\\log_{2}\\left(\\cos\\left(\\sin t\\right)\\right)\\cos t\\right)+\\left(420-8\\right),\\left(\\left(\\frac{13}{5}\\right)\\log_{2}\\left(\\cos\\left(\\sin t\\right)\\right)\\sin t\\right)+\\left(170+7\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#ede6a1"
+        },
+        {
+          "id": "wisteria_1574",
+          "latex": "\\left(\\left(\\left(13\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\cos t\\right)+\\left(420-8\\right),\\left(\\left(13\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\sin t\\right)+\\left(170+7\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#c28dd6"
+        },
+        {
+          "id": "wisteria_1575",
+          "latex": "\\left(\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(\\left(13\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\cos t\\right)+\\left(420-8\\right),\\left(\\left(13\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\sin t\\right)+\\left(170+7\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.4,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#b967c2"
+        },
+        {
+          "id": "wisteria_1549",
+          "latex": "\\left(\\left(14\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\cos t\\right)+\\left(420+5\\right),\\left(14\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\sin t\\right)+\\left(170+25\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#c694eb"
+        },
+        {
+          "id": "wisteria_1550",
+          "latex": "\\left(\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(14\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\cos t\\right)+\\left(420+5\\right),\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(14\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\sin t\\right)+\\left(170+25\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.2,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#f7dcef"
+        },
+        {
+          "id": "wisteria_1551",
+          "latex": "\\left(\\left(\\left(\\frac{14}{5}\\right)\\log_{2}\\left(\\sin t+2\\right)\\cos t\\right)+\\left(420+5\\right),\\left(\\left(\\frac{14}{5}\\right)\\log_{2}\\left(\\sin t+2\\right)\\sin t\\right)+\\left(170+25\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.5,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#fcf8eb"
+        },
+        {
+          "id": "wisteria_1552",
+          "latex": "\\left(\\left(\\left(\\frac{14}{5}\\right)\\log_{2}\\left(\\cos\\left(\\sin t\\right)\\right)\\cos t\\right)+\\left(420+5\\right),\\left(\\left(\\frac{14}{5}\\right)\\log_{2}\\left(\\cos\\left(\\sin t\\right)\\right)\\sin t\\right)+\\left(170+25\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#ede6a1"
+        },
+        {
+          "id": "wisteria_1553",
+          "latex": "\\left(\\left(\\left(14\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\cos t\\right)+\\left(420+5\\right),\\left(\\left(14\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\sin t\\right)+\\left(170+25\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#c28dd6"
+        },
+        {
+          "id": "wisteria_1554",
+          "latex": "\\left(\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(\\left(14\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\cos t\\right)+\\left(420+5\\right),\\left(\\left(14\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\sin t\\right)+\\left(170+25\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.4,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#b967c2"
+        },
+        {
+          "id": "wisteria_1507",
+          "latex": "\\left(\\left(15\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\cos t\\right)+\\left(420-4\\right),\\left(15\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\sin t\\right)+\\left(170+18\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#c694eb"
+        },
+        {
+          "id": "wisteria_1508",
+          "latex": "\\left(\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(15\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\cos t\\right)+\\left(420-4\\right),\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(15\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\sin t\\right)+\\left(170+18\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.2,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#f7dcef"
+        },
+        {
+          "id": "wisteria_1509",
+          "latex": "\\left(\\left(\\left(\\frac{15}{5}\\right)\\log_{2}\\left(\\sin t+2\\right)\\cos t\\right)+\\left(420-4\\right),\\left(\\left(\\frac{15}{5}\\right)\\log_{2}\\left(\\sin t+2\\right)\\sin t\\right)+\\left(170+18\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.5,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#fcf8eb"
+        },
+        {
+          "id": "wisteria_1510",
+          "latex": "\\left(\\left(\\left(\\frac{15}{5}\\right)\\log_{2}\\left(\\cos\\left(\\sin t\\right)\\right)\\cos t\\right)+\\left(420-4\\right),\\left(\\left(\\frac{15}{5}\\right)\\log_{2}\\left(\\cos\\left(\\sin t\\right)\\right)\\sin t\\right)+\\left(170+18\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#ede6a1"
+        },
+        {
+          "id": "wisteria_1511",
+          "latex": "\\left(\\left(\\left(15\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\cos t\\right)+\\left(420-4\\right),\\left(\\left(15\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\sin t\\right)+\\left(170+18\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#c28dd6"
+        },
+        {
+          "id": "wisteria_1512",
+          "latex": "\\left(\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(\\left(15\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\cos t\\right)+\\left(420-4\\right),\\left(\\left(15\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\sin t\\right)+\\left(170+18\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.4,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#b967c2"
+        },
+        {
+          "id": "wisteria_1423",
+          "latex": "\\left(\\left(17\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\cos t\\right)+\\left(420+12\\right),\\left(17\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\sin t\\right)+\\left(170+42\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#c694eb"
+        },
+        {
+          "id": "wisteria_1424",
+          "latex": "\\left(\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(17\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\cos t\\right)+\\left(420+12\\right),\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(17\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\sin t\\right)+\\left(170+42\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.2,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#f7dcef"
+        },
+        {
+          "id": "wisteria_1425",
+          "latex": "\\left(\\left(\\left(\\frac{17}{5}\\right)\\log_{2}\\left(\\sin t+2\\right)\\cos t\\right)+\\left(420+12\\right),\\left(\\left(\\frac{17}{5}\\right)\\log_{2}\\left(\\sin t+2\\right)\\sin t\\right)+\\left(170+42\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.5,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#fcf8eb"
+        },
+        {
+          "id": "wisteria_1426",
+          "latex": "\\left(\\left(\\left(\\frac{17}{5}\\right)\\log_{2}\\left(\\cos\\left(\\sin t\\right)\\right)\\cos t\\right)+\\left(420+12\\right),\\left(\\left(\\frac{17}{5}\\right)\\log_{2}\\left(\\cos\\left(\\sin t\\right)\\right)\\sin t\\right)+\\left(170+42\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#ede6a1"
+        },
+        {
+          "id": "wisteria_1427",
+          "latex": "\\left(\\left(\\left(17\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\cos t\\right)+\\left(420+12\\right),\\left(\\left(17\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\sin t\\right)+\\left(170+42\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#c28dd6"
+        },
+        {
+          "id": "wisteria_1428",
+          "latex": "\\left(\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(\\left(17\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\cos t\\right)+\\left(420+12\\right),\\left(\\left(17\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\sin t\\right)+\\left(170+42\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.4,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#b967c2"
+        },
+        {
+          "id": "wisteria_1486",
+          "latex": "\\left(\\left(15\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\cos t\\right)+\\left(420-1\\right),\\left(15\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\sin t\\right)+\\left(170+36\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#c694eb"
+        },
+        {
+          "id": "wisteria_1487",
+          "latex": "\\left(\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(15\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\cos t\\right)+\\left(420-1\\right),\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(15\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\sin t\\right)+\\left(170+36\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.2,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#f7dcef"
+        },
+        {
+          "id": "wisteria_1488",
+          "latex": "\\left(\\left(\\left(\\frac{15}{5}\\right)\\log_{2}\\left(\\sin t+2\\right)\\cos t\\right)+\\left(420-1\\right),\\left(\\left(\\frac{15}{5}\\right)\\log_{2}\\left(\\sin t+2\\right)\\sin t\\right)+\\left(170+36\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.5,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#fcf8eb"
+        },
+        {
+          "id": "wisteria_1489",
+          "latex": "\\left(\\left(\\left(\\frac{15}{5}\\right)\\log_{2}\\left(\\cos\\left(\\sin t\\right)\\right)\\cos t\\right)+\\left(420-1\\right),\\left(\\left(\\frac{15}{5}\\right)\\log_{2}\\left(\\cos\\left(\\sin t\\right)\\right)\\sin t\\right)+\\left(170+36\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#ede6a1"
+        },
+        {
+          "id": "wisteria_1490",
+          "latex": "\\left(\\left(\\left(15\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\cos t\\right)+\\left(420-1\\right),\\left(\\left(15\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\sin t\\right)+\\left(170+36\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#c28dd6"
+        },
+        {
+          "id": "wisteria_1491",
+          "latex": "\\left(\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(\\left(15\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\cos t\\right)+\\left(420-1\\right),\\left(\\left(15\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\sin t\\right)+\\left(170+36\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.4,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#b967c2"
+        },
+        {
+          "id": "wisteria_1465",
+          "latex": "\\left(\\left(16\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\cos t\\right)+\\left(420-10\\right),\\left(16\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\sin t\\right)+\\left(170+32\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#c694eb"
+        },
+        {
+          "id": "wisteria_1466",
+          "latex": "\\left(\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(16\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\cos t\\right)+\\left(420-10\\right),\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(16\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\sin t\\right)+\\left(170+32\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.2,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#f7dcef"
+        },
+        {
+          "id": "wisteria_1467",
+          "latex": "\\left(\\left(\\left(\\frac{16}{5}\\right)\\log_{2}\\left(\\sin t+2\\right)\\cos t\\right)+\\left(420-10\\right),\\left(\\left(\\frac{16}{5}\\right)\\log_{2}\\left(\\sin t+2\\right)\\sin t\\right)+\\left(170+32\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.5,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#fcf8eb"
+        },
+        {
+          "id": "wisteria_1468",
+          "latex": "\\left(\\left(\\left(\\frac{16}{5}\\right)\\log_{2}\\left(\\cos\\left(\\sin t\\right)\\right)\\cos t\\right)+\\left(420-10\\right),\\left(\\left(\\frac{16}{5}\\right)\\log_{2}\\left(\\cos\\left(\\sin t\\right)\\right)\\sin t\\right)+\\left(170+32\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#ede6a1"
+        },
+        {
+          "id": "wisteria_1469",
+          "latex": "\\left(\\left(\\left(16\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\cos t\\right)+\\left(420-10\\right),\\left(\\left(16\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\sin t\\right)+\\left(170+32\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#c28dd6"
+        },
+        {
+          "id": "wisteria_1470",
+          "latex": "\\left(\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(\\left(16\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\cos t\\right)+\\left(420-10\\right),\\left(\\left(16\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\sin t\\right)+\\left(170+32\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.4,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#b967c2"
+        },
+        {
+          "id": "wisteria_1444",
+          "latex": "\\left(\\left(17\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\cos t\\right)+\\left(420-19\\right),\\left(17\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\sin t\\right)+\\left(170+45\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#c694eb"
+        },
+        {
+          "id": "wisteria_1445",
+          "latex": "\\left(\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(17\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\cos t\\right)+\\left(420-19\\right),\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(17\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\sin t\\right)+\\left(170+45\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.2,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#f7dcef"
+        },
+        {
+          "id": "wisteria_1446",
+          "latex": "\\left(\\left(\\left(\\frac{17}{5}\\right)\\log_{2}\\left(\\sin t+2\\right)\\cos t\\right)+\\left(420-19\\right),\\left(\\left(\\frac{17}{5}\\right)\\log_{2}\\left(\\sin t+2\\right)\\sin t\\right)+\\left(170+45\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.5,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#fcf8eb"
+        },
+        {
+          "id": "wisteria_1447",
+          "latex": "\\left(\\left(\\left(\\frac{17}{5}\\right)\\log_{2}\\left(\\cos\\left(\\sin t\\right)\\right)\\cos t\\right)+\\left(420-19\\right),\\left(\\left(\\frac{17}{5}\\right)\\log_{2}\\left(\\cos\\left(\\sin t\\right)\\right)\\sin t\\right)+\\left(170+45\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#ede6a1"
+        },
+        {
+          "id": "wisteria_1448",
+          "latex": "\\left(\\left(\\left(17\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\cos t\\right)+\\left(420-19\\right),\\left(\\left(17\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\sin t\\right)+\\left(170+45\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#c28dd6"
+        },
+        {
+          "id": "wisteria_1449",
+          "latex": "\\left(\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(\\left(17\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\cos t\\right)+\\left(420-19\\right),\\left(\\left(17\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\sin t\\right)+\\left(170+45\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.4,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#b967c2"
+        },
+        {
+          "id": "wisteria_1339",
+          "latex": "\\left(\\left(18\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\cos t\\right)+\\left(420-5\\right),\\left(18\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\sin t\\right)+\\left(170+65\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#c694eb"
+        },
+        {
+          "id": "wisteria_1340",
+          "latex": "\\left(\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(18\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\cos t\\right)+\\left(420-5\\right),\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(18\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\sin t\\right)+\\left(170+65\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.2,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#f7dcef"
+        },
+        {
+          "id": "wisteria_1341",
+          "latex": "\\left(\\left(\\left(\\frac{18}{5}\\right)\\log_{2}\\left(\\sin t+2\\right)\\cos t\\right)+\\left(420-5\\right),\\left(\\left(\\frac{18}{5}\\right)\\log_{2}\\left(\\sin t+2\\right)\\sin t\\right)+\\left(170+65\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.5,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#fcf8eb"
+        },
+        {
+          "id": "wisteria_1342",
+          "latex": "\\left(\\left(\\left(\\frac{18}{5}\\right)\\log_{2}\\left(\\cos\\left(\\sin t\\right)\\right)\\cos t\\right)+\\left(420-5\\right),\\left(\\left(\\frac{18}{5}\\right)\\log_{2}\\left(\\cos\\left(\\sin t\\right)\\right)\\sin t\\right)+\\left(170+65\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#ede6a1"
+        },
+        {
+          "id": "wisteria_1343",
+          "latex": "\\left(\\left(\\left(18\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\cos t\\right)+\\left(420-5\\right),\\left(\\left(18\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\sin t\\right)+\\left(170+65\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#c28dd6"
+        },
+        {
+          "id": "wisteria_1344",
+          "latex": "\\left(\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(\\left(18\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\cos t\\right)+\\left(420-5\\right),\\left(\\left(18\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\sin t\\right)+\\left(170+65\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.4,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#b967c2"
+        },
+        {
+          "id": "wisteria_1402",
+          "latex": "\\left(\\left(18\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\cos t\\right)+\\left(420+10\\right),\\left(18\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\sin t\\right)+\\left(170+57\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#c694eb"
+        },
+        {
+          "id": "wisteria_1403",
+          "latex": "\\left(\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(18\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\cos t\\right)+\\left(420+10\\right),\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(18\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\sin t\\right)+\\left(170+57\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.2,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#f7dcef"
+        },
+        {
+          "id": "wisteria_1404",
+          "latex": "\\left(\\left(\\left(\\frac{18}{5}\\right)\\log_{2}\\left(\\sin t+2\\right)\\cos t\\right)+\\left(420+10\\right),\\left(\\left(\\frac{18}{5}\\right)\\log_{2}\\left(\\sin t+2\\right)\\sin t\\right)+\\left(170+57\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.5,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#fcf8eb"
+        },
+        {
+          "id": "wisteria_1405",
+          "latex": "\\left(\\left(\\left(\\frac{18}{5}\\right)\\log_{2}\\left(\\cos\\left(\\sin t\\right)\\right)\\cos t\\right)+\\left(420+10\\right),\\left(\\left(\\frac{18}{5}\\right)\\log_{2}\\left(\\cos\\left(\\sin t\\right)\\right)\\sin t\\right)+\\left(170+57\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#ede6a1"
+        },
+        {
+          "id": "wisteria_1406",
+          "latex": "\\left(\\left(\\left(18\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\cos t\\right)+\\left(420+10\\right),\\left(\\left(18\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\sin t\\right)+\\left(170+57\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#c28dd6"
+        },
+        {
+          "id": "wisteria_1407",
+          "latex": "\\left(\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(\\left(18\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\cos t\\right)+\\left(420+10\\right),\\left(\\left(18\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\sin t\\right)+\\left(170+57\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.4,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#b967c2"
+        },
+        {
+          "id": "wisteria_1381",
+          "latex": "\\left(\\left(15\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\cos t\\right)+\\left(420-4\\right),\\left(15\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\sin t\\right)+\\left(170+46\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#c694eb"
+        },
+        {
+          "id": "wisteria_1382",
+          "latex": "\\left(\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(15\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\cos t\\right)+\\left(420-4\\right),\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(15\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\sin t\\right)+\\left(170+46\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.2,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#f7dcef"
+        },
+        {
+          "id": "wisteria_1383",
+          "latex": "\\left(\\left(\\left(\\frac{15}{5}\\right)\\log_{2}\\left(\\sin t+2\\right)\\cos t\\right)+\\left(420-4\\right),\\left(\\left(\\frac{15}{5}\\right)\\log_{2}\\left(\\sin t+2\\right)\\sin t\\right)+\\left(170+46\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.5,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#fcf8eb"
+        },
+        {
+          "id": "wisteria_1384",
+          "latex": "\\left(\\left(\\left(\\frac{15}{5}\\right)\\log_{2}\\left(\\cos\\left(\\sin t\\right)\\right)\\cos t\\right)+\\left(420-4\\right),\\left(\\left(\\frac{15}{5}\\right)\\log_{2}\\left(\\cos\\left(\\sin t\\right)\\right)\\sin t\\right)+\\left(170+46\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#ede6a1"
+        },
+        {
+          "id": "wisteria_1385",
+          "latex": "\\left(\\left(\\left(15\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\cos t\\right)+\\left(420-4\\right),\\left(\\left(15\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\sin t\\right)+\\left(170+46\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#c28dd6"
+        },
+        {
+          "id": "wisteria_1386",
+          "latex": "\\left(\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(\\left(15\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\cos t\\right)+\\left(420-4\\right),\\left(\\left(15\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\sin t\\right)+\\left(170+46\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.4,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#b967c2"
+        },
+        {
+          "id": "wisteria_1360",
+          "latex": "\\left(\\left(19\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\cos t\\right)+\\left(420-25\\right),\\left(19\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\sin t\\right)+\\left(170+65\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#c694eb"
+        },
+        {
+          "id": "wisteria_1361",
+          "latex": "\\left(\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(19\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\cos t\\right)+\\left(420-25\\right),\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(19\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\sin t\\right)+\\left(170+65\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.2,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#f7dcef"
+        },
+        {
+          "id": "wisteria_1362",
+          "latex": "\\left(\\left(\\left(\\frac{19}{5}\\right)\\log_{2}\\left(\\sin t+2\\right)\\cos t\\right)+\\left(420-25\\right),\\left(\\left(\\frac{19}{5}\\right)\\log_{2}\\left(\\sin t+2\\right)\\sin t\\right)+\\left(170+65\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.5,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#fcf8eb"
+        },
+        {
+          "id": "wisteria_1363",
+          "latex": "\\left(\\left(\\left(\\frac{19}{5}\\right)\\log_{2}\\left(\\cos\\left(\\sin t\\right)\\right)\\cos t\\right)+\\left(420-25\\right),\\left(\\left(\\frac{19}{5}\\right)\\log_{2}\\left(\\cos\\left(\\sin t\\right)\\right)\\sin t\\right)+\\left(170+65\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#ede6a1"
+        },
+        {
+          "id": "wisteria_1364",
+          "latex": "\\left(\\left(\\left(19\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\cos t\\right)+\\left(420-25\\right),\\left(\\left(19\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\sin t\\right)+\\left(170+65\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#c28dd6"
+        },
+        {
+          "id": "wisteria_1365",
+          "latex": "\\left(\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(\\left(19\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\cos t\\right)+\\left(420-25\\right),\\left(\\left(19\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\sin t\\right)+\\left(170+65\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.4,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#b967c2"
+        },
+        {
+          "id": "wisteria_1318",
+          "latex": "\\left(\\left(16\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\cos t\\right)+\\left(420-15\\right),\\left(16\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\sin t\\right)+\\left(170+55\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#c694eb"
+        },
+        {
+          "id": "wisteria_1319",
+          "latex": "\\left(\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(16\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\cos t\\right)+\\left(420-15\\right),\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(16\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\sin t\\right)+\\left(170+55\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.2,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#f7dcef"
+        },
+        {
+          "id": "wisteria_1320",
+          "latex": "\\left(\\left(\\left(\\frac{16}{5}\\right)\\log_{2}\\left(\\sin t+2\\right)\\cos t\\right)+\\left(420-15\\right),\\left(\\left(\\frac{16}{5}\\right)\\log_{2}\\left(\\sin t+2\\right)\\sin t\\right)+\\left(170+55\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.5,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#fcf8eb"
+        },
+        {
+          "id": "wisteria_1321",
+          "latex": "\\left(\\left(\\left(\\frac{16}{5}\\right)\\log_{2}\\left(\\cos\\left(\\sin t\\right)\\right)\\cos t\\right)+\\left(420-15\\right),\\left(\\left(\\frac{16}{5}\\right)\\log_{2}\\left(\\cos\\left(\\sin t\\right)\\right)\\sin t\\right)+\\left(170+55\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#ede6a1"
+        },
+        {
+          "id": "wisteria_1322",
+          "latex": "\\left(\\left(\\left(16\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\cos t\\right)+\\left(420-15\\right),\\left(\\left(16\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\sin t\\right)+\\left(170+55\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#c28dd6"
+        },
+        {
+          "id": "wisteria_1323",
+          "latex": "\\left(\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(\\left(16\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\cos t\\right)+\\left(420-15\\right),\\left(\\left(16\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\sin t\\right)+\\left(170+55\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.4,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#b967c2"
+        },
+        {
+          "id": "wisteria_1297",
+          "latex": "\\left(\\left(17\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\cos t\\right)+\\left(420+10\\right),\\left(17\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\sin t\\right)+\\left(170+75\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#c694eb"
+        },
+        {
+          "id": "wisteria_1298",
+          "latex": "\\left(\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(17\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\cos t\\right)+\\left(420+10\\right),\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(17\\sin\\left(\\tan\\left(\\sin t\\right)+6\\right)\\sin t\\right)+\\left(170+75\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.2,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#f7dcef"
+        },
+        {
+          "id": "wisteria_1299",
+          "latex": "\\left(\\left(\\left(\\frac{17}{5}\\right)\\log_{2}\\left(\\sin t+2\\right)\\cos t\\right)+\\left(420+10\\right),\\left(\\left(\\frac{17}{5}\\right)\\log_{2}\\left(\\sin t+2\\right)\\sin t\\right)+\\left(170+75\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.5,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#fcf8eb"
+        },
+        {
+          "id": "wisteria_1300",
+          "latex": "\\left(\\left(\\left(\\frac{17}{5}\\right)\\log_{2}\\left(\\cos\\left(\\sin t\\right)\\right)\\cos t\\right)+\\left(420+10\\right),\\left(\\left(\\frac{17}{5}\\right)\\log_{2}\\left(\\cos\\left(\\sin t\\right)\\right)\\sin t\\right)+\\left(170+75\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#ede6a1"
+        },
+        {
+          "id": "wisteria_1301",
+          "latex": "\\left(\\left(\\left(17\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\cos t\\right)+\\left(420+10\\right),\\left(\\left(17\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\sin t\\right)+\\left(170+75\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 1.0,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#c28dd6"
+        },
+        {
+          "id": "wisteria_1302",
+          "latex": "\\left(\\left(\\left[0.8,0.6...0.2\\right]\\right)\\left(\\left(17\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\cos t\\right)+\\left(420+10\\right),\\left(\\left(17\\cdot0.6\\right)\\sin\\left(\\tan\\left(\\sin t\\right)+3\\right)\\sin t\\right)+\\left(170+75\\right)\\right)",
+          "fill": true,
+          "lines": false,
+          "fillOpacity": 0.4,
+          "lineOpacity": 1,
+          "lineWidth": 2.5,
+          "parametricDomain": {
+            "min": "0",
+            "max": "12\\pi"
+          },
+          "color": "#b967c2"
+        }
+      ]
     }
   ]
 };

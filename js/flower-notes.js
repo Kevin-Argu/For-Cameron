@@ -14,7 +14,8 @@
         sunflower: { title: 'Sunflower', note: '' },
         chrysanthemum: { title: 'Chrysanthemum', note: '' },
         marigold: { title: 'Marigold', note: '' },
-        daisy: { title: 'Daisy', note: '' }
+        daisy: { title: 'Daisy', note: '' },
+        forgetmenots: { title: 'Forget-me-nots', note: '' }
     };
 
     function createCard(container, id, onClose = () => {}) {

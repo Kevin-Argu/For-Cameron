@@ -24,7 +24,7 @@ Open `http://localhost:8000`. The source is a static website with no build step.
 
 ## Flower notes
 
-The twelve flower names and personal messages live in `js/flower-notes.js` under `entries`.
+The thirteen flower names and personal messages live in `js/flower-notes.js` under `entries`.
 Fill each `note` string with Kevin's wording. Blank entries show “This one reminds me of…”
 as a placeholder. These notes are published text, not a visitor comment form.
 
@@ -61,7 +61,7 @@ The API key is configured in the `desmos-api-key` meta tag in `index.html`. This
 
 `js/graph-loader.js` downloads the pinned v1.12 library asynchronously after entry and initializes each graph near its section. A failed download or 15-second timeout exposes Try again while leaving the rest of the experience usable.
 
-The garden contains eleven flower groups: sakura, petunia, plumeria, hibiscus, lilac, wisteria, pansy, sunflower, chrysanthemum, marigold and daisy. The five newer flowers and the shared RGB palette come from [The Bouquet](https://www.desmos.com/calculator/n3bgw7hhkd), stored in `js/bouquet-data.js` with their original equations, domains, layer order and transparency. Existing flowers use this same palette, except for the petunia, which keeps its earlier pink gradient with fine, translucent veins. Uniform transforms scatter the flowers at varied heights and sizes around Cameron, with separate asymmetrical arrangements for desktop and phones and equal horizontal and vertical units. All eleven groups fade in on each visit. Flower hitboxes track Desmos coordinates after panning and zooming. The heart uses Desmos's documented `playing` property; the old undocumented `loopMode`/`sliderPeriod` arguments have been removed.
+The garden contains twelve flower groups: sakura, petunia, plumeria, hibiscus, lilac, wisteria, pansy, sunflower, chrysanthemum, marigold, daisy and forget-me-nots. The seven imported flower groups and the shared RGB palette come from [The Bouquet](https://www.desmos.com/calculator/n3bgw7hhkd), stored in `js/bouquet-data.js` with their original equations, domains, layer order and transparency. Wisteria preserves all sixteen original rounded blossoms, with its helper variables expanded into the curves. Existing flowers use this same palette, except for the petunia, which keeps its earlier pink gradient with fine, translucent veins. Uniform transforms scatter the flowers at varied heights and sizes around Cameron, with separate asymmetrical arrangements for desktop and phones and equal horizontal and vertical units. All twelve groups fade in on each visit. Flower hitboxes track Desmos coordinates after panning and zooming. The heart uses Desmos's documented `playing` property; the old undocumented `loopMode`/`sliderPeriod` arguments have been removed.
 
 ## Checks
 

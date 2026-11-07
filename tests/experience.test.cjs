@@ -11,8 +11,8 @@ function heart(h) { h.run('heart.js'); h.context.CameronGraphs.heart(); }
 test('bouquet imports preserve source geometry, colors, layers and domains', () => {
     const h = start({ reduced: true }); flowers(h); h.intersect('gardenStart', 1);
     const calc = h.calculators[0];
-    assert.equal(calc.getExpressions().length, 357);
-    const expectedLayers = { pansy: 15, sunflower: 6, chrysanthemum: 20, marigold: 18, daisy: 4 };
+    assert.equal(calc.getExpressions().length, 398);
+    const expectedLayers = { pansy: 15, sunflower: 6, chrysanthemum: 20, marigold: 18, daisy: 4, forgetmenots: 7, wisteria: 96 };
     const definitions = new Set();
     for (const flower of h.context.CameronBouquet.flowers) {
         const curves = flower.expressions.filter(e => e.parametricDomain);
@@ -38,6 +38,7 @@ test('bouquet imports preserve source geometry, colors, layers and domains', () 
     assert.equal(calc.expressions.get('chrysanthemum_989').color, '#f7d839');
     assert.equal(calc.expressions.get('marigold_1182').color, '#f5771d');
     assert.equal(calc.expressions.get('daisy_1233').color, '#fcf8eb');
+    assert.equal(calc.expressions.get('forgetmenots_599').color, '#5a94d1');
     // Petunia retains its earlier pink gradient after the visual refinement.
     assert.equal(calc.expressions.get('petuniaOuter').color, '#f7b6dc');
     assert.equal(calc.expressions.get('hibiscusNice').color, '#8f70c4');
@@ -52,7 +53,7 @@ test('every flower fits the viewport with equal axis scale on phones, tablets an
         const b = h.calculators[0].bounds;
         assert.ok(Math.abs(width / (b.right - b.left) - height / (b.top - b.bottom)) < .00001);
         const zones = h.document.querySelector('.flower-click-layer').querySelectorAll('button');
-        assert.equal(zones.length, 11);
+        assert.equal(zones.length, 12);
         for (const zone of zones) {
             const left = parseFloat(zone.style.left), top = parseFloat(zone.style.top);
             assert.ok(left >= 0 && top >= 0, zone.title + ' begins inside the viewport');
@@ -88,11 +89,11 @@ test('Done closes flower notes and restores scroll mode and focus; repeated visi
 test('flower reveals replay on re-entry and stop after finishing', () => {
     const h = start(); flowers(h); h.intersect('gardenStart', 1); h.advance(4000);
     const calc = h.calculators[0];
-    assert.equal(calc.expressions.get('wisteria_16_petals').fillOpacity, 1);
+    assert.equal(calc.expressions.get('wisteria_1297').fillOpacity, 1);
     const batches = calc.batches; h.advance(1000); assert.equal(calc.batches, batches);
     h.intersect('gardenStart', 0); assert.equal(calc.expressions.get('sakuraOuter').fillOpacity, 0);
     h.intersect('gardenStart', 1); h.advance(4000);
-    assert.equal(calc.expressions.get('wisteria_16_petals').fillOpacity, 1);
+    assert.equal(calc.expressions.get('wisteria_1297').fillOpacity, 1);
     h.hidden(true); assert.equal(h.frames.size, 0);
     h.hidden(false); h.advance(4000); assert.equal(calc.expressions.get('sakuraOuter').fillOpacity, 1);
 });
@@ -103,7 +104,7 @@ test('every flower opens its note with expanded live math, its original layers, 
     const layer = h.document.querySelector('.flower-click-layer');
     const buttons = layer.querySelectorAll('button');
     const card = h.get('flowerNotePanel');
-    assert.equal(buttons.length, 11);
+    assert.equal(buttons.length, 12);
     const names = [];
     for (const button of buttons) {
         button.click();
@@ -125,7 +126,7 @@ test('every flower opens its note with expanded live math, its original layers, 
         // Switching flowers cleans up the preceding live calculator.
         if (h.calculators.length > 2) assert.equal(h.calculators.at(-2).destroyed, true);
     }
-    assert.deepEqual(names.sort(), ['Chrysanthemum', 'Daisy', 'Hibiscus', 'Lilac', 'Marigold', 'Pansy', 'Petunia', 'Plumeria', 'Sakura', 'Sunflower', 'Wisteria']);
+    assert.deepEqual(names.sort(), ['Chrysanthemum', 'Daisy', 'Forget-me-nots', 'Hibiscus', 'Lilac', 'Marigold', 'Pansy', 'Petunia', 'Plumeria', 'Sakura', 'Sunflower', 'Wisteria']);
     h.context.CameronNotes.entries.lilac.note = 'A personal line.\n<em>Kept as plain text.</em>';
     buttons.find(button => button.getAttribute('aria-label') === 'Read the note for Lilac').click();
     const note = card.querySelector('.flower-note-text');
