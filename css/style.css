@@ -88,6 +88,42 @@ button:not(:disabled):active { transform: translateY(0); }
 .whale-stars { position: absolute; inset: 0; opacity: .3; pointer-events: none; background-image: radial-gradient(#d3f5ff 1px, transparent 1px); background-size: 67px 71px; }
 .whale-words { position: relative; z-index: 1; transform: translateY(-18vh); transform: translateY(-18svh); pointer-events: none; }
 
+.birdwatch-entry {
+    position: relative; z-index: 20; min-height: 82vh; min-height: 82svh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: clamp(20px, 4vh, 40px); padding: 64px 20px 56px;
+    background: #040609; color: #b7c7b2; text-align: center;
+}
+.birdwatch-entry h2 {
+    font: italic normal clamp(26px, 4.5vw, 46px)/1.25 var(--serif);
+    text-wrap: balance;
+}
+.binocular-link {
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+    width: min(560px, 100%); padding: 12px; border-radius: 24px;
+    color: #e9b9cf; text-decoration: none; -webkit-tap-highlight-color: transparent;
+}
+.binocular-art {
+    display: block; width: 100%; height: auto;
+    filter: drop-shadow(0 0 7px rgba(157,195,147,.16));
+    transition: transform .35s ease, filter .35s ease;
+}
+.binocular-prompt {
+    font: 13px/1.6 Menlo, Consolas, "Liberation Mono", monospace;
+    letter-spacing: .07em;
+}
+.binocular-prompt span { display: inline-block; margin-left: 6px; transition: transform .25s ease; }
+.binocular-link:focus-visible { outline: 2px solid #f9bfd2; outline-offset: 8px; }
+.binocular-link:focus-visible .binocular-art { transform: translateY(-5px) rotate(-2deg); }
+@media (hover: hover) {
+    .binocular-link:hover .binocular-art {
+        transform: translateY(-5px) rotate(-2deg);
+        filter: drop-shadow(0 0 12px rgba(185,222,166,.3));
+    }
+    .binocular-link:hover .binocular-prompt span { transform: translate(3px, -3px); }
+}
+.binocular-link:active .binocular-art { transform: scale(.97); }
+
 .heart-section {
     position: relative; min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column;
     justify-content: center; align-items: center; gap: 18px;
@@ -118,5 +154,8 @@ button:not(:disabled):active { transform: translateY(0); }
     html { scroll-behavior: auto; }
     button { transition: none; }
     button:where(:not(:disabled)):hover { transform: none; }
+    .binocular-art, .binocular-prompt span { transition: none; }
+    .binocular-link:hover .binocular-art, .binocular-link:focus-visible .binocular-art,
+    .binocular-link:active .binocular-art, .binocular-link:hover .binocular-prompt span { transform: none; }
 }
 
