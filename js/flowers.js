@@ -694,8 +694,9 @@ layer.hidden = true;
 wrapper.appendChild(layer);
 
 const hint = document.createElement('div');
+// The hint and accessible names describe the math view; the former personal notes are gone.
 hint.className = 'flower-note-hint';
-hint.textContent = 'Tap a flower for its note and math';
+hint.textContent = 'Tap a flower to explore its math';
 hint.hidden = true;
 wrapper.appendChild(hint);
 let interactive = false;
@@ -731,8 +732,8 @@ const zones = flowerClickAreas.map(flower => {
     button.setAttribute('aria-haspopup', 'dialog');
     button.setAttribute('aria-controls', 'flowerNotePanel');
     button.setAttribute('aria-expanded', 'false');
-    button.setAttribute('aria-label', 'Read the note for ' + flowerNotes[flower.id].title);
-    button.title = 'Read the note for ' + flowerNotes[flower.id].title;
+    button.setAttribute('aria-label', 'Explore ' + flowerNotes[flower.id].title);
+    button.title = 'Explore ' + flowerNotes[flower.id].title;
     button.addEventListener('click', event => {
         event.preventDefault();
         event.stopPropagation();

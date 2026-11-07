@@ -9,8 +9,10 @@
   if (!home || !roamButton || !dropButton || !status) return;
   const canvas = document.createElement('canvas');
   canvas.id = 'roamingWhale';
-  canvas.setAttribute('role', 'img');
-  canvas.setAttribute('aria-label', 'An animated, shaded ASCII whale with a forked tail and a long swimming flipper');
+  canvas.setAttribute('role', 'button');
+  canvas.setAttribute('tabindex', '-1');
+  canvas.setAttribute('aria-label', 'ASCII whale. Tap or press Enter to make it flip or swim upward.');
+  canvas.setAttribute('data-whale-trick', 'idle');
   home.appendChild(canvas);
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
@@ -145,8 +147,16 @@
   let x = w*.5, y = h*.65;
   let scale = .65, direction = 1, last = 0, elapsed = 0;
   let scrollNudge = 0, previousScroll = scrollY, hearts = 0;
+  let trick = null, nextTrick = 0;
+
+  function cancelTrick() {
+    trick = null;
+    canvas.setAttribute('data-whale-trick', 'idle');
+  }
 
   function resize() {
+    // A viewport or container change must not leave a turn following coordinates from the old size.
+    cancelTrick();
     const bounds = home.getBoundingClientRect();
     w = roaming ? innerWidth : bounds.width;
     h = roaming ? innerHeight : bounds.height;
@@ -223,19 +233,34 @@
       home.scrollIntoView({ behavior: reduced ? 'instant' : 'smooth', block: 'start' });
   });
 
+  function reactToTap() {
+    if (!site.entered || entrance !== 'swimming' || trick || (!roaming && !homeVisible)) return;
+    hearts = 1;
+    if (reduced) {
+      // Keep the response visible without spinning or moving for reduced-motion visitors.
+      status.textContent = 'The whale sends you a little heart.';
+      clearTimeout(heartTimer);
+      heartTimer = setTimeout(() => { hearts = 0; requestFrame(); }, 900);
+    } else {
+      const kind = nextTrick++ % 2 === 0 ? 'flip' : 'swoop';
+      trick = { kind, ms: 0, startX: x, startY: y, heading: direction };
+      canvas.setAttribute('data-whale-trick', kind);
+      status.textContent = kind === 'flip' ? 'The whale does an upward flip!' : 'The whale swims up in a big swoop!';
+    }
+    requestFrame();
+  }
+  canvas.addEventListener('keydown', event => {
+    if (event.key !== 'Enter' && event.key !== ' ') return;
+    event.preventDefault();
+    if (!event.repeat) reactToTap();
+  });
   addEventListener('click', event => {
     if (!site.entered || entrance !== 'swimming' || event.target.closest('button, a, input, textarea, select, summary, .flower-note-card')) return;
     if (!roaming && (!homeVisible || !home.contains(event.target))) return;
     const bounds = canvas.getBoundingClientRect();
     if (Math.abs(event.clientX-bounds.left-x) < spriteWidth*scale/2 &&
         Math.abs(event.clientY-bounds.top-y) < spriteHeight*scale/2) {
-      hearts = 1;
-      if (!reduced) direction *= -1;
-      else {
-        clearTimeout(heartTimer);
-        heartTimer = setTimeout(() => { hearts = 0; requestFrame(); }, 900);
-      }
-      requestFrame();
+      reactToTap();
     }
   }, { passive: true });
 
@@ -284,7 +309,7 @@
 
     // An occasional quiet breath, still drawn from characters like the skin.
     const breath = (elapsed/60) % 8;
-    if (!reduced && entrance === 'swimming' && breath < 1.65) {
+    if (!reduced && !trick && entrance === 'swimming' && breath < 1.65) {
       const rise = breath/1.65;
       ctx.globalAlpha = Math.sin(rise*Math.PI)*.72;
       ctx.fillStyle = dark ? '#bed9e2' : '#577f91';
@@ -349,6 +374,7 @@
       atIntro = roaming && !!introRect && introRect.top < innerHeight*.75 && introRect.bottom > innerHeight*.25;
       darkRects = roaming ? Array.from(darkSections, section => section.getBoundingClientRect()) : [];
       canvas.setAttribute('aria-hidden', String(!roaming && !homeVisible));
+      canvas.setAttribute('tabindex', roaming || homeVisible ? '0' : '-1');
       layoutDirty = false;
     }
     // A contained whale scrolls with its section and sleeps when that section leaves view.
@@ -359,13 +385,14 @@
     last = now;
     if (!reduced) elapsed += dt;
     const entering = entrance !== 'swimming';
-    // Impact particles can extend beyond the whale's bounds; clear the whole stage during the entrance.
-    if (entering) ctx.clearRect(0, 0, w, h);
+    const doingTrick = !!trick;
+    // Rotations and impact particles extend outside the usual bounds; clear the whole stage during both.
+    if (entering || doingTrick) ctx.clearRect(0, 0, w, h);
     else if (lastRect) ctx.clearRect(lastRect.x, lastRect.y, lastRect.width, lastRect.height);
     const fitScale = Math.max(.1, (w-32)/(spriteWidth+24));
     const goalScale = Math.min(atHome ? 1.08 : .66, fitScale, h*.45/spriteHeight);
     const goalY = h*(atHome ? .65 : atIntro ? .58 : .64);
-    let compression = 0, shake = 0;
+    let compression = 0, shake = 0, turn = 0;
     if (entering) {
       scale = goalScale;
       x = w/2;
@@ -389,6 +416,24 @@
         shake = Math.sin(t*60)*4*(1-t)**3;
         if (t === 1) finishLanding();
       }
+    } else if (trick) {
+      trick.ms += dt*16.67;
+      const t = clamp(trick.ms/(trick.kind === 'flip' ? 2100 : 2500), 0, 1);
+      const eased = t*t*(3-2*t);
+      const arc = Math.sin(Math.PI*t);
+      turn = trick.kind === 'flip' ? -Math.PI*2*eased : -.55*Math.sin(Math.PI*2*t);
+      // Fit the rotated sprite on narrow screens, then move along a smooth arc back to its starting point.
+      const cos = Math.abs(Math.cos(turn)), sin = Math.abs(Math.sin(turn));
+      const rotatedWidth = cos*spriteWidth+sin*(spriteHeight+50);
+      const rotatedHeight = sin*spriteWidth+cos*(spriteHeight+50);
+      scale = Math.min(goalScale, (w-36)/(rotatedWidth+24), (h-48)/(rotatedHeight+24));
+      const halfWidth = rotatedWidth*scale/2+16, halfHeight = rotatedHeight*scale/2+16;
+      const lift = Math.min(h*(trick.kind === 'flip' ? .19 : .28), trick.kind === 'flip' ? 180 : 260);
+      const drift = trick.kind === 'flip' ? Math.sin(Math.PI*2*t)*24 : arc*Math.min(w*.12, 100);
+      x = clamp(trick.startX+trick.heading*drift, halfWidth, w-halfWidth);
+      y = clamp(trick.startY-arc*lift, halfHeight, h-halfHeight);
+      direction = trick.heading;
+      if (t === 1) cancelTrick();
     } else if (reduced) {
       scale = goalScale;
       const half = (spriteWidth/2+12)*scale;
@@ -412,11 +457,11 @@
     }
     if (entrance === 'falling' || entrance === 'impact') drawGround(shake);
     ctx.save();
-    const bob = reduced || entering ? 0 : Math.sin(elapsed*.019)*5;
+    const bob = reduced || entering || doingTrick ? 0 : Math.sin(elapsed*.019)*5;
     ctx.translate(x+shake, y+bob);
     if (direction < 0) ctx.scale(-1,1);
     ctx.scale(scale*(1+.12*compression), scale*(1-.25*compression));
-    ctx.rotate(reduced || entering ? 0 : Math.sin(elapsed*.014)*.012);
+    ctx.rotate(doingTrick ? turn : reduced || entering ? 0 : Math.sin(elapsed*.014)*.012);
     draw(!roaming || darkRects.some(rect => rect.top <= y && rect.bottom > y));
     ctx.restore();
     if (entrance === 'impact') drawImpact(entranceMs/impactDuration);
@@ -438,12 +483,20 @@
     lastDraw = 0;
     layoutDirty = true;
     canvas.setAttribute('aria-hidden', String(entrance === 'waiting' || !site.entered || (!roaming && !homeVisible)));
+    canvas.setAttribute('tabindex', entrance !== 'waiting' && site.entered && (roaming || homeVisible) ? '0' : '-1');
     requestFrame();
   }
   document.addEventListener('cameron:entered', updateActivity);
   document.addEventListener('visibilitychange', updateActivity);
   site.reducedMotion.addEventListener('change', () => {
     reduced = site.reducedMotion.matches;
+    if (reduced && trick) {
+      // Resolve an active reaction immediately when the visitor changes their motion preference.
+      cancelTrick();
+      hearts = 0;
+      ctx.clearRect(0, 0, w, h);
+      lastRect = null;
+    }
     if (reduced && (entrance === 'falling' || entrance === 'impact')) {
       // Switching the preference mid-fall immediately resolves the entrance and removes all debris.
       ctx.clearRect(0, 0, w, h);

@@ -1,4 +1,4 @@
-/* Final page: keep the gift and George centered in a quiet, dark scene. */
+/* Final page: center the bottle, seated pickle, and George in a quiet, dark scene. */
 .goodbye-section {
     --milk-cream: #ead7bb;
     --milk-pink: #e9b9cf;
@@ -25,6 +25,24 @@
     color: #a6b59f;
     font: 13px/1.6 Menlo, Consolas, "Liberation Mono", monospace;
     letter-spacing: .04em;
+}
+/* The pickle is a quiet companion beside the gift, with space around the rocking-chair silhouette. */
+.goodbye-gifts {
+    width: min(700px, 100%); display: flex; align-items: center; justify-content: center;
+    gap: clamp(36px, 6vw, 76px); margin-top: 12px;
+}
+.goodbye-gifts .milk-gift { flex: 0 0 260px; margin-top: 0; }
+.dillbillies { flex: 0 0 270px; width: 270px; margin: 0; }
+.dillbillies img { display: block; width: 100%; height: auto; }
+.dillbillies figcaption {
+    margin-top: 0; color: #a9b678; text-align: center;
+    font: 12px/1.5 Menlo, Consolas, monospace; letter-spacing: .14em;
+}
+@media (max-width: 620px) {
+    /* Preserve the legible character art instead of squeezing two illustrations into a narrow row. */
+    .goodbye-gifts { flex-direction: column; gap: 24px; }
+    .goodbye-gifts .milk-gift { flex-basis: auto; width: min(230px, 100%); }
+    .dillbillies { flex-basis: auto; width: min(280px, 100%); }
 }
 /* A generous tap target also gets a visible outline when focused from the keyboard. */
 .goodbye-section .milk-gift {

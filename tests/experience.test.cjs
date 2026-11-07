@@ -98,7 +98,7 @@ test('flower reveals replay on re-entry and stop after finishing', () => {
     h.hidden(false); h.advance(4000); assert.equal(calc.expressions.get('sakuraOuter').fillOpacity, 1);
 });
 
-test('every flower opens its note with expanded live math, its original layers, and a size slider', () => {
+test('every flower opens live math and a size slider without a personal-message area', () => {
     const h = start(); flowers(h);
     h.get('exploreButton').click();
     const layer = h.document.querySelector('.flower-click-layer');
@@ -109,7 +109,7 @@ test('every flower opens its note with expanded live math, its original layers, 
     for (const button of buttons) {
         button.click();
         names.push(card.querySelector('h2').textContent);
-        assert.equal(card.querySelector('.flower-note-text').textContent, 'This one reminds me of…');
+        assert.equal(card.querySelector('.flower-note-text'), null);
         assert.equal(card.querySelector('pre'), null);
         assert.equal(card.querySelector('details'), null);
         const detail = h.calculators.at(-1);
@@ -127,12 +127,9 @@ test('every flower opens its note with expanded live math, its original layers, 
         if (h.calculators.length > 2) assert.equal(h.calculators.at(-2).destroyed, true);
     }
     assert.deepEqual(names.sort(), ['Chrysanthemum', 'Daisy', 'Forget-me-nots', 'Hibiscus', 'Lilac', 'Marigold', 'Pansy', 'Petunia', 'Plumeria', 'Sakura', 'Sunflower', 'Wisteria']);
-    h.context.CameronNotes.entries.lilac.note = 'A personal line.\n<em>Kept as plain text.</em>';
-    buttons.find(button => button.getAttribute('aria-label') === 'Read the note for Lilac').click();
-    const note = card.querySelector('.flower-note-text');
-    assert.equal(note.textContent, 'A personal line.\n<em>Kept as plain text.</em>');
-    assert.equal(note.classList.contains('is-placeholder'), false);
-    assert.equal(note.querySelector('em'), null);
+    // Reopening a flower still replaces the calculator without bringing back the removed note area.
+    buttons.find(button => button.getAttribute('aria-label') === 'Explore Lilac').click();
+    assert.equal(card.querySelector('.flower-note-text'), null);
     card.querySelector('button').click();
     assert.equal(h.calculators.at(-1).destroyed, true);
 });

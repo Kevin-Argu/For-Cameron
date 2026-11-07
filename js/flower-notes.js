@@ -1,21 +1,21 @@
-// Kevin's notes for Cameron. Add the personal wording between the quotes.
-// These are published page contents, not a visitor comment form.
+// Flower names and shared detail dialogs. Each popup contains its math or bloom control.
+// Personal-message placeholders are intentionally absent from both the data and markup.
 (() => {
     'use strict';
     const entries = {
-        lilies:   { title: 'Lilies',   note: '' },
-        sakura:   { title: 'Sakura',   note: '' },
-        petunia:  { title: 'Petunia',  note: '' },
-        plumeria: { title: 'Plumeria', note: '' },
-        hibiscus: { title: 'Hibiscus', note: '' },
-        lilac:    { title: 'Lilac',    note: '' },
-        wisteria: { title: 'Wisteria', note: '' },
-        pansy: { title: 'Pansy', note: '' },
-        sunflower: { title: 'Sunflower', note: '' },
-        chrysanthemum: { title: 'Chrysanthemum', note: '' },
-        marigold: { title: 'Marigold', note: '' },
-        daisy: { title: 'Daisy', note: '' },
-        forgetmenots: { title: 'Forget-me-nots', note: '' }
+        lilies:   { title: 'Lilies' },
+        sakura:   { title: 'Sakura' },
+        petunia:  { title: 'Petunia' },
+        plumeria: { title: 'Plumeria' },
+        hibiscus: { title: 'Hibiscus' },
+        lilac:    { title: 'Lilac' },
+        wisteria: { title: 'Wisteria' },
+        pansy: { title: 'Pansy' },
+        sunflower: { title: 'Sunflower' },
+        chrysanthemum: { title: 'Chrysanthemum' },
+        marigold: { title: 'Marigold' },
+        daisy: { title: 'Daisy' },
+        forgetmenots: { title: 'Forget-me-nots' }
     };
 
     function createCard(container, id, onClose = () => {}) {
@@ -26,13 +26,11 @@
         card.setAttribute('role', 'dialog');
         card.setAttribute('aria-labelledby', id + 'Title');
         card.innerHTML = `
-            <button type="button" class="flower-note-close" aria-label="Close flower note">×</button>
+            <button type="button" class="flower-note-close" aria-label="Close flower">×</button>
             <h2 id="${id}Title"></h2>
-            <p class="flower-note-text"></p>
         `;
         container.appendChild(card);
         const closeButton = card.querySelector('button');
-        const text = card.querySelector('.flower-note-text');
         let trigger = null;
 
         function close(restoreFocus = false) {
@@ -50,9 +48,6 @@
             trigger = button;
             if (trigger) trigger.setAttribute('aria-expanded', 'true');
             card.querySelector('h2').textContent = entry.title;
-            const note = entry.note.trim();
-            text.textContent = note || 'This one reminds me of…';
-            text.classList.toggle('is-placeholder', !note);
             card.scrollTop = 0;
             card.hidden = false;
             card.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'instant' });

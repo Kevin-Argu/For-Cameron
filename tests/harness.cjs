@@ -77,13 +77,15 @@ function harness({ reduced = false, desmos = true, hash = '', root = path.resolv
         set innerHTML(html) { this.children = []; parse(html, this); }
         getContext() {
             if (this.context) return this.context;
-            const calls = { fills: 0, clears: 0, translations: [], clearsAt: [] };
+            // Capture transforms so animation tests can verify a real turn and upward movement.
+            const calls = { fills: 0, clears: 0, translations: [], rotations: [], clearsAt: [] };
             canvasCalls.set(this, calls);
             this.context = new Proxy({
                 measureText: () => ({ width: 7.41 }),
                 fillText: () => calls.fills++,
                 clearRect: (...args) => { calls.clears++; calls.clearsAt.push(args); },
-                translate: (...args) => calls.translations.push(args)
+                translate: (...args) => calls.translations.push(args),
+                rotate: angle => calls.rotations.push(angle)
             }, { get: (obj, key) => obj[key] ?? (() => {}), set: (obj, key, value) => (obj[key] = value, true) });
             return this.context;
         }
