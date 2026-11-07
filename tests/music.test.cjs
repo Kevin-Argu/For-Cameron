@@ -58,6 +58,24 @@ test('instruments are silent on load; piano chords start on interaction and rele
     assert.equal(t.button('a').classList.contains('is-playing'), false);
 });
 
+test('piano mechanics follow each key and stay raised until every input for that key releases', () => {
+    const t = setup(); t.h.enter();
+    const parts = midi => t.h.document.querySelector('[data-piano-note="' + midi + '"]');
+    const raised = midi => parts(midi).classList.contains('is-playing');
+    t.down('a', 1); t.down('d', 2);
+    assert.equal(raised(60), true);
+    assert.equal(raised(64), true);
+    assert.equal(raised(61), false);
+    t.h.get('musicFinale').dispatchEvent({ type: 'keydown', key: 'a', target: t.button('a') });
+    t.up('a', 1);
+    assert.equal(raised(60), true);
+    t.h.windowEvent('keyup', { key: 'a' });
+    assert.equal(raised(60), false);
+    assert.equal(raised(64), true);
+    t.h.intersect('musicFinale', 0);
+    assert.equal(raised(64), false);
+});
+
 test('harmonica blow/draw selects Richter notes and releases the previous reed', () => {
     const t = setup(); t.h.enter(); t.down('1');
     assert.ok(t.oscillators[0].wave);

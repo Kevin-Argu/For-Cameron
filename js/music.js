@@ -20,7 +20,16 @@
     const active = new Map();
     const shortcuts = new Map(buttons.map(button => [button.getAttribute('data-key'), button]));
     const Audio = window.AudioContext || window.webkitAudioContext;
+    const pianoMechanisms = new Map([...section.querySelectorAll('[data-piano-note]')]
+        .map(part => [part.getAttribute('data-piano-note'), part]));
     const noteName = midi => ['C','C♯','D','D♯','E','F','F♯','G','G♯','A','A♯','B'][midi % 12] + (Math.floor(midi / 12) - 1);
+
+    function setPlaying(button, playing) {
+        button.classList.toggle('is-playing', playing);
+        if (button.getAttribute('data-instrument') === 'piano') {
+            pianoMechanisms.get(button.getAttribute('data-midi'))?.classList.toggle('is-playing', playing);
+        }
+    }
 
     function setVolume() {
         if (master) master.gain.setTargetAtTime(Number(volume.value) / 100 * .65, context.currentTime, .02);
@@ -104,7 +113,7 @@
         active.delete(token);
         clearTimeout(held.timer);
         held.stop?.();
-        if (![...active.values()].some(item => item.button === held.button)) held.button.classList.remove('is-playing');
+        if (![...active.values()].some(item => item.button === held.button)) setPlaying(held.button, false);
     }
     function releaseAll(instrument) {
         for (const [token, held] of active) if (!instrument || held.instrument === instrument) release(token);
@@ -117,7 +126,7 @@
             : tuning[breath][Number(button.getAttribute('data-hole'))];
         const held = { button, instrument, stop: null, timer: null };
         active.set(token, held);
-        button.classList.add('is-playing');
+        setPlaying(button, true);
         function begin() {
             // A released tap must not start a delayed, stuck note after resume.
             if (active.get(token) !== held) return;

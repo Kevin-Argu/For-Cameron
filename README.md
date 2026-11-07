@@ -50,6 +50,11 @@ These are synthesized instruments, not recordings. Touch, keyboard, and accessib
 button clicks share the same note lifecycle; pending audio resumes cannot start
 notes that have already been released.
 
+Each piano note lifts its own hammer and shimmers its strings; multiple held notes
+animate independently. The harmonica has metal covers, a wooden comb, and visible
+reeds that respond to playing. Reduced motion keeps the color feedback and removes
+the moving parts. All note visuals reset on release, tab hiding, or leaving the section.
+
 ## Desmos configuration
 
 The API key is configured in the `desmos-api-key` meta tag in `index.html`. This update retains the existing key. Verify its status and personal-project configuration at <https://www.desmos.com/my-api>; the repository cannot establish its account/tier or guarantee removal of a trial-key notice. Provider notices are not hidden by CSS.
