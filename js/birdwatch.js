@@ -2,8 +2,6 @@
 (() => {
   'use strict';
   const canvas = document.getElementById('splitRockerCanvas');
-  const colors = document.getElementById('colorSculpture');
-  const replay = document.getElementById('replaySculpture');
   const status = document.getElementById('artStatus');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
@@ -12,12 +10,7 @@
     return;
   }
 
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const palettes = [
-    { name: 'Pink', petals: ['#f9bfd2', '#ec8fb4', '#ffdfeb'], pollen: '#fbe7a4' },
-    { name: 'White', petals: ['#fffdf3', '#d7e6df', '#f6f4e5'], pollen: '#f9dda0' },
-    { name: 'Garden', petals: ['#e8a6e5', '#ffc17f', '#ed88a9', '#f9e49f'], pollen: '#fff1b9' }
-  ];
+  const palette = { petals: ['#e8a6e5', '#ffc17f', '#ed88a9', '#f9e49f'], pollen: '#fff1b9' };
   const leaves = ['#669765', '#7eaf70', '#a5c17b', '#92b67b'];
   const background = '#040609';
   const world = { left: 14, top: -12, width: 146, height: 156 };
@@ -62,12 +55,8 @@
     [115,117,2.5], [89,115,2.4], [74,120,2.6], [54,118,2.4]
   ];
 
-  let palette = 0, cells = [];
+  let cells = [];
   let width = 0, height = 0, scale = 1, stepX = 1, stepY = 1;
-  let frameId = 0, lastPaint = 0, previousTime = 0;
-  const duration = 2400;
-  let elapsed = duration, visible = true;
-
   function hash(x, y) {
     const n = Math.sin(x * 127.1 + y * 311.7) * 43758.5453;
     return n - Math.floor(n);
@@ -92,12 +81,12 @@
         const y = world.top + (row + .5) * stepY;
         const n = hash(col, row);
         const inside = ctx.isPointInPath(outline, x, y);
-        let char, color, bloom = false;
+        let char, color;
         if (!inside) {
           if (y > 125 && y < 135 && x > 28 && x < 144) {
             if (row % 3 === 0 && n > .52) {
               char = n > .87 ? '*' : n > .65 ? '/' : '.';
-              color = n > .87 ? palettes[palette].petals[0] : '#52784f';
+              color = n > .87 ? palette.petals[0] : '#52784f';
             }
           } else if (n > .994 && y > 0 && y < 124) {
             char = n > .998 ? '*' : '.';
@@ -126,63 +115,38 @@
             const angle = Math.atan2(dy, dx);
             const distance = Math.hypot(dx, dy) / (radius * 1.55 * (1 + .19 * Math.cos(angle * 5)));
             if (distance > 1.35) continue;
-            const p = palettes[palette];
+            const p = palette;
             char = distance < .25 ? '@' : distance < .6 ? 'o' : distance < 1 ? '*' : '.';
             color = distance < .25 ? p.pollen : p.petals[i % p.petals.length];
-            bloom = true;
             break;
           }
           if (eyeRim) { char = n > .6 ? 'o' : '*'; color = '#e7d8bc'; }
         }
-        cells.push({ x, y, char, color, bloom, seed: n });
+        cells.push({ x, y, char, color });
       }
     }
-    cells.push({ x: 119, y: 26, char: '*', color: '#fff9ea', bloom: false, seed: .5 });
-    cells.push({ x: 61.5, y: 54, char: '.', color: '#fff9ea', bloom: false, seed: .5 });
+    cells.push({ x: 119, y: 26, char: '*', color: '#fff9ea' });
+    cells.push({ x: 61.5, y: 54, char: '.', color: '#fff9ea' });
     ctx.restore();
   }
 
   function paint() {
     ctx.fillStyle = background;
     ctx.fillRect(0, 0, width, height);
-    const progress = Math.min(1, elapsed / duration);
     ctx.font = '600 ' + (stepY * scale * .89) + 'px Menlo, Consolas, monospace';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     for (const cell of cells) {
-      const start = .08 + (1 - Math.max(0, cell.y) / 135) * .40 + cell.seed * .12;
-      const reveal = reducedMotion.matches ? 1 : Math.max(0, Math.min(1, (progress - start) / .30));
-      if (cell.bloom && !reveal) continue;
-      ctx.globalAlpha = cell.bloom ? reveal : .6 + .4 * progress;
       ctx.fillStyle = cell.color;
       ctx.shadowColor = cell.color;
       ctx.shadowBlur = Math.min(4, stepX * scale * .44);
-      ctx.fillText(cell.bloom && reveal < .65 ? '.' : cell.char,
+      ctx.fillText(cell.char,
         (cell.x - world.left) * scale, (cell.y - world.top) * scale);
     }
     ctx.globalAlpha = 1;
     ctx.shadowBlur = 0;
   }
 
-  function canAnimate() { return visible && !document.hidden && !reducedMotion.matches; }
-  function schedule() {
-    if (!frameId && elapsed < duration && canAnimate()) frameId = requestAnimationFrame(animate);
-  }
-  function animate(now) {
-    frameId = 0;
-    if (!canAnimate()) return;
-    if (lastPaint && now - lastPaint < 1000 / 24) { schedule(); return; }
-    elapsed = Math.min(duration, elapsed + (previousTime ? Math.min(now - previousTime, 100) : 0));
-    previousTime = now;
-    lastPaint = now;
-    paint();
-    schedule();
-  }
-  function stop() {
-    cancelAnimationFrame(frameId);
-    frameId = 0;
-    previousTime = lastPaint = 0;
-  }
   function resize() {
     const box = canvas.getBoundingClientRect();
     if (box.width < 1 || box.height < 1) return;
@@ -195,41 +159,8 @@
     scale = width / world.width;
     makeCells();
     paint();
-    schedule();
-  }
-  function bloomAgain() {
-    stop();
-    elapsed = reducedMotion.matches ? duration : 0;
-    paint();
-    schedule();
-  }
-
-  colors?.addEventListener('click', () => {
-    palette = (palette + 1) % palettes.length;
-    colors.textContent = 'Colors: ' + palettes[palette].name;
-    makeCells();
-    paint();
-  });
-  replay?.addEventListener('click', bloomAgain);
-  reducedMotion.addEventListener('change', () => {
-    stop();
-    elapsed = duration;
-    paint();
-  });
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) stop();
-    else schedule();
-  });
-  if ('IntersectionObserver' in window) {
-    new IntersectionObserver(entries => {
-      visible = entries[0].isIntersecting;
-      if (visible) schedule();
-      else stop();
-    }, { threshold: .01 }).observe(canvas);
   }
   if ('ResizeObserver' in window) new ResizeObserver(resize).observe(canvas);
   else window.addEventListener('resize', resize, { passive: true });
   resize();
-  bloomAgain();
 })();
-
