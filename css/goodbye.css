@@ -62,7 +62,8 @@
 .milk-scene { position: relative; display: block; width: 100%; padding: 3px 4px; }
 .milk-bottle {
     display: block; width: 100%; height: auto;
-    transform-origin: 50% 65%;
+    /* On wider screens, grow upward beside the chair without covering the pickle. */
+    transform-origin: 0% 100%;
     transition: transform .7s cubic-bezier(.22, .75, .2, 1);
 }
 .milk-thanks {
@@ -78,12 +79,20 @@
     font: 10px/1.8 Menlo, Consolas, "Liberation Mono", monospace;
     white-space: nowrap;
 }
-/* goodbye.js toggles has-milk. Taking the bottle lifts it toward the visitor. */
+/* The same button toggles a three-times-larger view, then returns the bottle to its miniature size. */
+.goodbye-section.has-milk .milk-gift { z-index: 2; }
 .goodbye-section.has-milk .milk-bottle {
-    transform: translateY(-14px) rotate(-7deg) scale(1.08);
+    transform: translateY(-8px) scale(3);
 }
 .goodbye-section.has-milk .milk-thanks { opacity: 1; transform: translateY(0); }
 .goodbye-section.has-milk .milk-hint { color: var(--milk-pink); }
+@media (max-width: 700px) {
+    /* A phone has no room outside the chair: bring the bottle forward and soften the art behind it. */
+    .milk-bottle { transform-origin: 100% 100%; }
+    .dillbillies { transition: opacity .35s ease; }
+    .goodbye-section.has-milk .dillbillies { opacity: .18; }
+    .goodbye-section.has-milk .milk-bottle { background: #040609; }
+}
 @media (hover: hover) {
     .goodbye-section .milk-gift:hover { background: transparent; transform: none; }
     .goodbye-section:not(.has-milk) .milk-gift:hover .milk-bottle { transform: translateY(-5px) rotate(-2deg); }
@@ -150,11 +159,10 @@
     .george-crossing { width: min(310px, 100%); left: 50%; margin-left: max(-155px, -50%); }
     .george-grass { letter-spacing: .1em; }
 }
-/* Preserve controls and feedback while removing bouncing and bottle movement. */
+/* Keep the enlarged view available, but switch sizes instantly when reduced motion is requested. */
 @media (prefers-reduced-motion: reduce) {
-    .milk-bottle, .milk-thanks { transition: none; }
-    .goodbye-section:not(.has-milk) .milk-gift:hover .milk-bottle,
-    .goodbye-section.has-milk .milk-bottle { transform: none; }
+    .milk-bottle, .milk-thanks, .dillbillies { transition: none; }
+    .goodbye-section:not(.has-milk) .milk-gift:hover .milk-bottle { transform: none; }
     .george-meadow.is-hopping .george-crossing,
     .george-meadow.is-hopping .george-sprite { animation: none; }
 }

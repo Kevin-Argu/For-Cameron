@@ -76,14 +76,14 @@
         }
     }
 
-    // Taking the bottle starts the goodbye; putting it back brings George back.
-    // Keep the visible hint, spoken status, and pressed state consistent.
+    // Toggle the bottle's enlarged view with the same button; shrinking it also brings George back.
+    // Keep the visible hint, spoken status, and pressed state consistent with the visual size.
     gift.addEventListener('click', () => {
         const taken = section.classList.toggle('has-milk');
         gift.setAttribute('aria-pressed', String(taken));
-        gift.setAttribute('aria-label', taken ? 'Put the chocolate milk back' : 'Take the chocolate milk');
-        hint.textContent = taken ? 'all yours. ♡' : 'take it ↑';
-        status.textContent = taken ? 'The chocolate milk is yours. Tap again to put it back.' : 'Here, chocolate milk.';
+        gift.setAttribute('aria-label', taken ? 'Shrink the chocolate milk' : 'Enlarge the chocolate milk');
+        hint.textContent = taken ? 'shrink it ↓' : 'take it ↑';
+        status.textContent = taken ? 'The chocolate milk is bigger. Tap it again to shrink it.' : 'The chocolate milk is back beside the chair.';
         if (taken) hopAway();
         else resetGeorge();
     });
