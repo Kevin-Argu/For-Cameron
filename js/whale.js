@@ -111,7 +111,7 @@
   resize();
 
   addEventListener("click",e=>{
-    if (!site.entered || e.target.closest("button, a, input, textarea, select, summary, .flower-math-card")) return;
+    if (!site.entered || e.target.closest("button, a, input, textarea, select, summary, .flower-note-card")) return;
     if (Math.abs(e.clientX-x) < longest*glyphWidth*scale/2 &&
         Math.abs(e.clientY-y) < spriteRows*rowHeight*scale/2) {
       hearts = 1;

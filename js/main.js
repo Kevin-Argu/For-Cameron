@@ -31,7 +31,7 @@
     done.addEventListener('click', () => setExploring(false, true));
     document.addEventListener('keydown', event => {
         if (event.key !== 'Escape' || !garden.classList.contains('is-exploring')) return;
-        if (!site.flowerUI || !site.flowerUI.closeMath(true)) setExploring(false, true);
+        if (!site.flowerUI || !site.flowerUI.closeNote(true)) setExploring(false, true);
         event.preventDefault();
     });
 
@@ -42,3 +42,4 @@
         }).observe(garden);
     }
 })();
+

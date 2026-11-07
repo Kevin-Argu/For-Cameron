@@ -5,7 +5,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { harness } = require('./harness.cjs');
 const flush = async () => { for (let i = 0; i < 8; i++) await Promise.resolve(); };
-function start(options) { const h = harness(options); h.run('main.js'); return h; }
+function start(options) { const h = harness(options); h.run('main.js'); h.run('flower-notes.js'); return h; }
 function flowers(h) { h.run('flowers.js'); h.context.CameronGraphs.flowers(); h.get('exploreButton').disabled = false; }
 function heart(h) { h.run('heart.js'); h.context.CameronGraphs.heart(); h.get('toggleHeartMath').disabled = false; h.get('toggleHeartAnimation').disabled = false; }
 
@@ -28,14 +28,15 @@ test('garden framing contains all original bounds with equal axis scale across d
     }
 });
 
-test('Done closes math, restores scroll mode and focus; repeated math visits restore the hint', () => {
+test('Done closes flower notes and restores scroll mode and focus; repeated visits restore the hint', () => {
     const h = start(); flowers(h);
-    const card = h.document.querySelector('.flower-math-card');
+    const card = h.get('flowerNotePanel');
     const layer = h.document.querySelector('.flower-click-layer');
-    const hint = h.document.querySelector('.flower-math-hint');
+    const hint = h.document.querySelector('.flower-note-hint');
     const zone = layer.querySelector('button');
     h.get('exploreButton').click(); zone.click();
     assert.equal(card.hidden, false);
+    assert.equal(card.scrolledIntoView, true);
     assert.equal(h.document.activeElement, card.querySelector('button'));
     h.get('doneButton').click();
     assert.equal(card.hidden, true); assert.equal(layer.hidden, true);
@@ -60,6 +61,57 @@ test('flower reveals replay on re-entry and stop after finishing', () => {
     assert.equal(calc.expressions.get('wisteria_16_petals').fillOpacity, 1);
     h.hidden(true); assert.equal(h.frames.size, 0);
     h.hidden(false); h.advance(4000); assert.equal(calc.expressions.get('sakuraOuter').fillOpacity, 1);
+});
+
+test('every garden flower opens its own named note and renders supplied wording as plain text', () => {
+    const h = start(); flowers(h);
+    h.get('exploreButton').click();
+    const layer = h.document.querySelector('.flower-click-layer');
+    const buttons = layer.querySelectorAll('button');
+    const card = h.get('flowerNotePanel');
+    assert.equal(buttons.length, 6);
+    const names = [];
+    for (const button of buttons) {
+        button.click();
+        names.push(card.querySelector('h2').textContent);
+        assert.equal(card.querySelector('.flower-note-text').textContent, 'This one reminds me of…');
+        assert.equal(card.querySelector('pre'), null);
+        assert.equal(card.querySelector('details'), null);
+    }
+    assert.deepEqual(names.sort(), ['Hibiscus', 'Lilac', 'Petunia', 'Plumeria', 'Sakura', 'Wisteria']);
+    h.context.CameronNotes.entries.lilac.note = 'A personal line.\n<em>Kept as plain text.</em>';
+    buttons.find(button => button.getAttribute('aria-label') === 'Read the note for Lilac').click();
+    const note = card.querySelector('.flower-note-text');
+    assert.equal(note.textContent, 'A personal line.\n<em>Kept as plain text.</em>');
+    assert.equal(note.classList.contains('is-placeholder'), false);
+    assert.equal(note.querySelector('em'), null);
+});
+
+test('the lily note works without Desmos, opens on a bloom tap, and does not open on a watering drag', () => {
+    const h = start({ reduced: true, desmos: false });
+    h.run('ascii-lilies.js'); h.enter(); h.intersect('asciiLiliesCanvas', 1);
+    const card = h.get('lilyNotePanel');
+    h.get('lilyNoteButton').click();
+    assert.equal(card.querySelector('h2').textContent, 'Lilies');
+    assert.equal(card.hidden, false);
+    card.dispatchEvent({ type: 'keydown', key: 'Escape' });
+    assert.equal(card.hidden, true);
+    assert.equal(h.document.activeElement, h.get('lilyNoteButton'));
+    for (let i = 0; i < 6; i++) h.get('waterLilies').click();
+    h.advance(100);
+    const canvas = h.get('asciiLiliesCanvas');
+    const x = canvas.rect.left + canvas.rect.width * .25;
+    const y = canvas.rect.top + canvas.rect.height * .36;
+    const pointer = { pointerId: 1, isPrimary: true, button: 0, clientX: x, clientY: y };
+    canvas.dispatchEvent({ ...pointer, type: 'pointerdown' });
+    canvas.dispatchEvent({ ...pointer, type: 'pointerup' });
+    assert.equal(card.hidden, false);
+    card.querySelector('button').click();
+    canvas.dispatchEvent({ ...pointer, type: 'pointerdown' });
+    canvas.dispatchEvent({ ...pointer, type: 'pointermove', clientY: y - 60 });
+    canvas.dispatchEvent({ ...pointer, type: 'pointerup', clientY: y - 60 });
+    assert.equal(card.hidden, true);
+    assert.equal(h.requests().length, 0);
 });
 
 test('welcome entry works before Desmos loads; only background scrolling is blocked', () => {

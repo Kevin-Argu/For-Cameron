@@ -36,6 +36,8 @@
   let growth = 0;
   let growthTarget = 0;
   let dragLastY = null;
+  let dragLastX = null;
+  let dragDistance = 0;
   let dragPointer = null;
   const water = document.getElementById('waterLilies');
   let lastPaint = 0;
@@ -282,16 +284,35 @@
     if (event.isPrimary === false || event.button > 0) return;
     dragPointer = event.pointerId;
     dragLastY = event.clientY;
+    dragLastX = event.clientX;
+    dragDistance = 0;
     canvas.setPointerCapture(event.pointerId);
   });
   canvas.addEventListener('pointermove', event => {
     if (dragLastY === null || event.pointerId !== dragPointer) return;
     const upward = dragLastY - event.clientY;
+    dragDistance += Math.hypot(event.clientX - dragLastX, upward);
+    dragLastX = event.clientX;
     dragLastY = event.clientY;
     if (upward > 0) nurture(upward * .047);
   });
-  function endDrag() { dragLastY = null; dragPointer = null; }
-  canvas.addEventListener('pointerup', endDrag);
+  function endDrag() { dragLastY = null; dragLastX = null; dragPointer = null; }
+  canvas.addEventListener('pointerup', event => {
+    if (event.pointerId !== dragPointer) return;
+    dragDistance += Math.hypot(event.clientX - dragLastX, event.clientY - dragLastY);
+    if (dragDistance < 8) {
+      const box = canvas.getBoundingClientRect();
+      const x = (event.clientX - box.left) / box.width * 100;
+      const y = (event.clientY - box.top) / box.height * 100;
+      const hit = blooms.some(flower => {
+        if (growth < 5.1 + flower.k * .88) return false;
+        const center = point(flower, 1, growth);
+        return Math.hypot((x - center.x) / flower.size, (y - center.y) / (flower.size * .86)) < 1.2;
+      });
+      if (hit) window.CameronNotes?.openLilies();
+    }
+    endDrag();
+  });
   canvas.addEventListener('pointercancel', endDrag);
   canvas.addEventListener('lostpointercapture', endDrag);
   replay.addEventListener('click', restart);
@@ -323,3 +344,4 @@
   resize();
   restart();
 })();
+

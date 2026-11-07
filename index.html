@@ -8,13 +8,14 @@
     <title>Cameron</title>
     <link rel="stylesheet" href="css/style.css?v=4">
     <link rel="stylesheet" href="css/peanut-gate.css?v=4">
-    <link rel="stylesheet" href="css/flower-math.css?v=4">
+    <link rel="stylesheet" href="css/flower-math.css?v=5">
     <!-- Local controls initialize without waiting for the external graph library. -->
-    <script defer src="js/main.js?v=4"></script>
+    <script defer src="js/main.js?v=5"></script>
+    <script defer src="js/flower-notes.js?v=1"></script>
     <script defer src="js/peanut-gate.js?v=5"></script>
-    <script defer src="js/ascii-lilies.js?v=4"></script>
-    <script defer src="js/whale.js?v=5"></script>
-    <script defer src="js/flowers.js?v=4"></script>
+    <script defer src="js/ascii-lilies.js?v=5"></script>
+    <script defer src="js/whale.js?v=6"></script>
+    <script defer src="js/flowers.js?v=5"></script>
     <script defer src="js/heart.js?v=4"></script>
     <script defer src="js/graph-loader.js?v=4"></script>
 </head>
@@ -46,8 +47,11 @@
 
     <main inert aria-hidden="true">
         <section class="ascii-intro" id="lilyFinale" aria-label="Grow the ASCII lilies">
-            <canvas id="asciiLiliesCanvas" role="img" aria-label="Animated lilies drawn from colored ASCII characters. Drag upward or use Water the lilies to grow them."></canvas>
+            <canvas id="asciiLiliesCanvas" role="img" aria-label="Animated lilies drawn from colored ASCII characters. Drag upward or use Water the lilies to grow them. Tap a bloom or the Lilies button to read its note."></canvas>
             <div class="ascii-intro-controls">
+                <div class="ascii-note-row">
+                    <button id="lilyNoteButton" class="flower-note-tab" type="button" aria-label="Read the note for Lilies" aria-haspopup="dialog" aria-controls="lilyNotePanel" aria-expanded="false">Lilies</button>
+                </div>
                 <div class="ascii-actions">
                     <button id="waterLilies" type="button">♡ Water the lilies</button>
                     <button id="colorLilies" type="button">Colors: Pink</button>

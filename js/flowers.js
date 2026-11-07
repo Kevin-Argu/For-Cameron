@@ -2,7 +2,7 @@
 'use strict';
 window.CameronGraphs.flowers = function initializeFlowers() {
 // ============================================================
-// DESMOS FLOWER BACKGROUND + CLICKABLE MATH
+// DESMOS FLOWER BACKGROUND + PERSONAL NOTES
 // ============================================================
 
 const flowerElement = document.getElementById("flowerCalculator");
@@ -597,124 +597,10 @@ wisteriaBlooms.forEach(([x, y, radius, rotation], index) => {
 
 // ============================================================
 // ============================================================
-// CLICKABLE FLOWER MATH
+// CLICKABLE FLOWER NOTES
 // ============================================================
 
-const flowerMathInfo = {
-
-    sakura: {
-        title: "Sakura",
-
-        note:
-            "The same trigonometric petal curve is drawn several times at smaller scales to create the nested pink blossom.",
-
-        equation:
-`x(t) = -2.4√[sin(cos(5t) - 5)] cos(t) - 5
-
-y(t) =  2.4√[sin(cos(5t) - 5)] sin(t) + 3`,
-
-        details:
-`Center: (-5, 3)
-Main scale: 2.4
-Other scales: 1.55, 0.95, 0.48
-Domain: 0 ≤ t ≤ 2π`
-    },
-
-
-    petunia: {
-        title: "Petunia",
-
-        note:
-            "The cos(5t) term creates five-fold symmetry while the logarithm shapes the petals.",
-
-        equation:
-`x(t) = P√[log₂(cos(5t) + 3)] cos(t) + X
-
-y(t) = P√[log₂(cos(5t) + 3)] sin(t) + Y`,
-
-        details:
-`P = 1.15
-X = 5
-Y = 2.7
-The inner details use additional logarithmic and tangent curves.`
-    },
-
-
-    plumeria: {
-        title: "Plumeria",
-
-        note:
-            "One compact parametric curve is repeated at smaller scales to create the pink, coral, orange, and yellow layers.",
-
-        equation:
-`x(t) = P√[tan(cos(2.5t))] cos(t) + X
-
-y(t) = P√[tan(cos(2.5t))] sin(t) + Y`,
-
-        details:
-`P = -1.35
-X = -6.2
-Y = -3.2
-Layer scales:
-1.00, 0.82, 0.62, 0.43, 0.27, 0.12`
-    },
-
-
-    hibiscus: {
-        title: "Hibiscus",
-
-        note:
-            "Four phase-shifted versions of the same curve overlap to make the purple petals. Logarithmic tangent curves make the dark radial details.",
-
-        equation:
-`x(t) = H√[cos(sin(5(t - 4)) - 1)] cos(t) + X
-
-y(t) = H√[cos(sin(5(t - 4)) - 1)] sin(t) + Y`,
-
-        details:
-`H = -1.25
-X = 0
-Y = -3
-Main phase shifts:
-t - 4
-t - 3
-t - 2
-t - 1`
-    },
-
-
-    wisteria: {
-        title: "Wisteria",
-        note: "Sixteen four-petaled blossoms form a soft, tapered hanging cluster. Each flower uses a parametric petal curve, with different sizes, positions, and rotations.",
-        equation: "r(t) = R[0.54 + 0.46 cos(4(t − φ))]\n\nx(t) = r(t) cos(t) + X\n\ny(t) = r(t) sin(t) + Y",
-        details: "Wisteria 1–16\nR controls blossom size\nφ rotates the four petals\nX and Y position each blossom\nAn inner 0.72R layer adds shading\nSmall ellipse curves form the pale flower centers."
-    },
-
-    lilac: {
-        title: "Lilac",
-
-        note:
-            "The lilac is a cluster of six related blossoms. Each changes its size, position, and phase while keeping the same basic equation.",
-
-        equation:
-`x(t) = L√[log₂(1.05 - cos(4(t - φ)) + 1)] cos(t) + X
-
-y(t) = L√[log₂(1.05 - cos(4(t - φ)) + 1)] sin(t) + Y`,
-
-        details:
-`L controls size
-X and Y control position
-φ controls rotation
-
-Each bloom also uses:
-
-0.80L
-0.60L
-0.40L
-0.20L`
-    }
-
-};
+const flowerNotes = window.CameronNotes.entries;
 
 
 // ============================================================
@@ -784,66 +670,36 @@ layer.className = 'flower-click-layer';
 layer.hidden = true;
 wrapper.appendChild(layer);
 
-const card = document.createElement('section');
-card.className = 'flower-math-card';
-card.id = 'flowerMathPanel';
-card.hidden = true;
-card.setAttribute('role', 'dialog');
-card.setAttribute('aria-labelledby', 'flowerMathTitle');
-card.innerHTML = `
-    <button type="button" class="flower-math-close" aria-label="Close math panel">×</button>
-    <div class="math-kicker">Math behind the flower</div>
-    <h2 id="flowerMathTitle"></h2>
-    <p class="math-note"></p>
-    <pre class="math-equation"></pre>
-    <details><summary>View parameters and layers</summary><div class="flower-math-details"></div></details>
-`;
-wrapper.appendChild(card);
-const closeButton = card.querySelector('.flower-math-close');
 const hint = document.createElement('div');
-hint.className = 'flower-math-hint';
-hint.textContent = '✦ Tap a flower to explore its math';
+hint.className = 'flower-note-hint';
+hint.textContent = 'Tap a flower for a little note';
 hint.hidden = true;
 wrapper.appendChild(hint);
-let selectedButton = null;
 let interactive = false;
-
-function openMath(flower, button) {
-    const info = flowerMathInfo[flower.id];
-    card.querySelector('h2').textContent = info.title;
-    card.querySelector('.math-note').textContent = info.note;
-    card.querySelector('.math-equation').textContent = info.equation;
-    card.querySelector('.flower-math-details').textContent = info.details;
-    card.querySelector('details').open = false;
-    if (selectedButton) selectedButton.setAttribute('aria-expanded', 'false');
-    selectedButton = button;
-    selectedButton.setAttribute('aria-expanded', 'true');
-    card.hidden = false;
-    hint.hidden = true;
-    closeButton.focus({ preventScroll: true });
-}
-function closeMath(restoreFocus = false) {
-    if (card.hidden) return false;
-    card.hidden = true;
-    if (selectedButton) selectedButton.setAttribute('aria-expanded', 'false');
+const notePanel = window.CameronNotes.createCard(wrapper, 'flowerNotePanel', () => {
     hint.hidden = !interactive;
-    if (restoreFocus && selectedButton) selectedButton.focus({ preventScroll: true });
-    return true;
+});
+
+function openNote(flower, button) {
+    notePanel.open(flower.id, button);
+    hint.hidden = true;
 }
-closeButton.addEventListener('click', () => closeMath(true));
+function closeNote(restoreFocus = false) {
+    return notePanel.close(restoreFocus);
+}
 const zones = flowerClickAreas.map(flower => {
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'flower-click-zone';
     button.setAttribute('aria-haspopup', 'dialog');
-    button.setAttribute('aria-controls', 'flowerMathPanel');
+    button.setAttribute('aria-controls', 'flowerNotePanel');
     button.setAttribute('aria-expanded', 'false');
-    button.setAttribute('aria-label', 'Explore the math behind ' + flowerMathInfo[flower.id].title);
-    button.title = 'Explore ' + flowerMathInfo[flower.id].title + ' math';
+    button.setAttribute('aria-label', 'Read the note for ' + flowerNotes[flower.id].title);
+    button.title = 'Read the note for ' + flowerNotes[flower.id].title;
     button.addEventListener('click', event => {
         event.preventDefault();
         event.stopPropagation();
-        openMath(flower, button);
+        openNote(flower, button);
     });
     layer.appendChild(button);
     return { flower, button };
@@ -881,12 +737,12 @@ if ('ResizeObserver' in window) new ResizeObserver(queueResize).observe(flowerEl
 else window.addEventListener('resize', queueResize, { passive: true });
 fitGarden();
 site.flowerUI = {
-    closeMath,
+    closeNote,
     setInteractive(enabled) {
         interactive = enabled;
         layer.hidden = !enabled;
         hint.hidden = !enabled;
-        if (!enabled) { closeMath(); fitGarden(); }
+        if (!enabled) { closeNote(); fitGarden(); }
     }
 };
 
@@ -972,3 +828,4 @@ site.reducedMotion.addEventListener('change', () => {
 });
 };
 })();
+
