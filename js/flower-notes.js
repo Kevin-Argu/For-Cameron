@@ -64,8 +64,8 @@
 
     const api = window.CameronNotes = { entries, createCard };
     const lilySection = document.getElementById('lilyFinale');
-    const lilyButton = document.getElementById('lilyNoteButton');
-    if (lilySection && lilyButton) {
+    const lilyCanvas = document.getElementById('asciiLiliesCanvas');
+    if (lilySection && lilyCanvas) {
         const lilyCard = createCard(lilySection, 'lilyNotePanel');
         const growthControl = document.createElement('div');
         growthControl.className = 'lily-growth-control';
@@ -74,8 +74,12 @@
             <input id="lilyGrowth" type="range" min="0" max="20" step="0.1" value="0">
         `;
         lilyCard.element.appendChild(growthControl);
-        api.openLilies = () => lilyCard.open('lilies', lilyButton);
-        lilyButton.addEventListener('click', api.openLilies);
+        api.openLilies = () => lilyCard.open('lilies', lilyCanvas);
+        lilyCanvas.addEventListener('keydown', event => {
+            if (event.key !== 'Enter' && event.key !== ' ') return;
+            event.preventDefault();
+            api.openLilies();
+        });
         document.getElementById('enterGarden')?.addEventListener('click', () => lilyCard.close());
         if ('IntersectionObserver' in window) {
             new IntersectionObserver(entries => {

@@ -8,10 +8,11 @@
     <title>Cameron</title>
     <link rel="stylesheet" href="css/style.css?v=6">
     <link rel="stylesheet" href="css/peanut-gate.css?v=4">
-    <link rel="stylesheet" href="css/flower-math.css?v=6">
+    <link rel="stylesheet" href="css/flower-math.css?v=7">
+    <link rel="stylesheet" href="css/music.css?v=1">
     <!-- Local controls initialize without waiting for the external graph library. -->
     <script defer src="js/main.js?v=5"></script>
-    <script defer src="js/flower-notes.js?v=2"></script>
+    <script defer src="js/flower-notes.js?v=3"></script>
     <script defer src="js/flower-details.js?v=1"></script>
     <script defer src="js/peanut-gate.js?v=5"></script>
     <script defer src="js/ascii-lilies.js?v=6"></script>
@@ -19,6 +20,7 @@
     <script defer src="js/flowers.js?v=6"></script>
     <script defer src="js/heart.js?v=5"></script>
     <script defer src="js/graph-loader.js?v=5"></script>
+    <script defer src="js/music.js?v=1"></script>
 </head>
 <body class="peanut-lock">
     <div id="peanutGate" class="peanut-gate" role="dialog" aria-modal="true"
@@ -48,11 +50,8 @@
 
     <main inert aria-hidden="true">
         <section class="ascii-intro" id="lilyFinale" aria-label="Grow the ASCII lilies">
-            <canvas id="asciiLiliesCanvas" role="img" aria-label="Animated lilies drawn from colored ASCII characters. Drag upward or use Water the lilies to grow them. Tap a bloom or the Lilies button to read its note."></canvas>
+            <canvas id="asciiLiliesCanvas" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="lilyNotePanel" aria-expanded="false" aria-label="Lilies drawn from glowing characters. Drag upward to grow them. Tap a bloom or press Enter to open their note."></canvas>
             <div class="ascii-intro-controls">
-                <div class="ascii-note-row">
-                    <button id="lilyNoteButton" class="flower-note-tab" type="button" aria-label="Read the note for Lilies" aria-haspopup="dialog" aria-controls="lilyNotePanel" aria-expanded="false">Lilies</button>
-                </div>
                 <div class="ascii-actions">
                     <button id="waterLilies" type="button">♡ Water the lilies</button>
                     <button id="colorLilies" type="button">Colors: Pink</button>
@@ -105,6 +104,69 @@
                     <button type="button" data-retry="heart" hidden>Try again</button>
                 </div>
             </div>
+        </section>
+
+        <section class="music-section" id="musicFinale" aria-labelledby="musicHeading" tabindex="-1">
+            <header class="music-heading">
+                <span class="music-stars" aria-hidden="true">· * ·</span>
+                <h2 id="musicHeading">In the sweetest sounds.</h2>
+                <p>play a little something.</p>
+            </header>
+            <div class="music-instruments">
+                <div class="instrument piano-instrument" role="group" aria-labelledby="pianoHeading">
+                    <h3 id="pianoHeading">piano</h3>
+                    <img class="piano-art" src="assets/piano.svg" width="630" height="300" alt="A grand piano drawn from glowing characters">
+                    <div class="piano-keyboard" id="pianoKeys" role="group" aria-label="Playable piano keys">
+                        <div class="piano-white-keys">
+                            <button class="piano-key white-key" type="button" data-instrument="piano" data-midi="60" data-key="a" aria-label="Piano C4, keyboard A"><span>C</span><kbd>A</kbd></button>
+                            <button class="piano-key white-key" type="button" data-instrument="piano" data-midi="62" data-key="s" aria-label="Piano D4, keyboard S"><span>D</span><kbd>S</kbd></button>
+                            <button class="piano-key white-key" type="button" data-instrument="piano" data-midi="64" data-key="d" aria-label="Piano E4, keyboard D"><span>E</span><kbd>D</kbd></button>
+                            <button class="piano-key white-key" type="button" data-instrument="piano" data-midi="65" data-key="f" aria-label="Piano F4, keyboard F"><span>F</span><kbd>F</kbd></button>
+                            <button class="piano-key white-key" type="button" data-instrument="piano" data-midi="67" data-key="g" aria-label="Piano G4, keyboard G"><span>G</span><kbd>G</kbd></button>
+                            <button class="piano-key white-key" type="button" data-instrument="piano" data-midi="69" data-key="h" aria-label="Piano A4, keyboard H"><span>A</span><kbd>H</kbd></button>
+                            <button class="piano-key white-key" type="button" data-instrument="piano" data-midi="71" data-key="j" aria-label="Piano B4, keyboard J"><span>B</span><kbd>J</kbd></button>
+                            <button class="piano-key white-key" type="button" data-instrument="piano" data-midi="72" data-key="k" aria-label="Piano C5, keyboard K"><span>C</span><kbd>K</kbd></button>
+                        </div>
+                        <button class="piano-key black-key" style="--key-position:1" type="button" data-instrument="piano" data-midi="61" data-key="w" aria-label="Piano C sharp 4, keyboard W"><kbd>W</kbd></button>
+                        <button class="piano-key black-key" style="--key-position:2" type="button" data-instrument="piano" data-midi="63" data-key="e" aria-label="Piano D sharp 4, keyboard E"><kbd>E</kbd></button>
+                        <button class="piano-key black-key" style="--key-position:4" type="button" data-instrument="piano" data-midi="66" data-key="t" aria-label="Piano F sharp 4, keyboard T"><kbd>T</kbd></button>
+                        <button class="piano-key black-key" style="--key-position:5" type="button" data-instrument="piano" data-midi="68" data-key="y" aria-label="Piano G sharp 4, keyboard Y"><kbd>Y</kbd></button>
+                        <button class="piano-key black-key" style="--key-position:6" type="button" data-instrument="piano" data-midi="70" data-key="u" aria-label="Piano A sharp 4, keyboard U"><kbd>U</kbd></button>
+                    </div>
+                    <p class="instrument-hint">tap the keys <span class="keyboard-hint">· A–K, with W E T Y U</span></p>
+                </div>
+
+                <div class="instrument harmonica-instrument" role="group" aria-labelledby="harmonicaHeading">
+                    <h3 id="harmonicaHeading">harmonica</h3>
+                    <div class="harmonica-space" aria-hidden="true"><span>♪</span><span>·</span><span>♫</span></div>
+                    <div class="harmonica-shell">
+                        <div class="harmonica-engraving" aria-hidden="true">* · C · *</div>
+                        <div class="harmonica-holes" id="harmonicaHoles" role="group" aria-label="Playable harmonica holes">
+                            <button type="button" data-instrument="harmonica" data-hole="0" data-key="1" aria-label="Harmonica hole 1, blow C4"><span>1</span></button>
+                            <button type="button" data-instrument="harmonica" data-hole="1" data-key="2" aria-label="Harmonica hole 2, blow E4"><span>2</span></button>
+                            <button type="button" data-instrument="harmonica" data-hole="2" data-key="3" aria-label="Harmonica hole 3, blow G4"><span>3</span></button>
+                            <button type="button" data-instrument="harmonica" data-hole="3" data-key="4" aria-label="Harmonica hole 4, blow C5"><span>4</span></button>
+                            <button type="button" data-instrument="harmonica" data-hole="4" data-key="5" aria-label="Harmonica hole 5, blow E5"><span>5</span></button>
+                            <button type="button" data-instrument="harmonica" data-hole="5" data-key="6" aria-label="Harmonica hole 6, blow G5"><span>6</span></button>
+                            <button type="button" data-instrument="harmonica" data-hole="6" data-key="7" aria-label="Harmonica hole 7, blow C6"><span>7</span></button>
+                            <button type="button" data-instrument="harmonica" data-hole="7" data-key="8" aria-label="Harmonica hole 8, blow E6"><span>8</span></button>
+                            <button type="button" data-instrument="harmonica" data-hole="8" data-key="9" aria-label="Harmonica hole 9, blow G6"><span>9</span></button>
+                            <button type="button" data-instrument="harmonica" data-hole="9" data-key="0" aria-label="Harmonica hole 10, blow C7"><span>10</span></button>
+                        </div>
+                        <div class="harmonica-bottom" aria-hidden="true">· : · : · : · : · : · : · : ·</div>
+                    </div>
+                    <div class="harmonica-breath" role="group" aria-label="Harmonica breath">
+                        <button id="harmonicaBlow" type="button" aria-pressed="true">blow</button>
+                        <button id="harmonicaDraw" type="button" aria-pressed="false">draw</button>
+                    </div>
+                    <p class="instrument-hint">hold a hole <span class="keyboard-hint">· 1–0 on your keyboard</span></p>
+                </div>
+            </div>
+            <div class="music-footer">
+                <div class="music-volume"><label for="musicVolume">volume</label><input id="musicVolume" type="range" min="0" max="100" value="35" aria-label="Instrument volume"></div>
+                <p id="musicStatus" class="music-status" role="status">tap or hold a note to begin</p>
+            </div>
+            <noscript><p class="music-status">Enable JavaScript to play the instruments.</p></noscript>
         </section>
     </main>
 </body>

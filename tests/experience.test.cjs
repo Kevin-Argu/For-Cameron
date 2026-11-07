@@ -106,12 +106,13 @@ test('the lily note works without Desmos, opens on a bloom tap, and does not ope
     const h = start({ reduced: true, desmos: false });
     h.run('ascii-lilies.js'); h.enter(); h.intersect('asciiLiliesCanvas', 1);
     const card = h.get('lilyNotePanel');
-    h.get('lilyNoteButton').click();
+    assert.equal(h.get('lilyNoteButton'), null);
+    h.get('asciiLiliesCanvas').dispatchEvent({ type: 'keydown', key: 'Enter' });
     assert.equal(card.querySelector('h2').textContent, 'Lilies');
     assert.equal(card.hidden, false);
     card.dispatchEvent({ type: 'keydown', key: 'Escape' });
     assert.equal(card.hidden, true);
-    assert.equal(h.document.activeElement, h.get('lilyNoteButton'));
+    assert.equal(h.document.activeElement, h.get('asciiLiliesCanvas'));
     for (let i = 0; i < 6; i++) h.get('waterLilies').click();
     h.advance(100);
     const canvas = h.get('asciiLiliesCanvas');

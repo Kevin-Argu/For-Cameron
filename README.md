@@ -1,6 +1,6 @@
 # For Cameron
 
-A little something: peanut-free welcome → interactive ASCII lilies → Cameron and mathematical flowers → roaming ASCII whale → animated Desmos heart.
+A little something: peanut-free welcome → interactive ASCII lilies → Cameron and mathematical flowers → roaming ASCII whale → birdwatching → animated Desmos heart → piano and harmonica.
 
 ## Run locally
 
@@ -20,6 +20,7 @@ Open `http://localhost:8000`. The source is a static website with no build step.
 - The glowing character-art binoculars open the Split-Rocker scene with the green hummingbird and red cardinal. The entire illustration is a keyboard-accessible link; the scene's back link returns directly to the garden.
 - The heart's equation and slider stay open. Use the slider's native play/pause control to control the animation. The heart pauses offscreen and when the tab is hidden, while preserving an explicit pause choice.
 - Reduced motion disables automatic heart playback and uses a stationary whale. The native slider's play control can still explicitly enable the heart. Lily growth responds without the rain animation.
+- The final music section has a playable piano and a C harmonica. Tap/hold keys or holes. Once focused inside the section, use A–K (W E T Y U for sharps) for piano and 1–0 for harmonica. Blow/Draw changes the reed tuning. Volume can be taken to zero. Escape, leaving the section, tab hiding, and window blur release held notes.
 
 ## Flower notes
 
@@ -28,7 +29,7 @@ Fill each `note` string with Kevin's wording. Blank entries show “This one rem
 as a placeholder. These notes are published text, not a visitor comment form.
 
 In the garden, choose Explore and tap any flower or cluster. For the ASCII lilies,
-tap an open bloom or the Lilies label. Dragging still waters the lilies. Close or
+tap an open bloom, or focus the canvas and press Enter. Dragging still waters the lilies. Close or
 Escape dismisses a note and returns focus to its flower.
 
 Each garden flower's card also opens a live Desmos calculator with its original
@@ -37,6 +38,17 @@ that scales the complete flower or cluster. Changes affect the card's preview;
 the main garden keeps its original composition. Closing or switching a card
 destroys its calculator. The ASCII lilies have a Bloom slider in their note,
 linked to the same growth state used by watering and dragging.
+
+## Music
+
+`js/music.js` synthesizes a soft piano from decaying harmonics and a reed-like
+harmonica from a periodic waveform with slight vibrato. It uses the browser's
+Web Audio API, starts only after a note gesture, and needs no audio download or
+microphone permission. The ten-hole C Richter tuning follows
+[Hohner's tuning chart](https://hohner.de/fileadmin/documents/instruments/harmonicas/HOHNER-Tuningcharts-Marineband-1896.pdf).
+These are synthesized instruments, not recordings. Touch, keyboard, and accessible
+button clicks share the same note lifecycle; pending audio resumes cannot start
+notes that have already been released.
 
 ## Desmos configuration
 
@@ -51,7 +63,7 @@ The flower equations, colors, domains, layer opacities, and six reveal groups ar
 With Node.js 18 or later:
 
 ```sh
-node --test tests/experience.test.cjs
+node --test tests/*.test.cjs
 ```
 
 The dependency-free tests cover expression preservation, responsive math bounds, welcome entry without Desmos, timeout/retry and lazy loading, Explore/Done/Escape, live flower cards, lily growth controls, repeat reveals, idle/offscreen animation scheduling, reduced-motion resize, and native heart playback. The test doubles do not render HTML/CSS or execute the real Desmos library.
