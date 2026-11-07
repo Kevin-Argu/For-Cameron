@@ -94,15 +94,11 @@ button:not(:disabled):active { transform: translateY(0); }
     padding: max(32px, env(safe-area-inset-top)) var(--space) max(32px, env(safe-area-inset-bottom));
     background: var(--paper);
 }
-.heart-controls { display: flex; justify-content: center; gap: 10px; position: sticky; top: max(12px, env(safe-area-inset-top)); z-index: 110; }
-.heart-controls button { box-shadow: 0 4px 20px rgba(36,33,31,.08); }
 .heart-stage {
-    position: relative; width: min(900px, 100%); height: clamp(320px, 70vh, 600px); height: clamp(320px, 70svh, 600px);
+    position: relative; width: min(1100px, 100%); height: clamp(480px, 82vh, 760px); height: clamp(480px, 82svh, 760px);
     border-radius: 16px; background: #fff; box-shadow: 0 15px 50px rgba(36,33,31,.08); overflow: hidden;
 }
-.heart-section.showing-math .heart-stage { height: clamp(480px, 78vh, 720px); height: clamp(480px, 78svh, 720px); }
 #heartCalculator { position: absolute; inset: 0; z-index: 1; }
-.heart-lock { position: absolute; inset: 0; z-index: 2; touch-action: pan-y; }
 @media (max-width: 600px) {
     .cameron-title { font-size: clamp(40px, 11.5vw, 68px); }
     #asciiLiliesCanvas { height: 62vh; height: 62svh; }
@@ -123,3 +119,4 @@ button:not(:disabled):active { transform: translateY(0); }
     button { transition: none; }
     button:where(:not(:disabled)):hover { transform: none; }
 }
+

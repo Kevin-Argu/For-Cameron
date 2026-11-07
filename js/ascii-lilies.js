@@ -40,6 +40,7 @@
   let dragDistance = 0;
   let dragPointer = null;
   const water = document.getElementById('waterLilies');
+  const growthSlider = document.getElementById('lilyGrowth');
   let lastPaint = 0;
   let active = false;
   let frameId = 0;
@@ -255,12 +256,25 @@
   }
   function nurture(amount) {
     growthTarget = Math.min(20, growthTarget + amount);
+    syncGrowthSlider();
     invalidate();
   }
+  function syncGrowthSlider() {
+    if (!growthSlider) return;
+    growthSlider.value = growthTarget;
+    growthSlider.setAttribute('aria-valuetext', Math.round(growthTarget / 20 * 100) + '% bloomed');
+  }
+  growthSlider?.addEventListener('input', () => {
+    growthTarget = clamp(Number(growthSlider.value), 0, 20);
+    growth = growthTarget;
+    syncGrowthSlider();
+    invalidate();
+  });
   function restart() {
     growth = 0;
     growthTarget = 0;
     rainDrops = [];
+    syncGrowthSlider();
     invalidate();
   }
   function animate(now) {

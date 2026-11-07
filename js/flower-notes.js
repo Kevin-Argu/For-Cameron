@@ -67,6 +67,13 @@
     const lilyButton = document.getElementById('lilyNoteButton');
     if (lilySection && lilyButton) {
         const lilyCard = createCard(lilySection, 'lilyNotePanel');
+        const growthControl = document.createElement('div');
+        growthControl.className = 'lily-growth-control';
+        growthControl.innerHTML = `
+            <label for="lilyGrowth">Bloom</label>
+            <input id="lilyGrowth" type="range" min="0" max="20" step="0.1" value="0">
+        `;
+        lilyCard.element.appendChild(growthControl);
         api.openLilies = () => lilyCard.open('lilies', lilyButton);
         lilyButton.addEventListener('click', api.openLilies);
         document.getElementById('enterGarden')?.addEventListener('click', () => lilyCard.close());

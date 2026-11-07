@@ -6,8 +6,8 @@ const path = require('node:path');
 const { harness } = require('./harness.cjs');
 const flush = async () => { for (let i = 0; i < 8; i++) await Promise.resolve(); };
 function start(options) { const h = harness(options); h.run('main.js'); h.run('flower-notes.js'); return h; }
-function flowers(h) { h.run('flowers.js'); h.context.CameronGraphs.flowers(); h.get('exploreButton').disabled = false; }
-function heart(h) { h.run('heart.js'); h.context.CameronGraphs.heart(); h.get('toggleHeartMath').disabled = false; h.get('toggleHeartAnimation').disabled = false; }
+function flowers(h) { h.run('flower-details.js'); h.run('flowers.js'); h.context.CameronGraphs.flowers(); h.get('exploreButton').disabled = false; }
+function heart(h) { h.run('heart.js'); h.context.CameronGraphs.heart(); }
 
 test('all original flower expressions, colors, domains and layers are preserved', () => {
     const h = start(); flowers(h);
@@ -63,7 +63,7 @@ test('flower reveals replay on re-entry and stop after finishing', () => {
     h.hidden(false); h.advance(4000); assert.equal(calc.expressions.get('sakuraOuter').fillOpacity, 1);
 });
 
-test('every garden flower opens its own named note and renders supplied wording as plain text', () => {
+test('every flower opens its note with expanded live math, its original layers, and a size slider', () => {
     const h = start(); flowers(h);
     h.get('exploreButton').click();
     const layer = h.document.querySelector('.flower-click-layer');
@@ -77,6 +77,19 @@ test('every garden flower opens its own named note and renders supplied wording 
         assert.equal(card.querySelector('.flower-note-text').textContent, 'This one reminds me of…');
         assert.equal(card.querySelector('pre'), null);
         assert.equal(card.querySelector('details'), null);
+        const detail = h.calculators.at(-1);
+        assert.equal(detail.settings.expressions, true);
+        assert.equal(detail.settings.expressionsCollapsed, false);
+        assert.equal(detail.expressions.get('bloom-size').latex, 'b=1');
+        const source = h.calculators[0].expressions;
+        for (const curve of detail.getExpressions().filter(expression => expression.parametricDomain)) {
+            assert.ok(curve.latex.includes(source.get(curve.id).latex.trim()));
+            assert.equal(curve.color, source.get(curve.id).color);
+            assert.ok(curve.fillOpacity > 0 || curve.lineOpacity > 0);
+        }
+        assert.ok(detail.getExpressions().filter(expression => expression.parametricDomain).length >= 4);
+        // Switching flowers cleans up the preceding live calculator.
+        if (h.calculators.length > 2) assert.equal(h.calculators.at(-2).destroyed, true);
     }
     assert.deepEqual(names.sort(), ['Hibiscus', 'Lilac', 'Petunia', 'Plumeria', 'Sakura', 'Wisteria']);
     h.context.CameronNotes.entries.lilac.note = 'A personal line.\n<em>Kept as plain text.</em>';
@@ -85,6 +98,8 @@ test('every garden flower opens its own named note and renders supplied wording 
     assert.equal(note.textContent, 'A personal line.\n<em>Kept as plain text.</em>');
     assert.equal(note.classList.contains('is-placeholder'), false);
     assert.equal(note.querySelector('em'), null);
+    card.querySelector('button').click();
+    assert.equal(h.calculators.at(-1).destroyed, true);
 });
 
 test('the lily note works without Desmos, opens on a bloom tap, and does not open on a watering drag', () => {
@@ -112,6 +127,20 @@ test('the lily note works without Desmos, opens on a bloom tap, and does not ope
     canvas.dispatchEvent({ ...pointer, type: 'pointerup', clientY: y - 60 });
     assert.equal(card.hidden, true);
     assert.equal(h.requests().length, 0);
+});
+
+test('the lilies Bloom slider controls growth and stays in sync with watering and restart', () => {
+    const h = start({ reduced: true, desmos: false });
+    h.run('ascii-lilies.js'); h.enter(); h.intersect('asciiLiliesCanvas', 1);
+    const slider = h.get('lilyGrowth');
+    slider.value = '20'; slider.dispatchEvent({ type: 'input' }); h.advance(100);
+    assert.equal(slider.getAttribute('aria-valuetext'), '100% bloomed');
+    const calls = h.canvasCalls.get(h.get('asciiLiliesCanvas'));
+    assert.ok(calls.fills > 0);
+    h.get('replayLilies').click();
+    assert.equal(Number(slider.value), 0);
+    h.get('waterLilies').click();
+    assert.equal(Number(slider.value), 3.6);
 });
 
 test('welcome entry works before Desmos loads; only background scrolling is blocked', () => {
@@ -203,23 +232,33 @@ test('whale entrance waits for entry and reduced-motion whale repaints on resize
     assert.ok(staticCalls.fills > afterResize);
 });
 
-test('heart keeps its equation, pauses offscreen, respects pause/reduced motion, and exposes math on demand', () => {
+test('heart math stays open without extra buttons and its native slider controls playback', () => {
     const h = start(); heart(h); const calc = h.calculators[0];
     assert.equal(calc.expressions.get('heart').latex, String.raw`f(x)=x^{\frac{2}{3}}+\sqrt{5-x^2}\sin(a\pi x)`);
     assert.equal(calc.expressions.get('slider').playing, false);
+    assert.equal(calc.settings.expressions, true);
+    assert.equal(calc.settings.expressionsCollapsed, false);
+    assert.equal(h.get('heartCalculator').inert, false);
+    assert.equal(h.get('toggleHeartMath'), null);
+    assert.equal(h.get('toggleHeartAnimation'), null);
     h.intersect('heartFinale', 1); assert.equal(calc.expressions.get('slider').playing, true);
     h.hidden(true); assert.equal(calc.expressions.get('slider').playing, false);
     h.hidden(false); assert.equal(calc.expressions.get('slider').playing, true);
-    h.get('toggleHeartAnimation').click();
+    calc.setExpression({ id: 'slider', playing: false });
+    calc.userChange('change', { isUserInitiated: true });
     h.intersect('heartFinale', 0); h.intersect('heartFinale', 1);
     assert.equal(calc.expressions.get('slider').playing, false);
-    h.get('toggleHeartMath').click();
-    assert.equal(calc.settings.expressions, true); assert.equal(h.get('heartCalculator').inert, false);
     h.get('heartFinale').dispatchEvent({ type: 'keydown', key: 'Escape' });
-    assert.equal(calc.settings.expressions, false); assert.equal(h.get('heartCalculator').inert, true);
-    h.get('toggleHeartAnimation').click(); h.setReduced(true);
+    assert.equal(calc.settings.expressions, true); assert.equal(h.get('heartCalculator').inert, false);
+    h.setReduced(true);
     assert.equal(calc.expressions.get('slider').playing, false);
-    h.get('toggleHeartAnimation').click(); assert.equal(calc.expressions.get('slider').playing, true);
+    calc.setExpression({ id: 'slider', playing: true });
+    calc.userChange('change', { isUserInitiated: true });
+    assert.equal(calc.expressions.get('slider').playing, true);
+    h.resize('heartCalculator', 320, 240);
+    const b = calc.bounds;
+    assert.ok(b.left <= -3.5 && b.right >= 3.5 && b.bottom <= -2 && b.top >= 5);
+    assert.ok(Math.abs(320 / (b.right - b.left) - 240 / (b.top - b.bottom)) < .00001);
 });
 
 test('HTML has unique IDs and all referenced local scripts/styles exist', () => {

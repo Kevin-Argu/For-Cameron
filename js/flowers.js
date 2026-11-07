@@ -672,16 +672,35 @@ wrapper.appendChild(layer);
 
 const hint = document.createElement('div');
 hint.className = 'flower-note-hint';
-hint.textContent = 'Tap a flower for a little note';
+hint.textContent = 'Tap a flower for its note and math';
 hint.hidden = true;
 wrapper.appendChild(hint);
 let interactive = false;
+let flowerDetail = null;
 const notePanel = window.CameronNotes.createCard(wrapper, 'flowerNotePanel', () => {
+    flowerDetail?.destroy();
+    flowerDetail = null;
     hint.hidden = !interactive;
 });
 
 function openNote(flower, button) {
+    flowerDetail?.destroy();
     notePanel.open(flower.id, button);
+    const parameters = {
+        petunia: ['Xpet', 'Ypet', 'Pet', 'Ptu', 'Ppetunia', 'Ps'],
+        hibiscus: ['Xhib', 'Yhib', 'Hlove', 'Hlover', 'Hlovers'],
+        plumeria: ['Xplum', 'Yplum', 'Pplum']
+    };
+    const curves = new Map(flowerRevealGroups[flower.id].map(curve => [curve.id, curve]));
+    const expressions = initialExpressions
+        .filter(expression => curves.has(expression.id) || parameters[flower.id]?.includes(expression.id))
+        .map(expression => {
+            const curve = curves.get(expression.id);
+            return curve ? { ...expression, [curve.kind === 'fill' ? 'fillOpacity' : 'lineOpacity']: curve.opacity } : { ...expression };
+        });
+    flowerDetail = window.CameronFlowerDetails(notePanel.element,
+        { ...flower, title: flowerNotes[flower.id].title }, expressions);
+    notePanel.element.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'instant' });
     hint.hidden = true;
 }
 function closeNote(restoreFocus = false) {

@@ -17,8 +17,8 @@ Open `http://localhost:8000`. The source is a static website with no build step.
 - Water the lilies or drag upward to grow them. Colors cycles through the original palettes; Start again resets growth and rain.
 - Enter the garden moves to Cameron's flowers. Explore enables graph interaction and personal flower notes. Done closes the card and restores page scrolling. Escape closes an open note first, then exits Explore.
 - The whale enters after the welcome screen closes and continues roaming. Tapping it away from other controls preserves its heart reaction.
-- Show math exposes the heart's equation and slider; Hide math restores page scrolling. Pause/Play controls the animation. The heart pauses offscreen and when the tab is hidden, while preserving an explicit pause choice.
-- Reduced motion disables automatic heart playback and uses a stationary whale. Play can still explicitly enable the heart. Lily growth responds without the rain animation.
+- The heart's equation and slider stay open. Use the slider's native play/pause control to control the animation. The heart pauses offscreen and when the tab is hidden, while preserving an explicit pause choice.
+- Reduced motion disables automatic heart playback and uses a stationary whale. The native slider's play control can still explicitly enable the heart. Lily growth responds without the rain animation.
 
 ## Flower notes
 
@@ -29,6 +29,13 @@ as a placeholder. These notes are published text, not a visitor comment form.
 In the garden, choose Explore and tap any flower or cluster. For the ASCII lilies,
 tap an open bloom or the Lilies label. Dragging still waters the lilies. Close or
 Escape dismisses a note and returns focus to its flower.
+
+Each garden flower's card also opens a live Desmos calculator with its original
+equations, colors and layers. The math list starts expanded with a `b` slider
+that scales the complete flower or cluster. Changes affect the card's preview;
+the main garden keeps its original composition. Closing or switching a card
+destroys its calculator. The ASCII lilies have a Bloom slider in their note,
+linked to the same growth state used by watering and dragging.
 
 ## Desmos configuration
 
@@ -46,7 +53,7 @@ With Node.js 18 or later:
 node --test tests/experience.test.cjs
 ```
 
-The dependency-free tests cover expression preservation, responsive math bounds, welcome entry without Desmos, timeout/retry and lazy loading, Explore/Done/Escape, repeat reveals, idle/offscreen animation scheduling, reduced-motion resize, and heart controls. The test doubles do not render HTML/CSS or execute the real Desmos library.
+The dependency-free tests cover expression preservation, responsive math bounds, welcome entry without Desmos, timeout/retry and lazy loading, Explore/Done/Escape, live flower cards, lily growth controls, repeat reveals, idle/offscreen animation scheduling, reduced-motion resize, and native heart playback. The test doubles do not render HTML/CSS or execute the real Desmos library.
 
 Before sharing, check the actual website in desktop and mobile browsers, including Safari: 320px and 390px portrait, landscape, tablet, and desktop; welcome scrolling on short screens; all lily controls; flower panning and note dismissal; repeated section visits; heart math and play/pause; reduced motion; and a throttled/blocked Desmos request. Confirm the API-key notice against the actual key and domain.
 

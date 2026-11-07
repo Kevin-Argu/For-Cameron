@@ -4,7 +4,7 @@
     let libraryPromise;
     const scenes = [
         { name: 'flowers', section: 'gardenStart', element: 'flowerCalculator', status: 'flowerStatus', controls: ['exploreButton'] },
-        { name: 'heart', section: 'heartFinale', element: 'heartCalculator', status: 'heartStatus', controls: ['toggleHeartMath', 'toggleHeartAnimation'] }
+        { name: 'heart', section: 'heartFinale', element: 'heartCalculator', status: 'heartStatus', controls: [] }
     ].map(scene => ({ ...scene, near: false, state: 'idle' }));
 
     function loadLibrary() {
@@ -75,3 +75,4 @@
     document.addEventListener('cameron:entered', enter, { once: true });
     if (site.entered) enter();
 })();
+

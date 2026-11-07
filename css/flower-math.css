@@ -43,6 +43,15 @@
     content: ''; display: block; height: 75px; margin-top: 9px;
     background: repeating-linear-gradient(transparent 0 24px, rgba(125,87,117,.12) 24px 25px);
 }
+.flower-note-card.has-flower-math { width: min(1040px, calc(100% - 44px)); }
+.has-flower-math .flower-note-text { min-height: 0; margin-top: 12px; padding-top: 12px; }
+.has-flower-math .flower-note-text.is-placeholder::after { display: none; }
+.flower-detail-calculator {
+    width: 100%; height: clamp(340px, 57svh, 520px); margin-top: 20px;
+    overflow: hidden; border: 1px solid #e4dce2; border-radius: 12px; background: #fff;
+}
+.lily-growth-control { display: grid; gap: 10px; margin-top: 20px; color: #e4c6d8; font: 15px/1.4 var(--serif); }
+.lily-growth-control input { width: 100%; min-height: 28px; accent-color: #e9a9c8; cursor: pointer; }
 .ascii-note-row { display: flex; justify-content: center; }
 .ascii-intro-controls .flower-note-tab {
     min-height: 36px; padding: 5px 15px; border: 0; border-radius: 0;
@@ -62,6 +71,7 @@
 @media (max-width: 700px) {
     .flower-note-card { top: 12px; right: 12px; width: calc(100% - 24px); max-height: min(calc(100% - 24px), calc(100svh - 24px)); padding: 24px; }
     .flower-note-card h2 { font-size: 29px; }
+    .flower-note-card.has-flower-math { width: calc(100% - 24px); padding: 18px; }
     .flower-note-hint { top: 9px; font-size: 12px; }
 }
 @media (prefers-reduced-motion: reduce) {

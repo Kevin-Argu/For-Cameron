@@ -6,18 +6,19 @@
     <meta name="theme-color" content="#040609">
     <meta name="desmos-api-key" content="b836d5b9911b48079c3f012e7dff2ae0">
     <title>Cameron</title>
-    <link rel="stylesheet" href="css/style.css?v=4">
+    <link rel="stylesheet" href="css/style.css?v=5">
     <link rel="stylesheet" href="css/peanut-gate.css?v=4">
-    <link rel="stylesheet" href="css/flower-math.css?v=5">
+    <link rel="stylesheet" href="css/flower-math.css?v=6">
     <!-- Local controls initialize without waiting for the external graph library. -->
     <script defer src="js/main.js?v=5"></script>
-    <script defer src="js/flower-notes.js?v=1"></script>
+    <script defer src="js/flower-notes.js?v=2"></script>
+    <script defer src="js/flower-details.js?v=1"></script>
     <script defer src="js/peanut-gate.js?v=5"></script>
-    <script defer src="js/ascii-lilies.js?v=5"></script>
+    <script defer src="js/ascii-lilies.js?v=6"></script>
     <script defer src="js/whale.js?v=6"></script>
-    <script defer src="js/flowers.js?v=5"></script>
-    <script defer src="js/heart.js?v=4"></script>
-    <script defer src="js/graph-loader.js?v=4"></script>
+    <script defer src="js/flowers.js?v=6"></script>
+    <script defer src="js/heart.js?v=5"></script>
+    <script defer src="js/graph-loader.js?v=5"></script>
 </head>
 <body class="peanut-lock">
     <div id="peanutGate" class="peanut-gate" role="dialog" aria-modal="true"
@@ -93,14 +94,8 @@
         </section>
 
         <section class="heart-section" id="heartFinale" aria-label="The animated mathematical heart">
-            <div class="heart-controls" aria-label="Heart controls">
-                <button id="toggleHeartMath" type="button" aria-expanded="false"
-                        aria-controls="heartCalculator" disabled>Show math</button>
-                <button id="toggleHeartAnimation" type="button" disabled>Pause</button>
-            </div>
             <div class="heart-stage">
-                <div id="heartCalculator" inert></div>
-                <div class="heart-lock" id="heartLock" aria-hidden="true"></div>
+                <div id="heartCalculator"></div>
                 <div class="graph-status" id="heartStatus">
                     <p role="status">Opening the heart…</p>
                     <button type="button" data-retry="heart" hidden>Try again</button>
