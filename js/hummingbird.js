@@ -1,4 +1,4 @@
-// A tiny green hummingbird, drawn with the same text glyphs as the flowers.
+// A green hummingbird and red cardinal, drawn from the flowers' text alphabet.
 (() => {
   'use strict';
   const canvas = document.getElementById('hummingbirdCanvas');
@@ -8,6 +8,7 @@
   const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
   // These coordinates share the sculpture's 146 × 156 drawing space.
   const stops = [[143, 25], [138, 7], [105, -3], [43, 9], [29, 59], [34, 95], [137, 108], [145, 69]];
+  const cardinalStops = [[32, 73], [32, 20], [64, 3], [128, 10], [143, 57], [133, 106], [81, 129], [32, 110]];
   let width = 0, height = 0, scale = 1;
   let frameId = 0, previous = 0, time = 0, visible = true;
 
@@ -54,6 +55,66 @@
     glyph('.', 2.5, -2.25, '#040609', 2.2);
     for (let x = 3.7; x <= 9.2; x += 1.1) glyph('-', x, -1.9 - (x - 3.7) * .07, '#d2e0ab', 1.7);
   }
+  function cardinalWing(phase, far) {
+    const tipX = -4.3 - 2 * Math.cos(phase);
+    const tipY = -.8 - (far ? 6.6 : 8.5) * Math.sin(phase);
+    const color = far ? '#963849' : '#ef6673';
+    // A broad fan of feathers, with a slower beat than the hummingbird.
+    for (let i = 0; i < 4; i++) {
+      feather(-2 + i * .35, -.8 + i * .3,
+        tipX - i * .6, tipY + i * .8, color);
+    }
+  }
+  function drawCardinal(t) {
+    const phase = motion.matches ? 1.1 : t * Math.PI * 2 * 4.5;
+    cardinalWing(phase + .6, true);
+    // Long red tail feathers and a fuller, rounded scarlet body.
+    for (let i = 0; i < 3; i++) {
+      feather(-3.5, .7 + i * .4, -11.7, 4.1 + i * .8, i === 1 ? '#f05b61' : '#b7384b');
+    }
+    for (let y = -2; y <= 3; y += .85) {
+      for (let x = -5; x <= 3; x += .9) {
+        if ((x + 1) ** 2 / 16 + (y - .25) ** 2 / 6.8 > 1) continue;
+        glyph(y > 1 ? '+' : '*', x, y, y > 1 ? '#ff806c' : x > -.5 ? '#ff4e58' : '#ce354d', 1.9);
+      }
+    }
+    cardinalWing(phase, false);
+    // The cardinal's raised crest, black facial mask, and short orange bill.
+    for (let y = -4.1; y <= -.9; y += .8) {
+      for (let x = .1; x <= 3.6; x += .8) {
+        if ((x - 1.8) ** 2 / 3.5 + (y + 2.5) ** 2 / 3.1 > 1) continue;
+        glyph('*', x, y, '#f1525e', 1.9);
+      }
+    }
+    glyph('^', .65, -6, '#ff6570', 2.5);
+    glyph('/\\', 1, -4.8, '#f1525e', 2.2);
+    glyph('*', 1.5, -4.2, '#ff4e58', 2.2);
+    glyph('#', 3, -2.4, '#281d29', 2.8);
+    glyph('*', 2.65, -.85, '#281d29', 2.5);
+    glyph('.', 2.65, -3.1, '#fff0d0', 1.6);
+    glyph('>', 4.8, -2.1, '#ffb45e', 3.2);
+    glyph('/', .6, 3.3, '#ca9676', 1.6);
+  }
+  function paintCardinal() {
+    // Its own slower circuit keeps both birds visible in different places.
+    const leg = time / 5.3;
+    const index = Math.floor(leg) % cardinalStops.length;
+    const local = leg - Math.floor(leg);
+    const u = Math.max(0, Math.min(1, (local - .12) / .88));
+    const ease = u * u * (3 - 2 * u);
+    const from = cardinalStops[index], to = cardinalStops[(index + 1) % cardinalStops.length];
+    const x = from[0] + (to[0] - from[0]) * ease;
+    const y = from[1] + (to[1] - from[1]) * ease +
+      (motion.matches ? 0 : Math.sin(time * 2.8) * .75 - Math.sin(u * Math.PI) * 2);
+    ctx.save();
+    ctx.translate((x - 14) * scale, (y + 12) * scale);
+    ctx.scale((x < 86 ? 1 : -1) * scale * 1.1, scale * 1.1);
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.shadowBlur = Math.min(3, scale * .45);
+    drawCardinal(time);
+    ctx.restore();
+  }
   function paint() {
     ctx.clearRect(0, 0, width, height);
     // Hover at each flower patch, then ease into the next short flight.
@@ -73,6 +134,7 @@
     ctx.shadowBlur = Math.min(3, scale * .45);
     drawBird(time);
     ctx.restore();
+    paintCardinal();
   }
   function canAnimate() { return visible && !document.hidden && !motion.matches; }
   function schedule() {
