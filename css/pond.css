@@ -1,0 +1,71 @@
+.birdwatch-entry { gap: 16px; }
+.birdwatch-entry .binocular-link { width: min(460px, 100%); }
+.birdwatch-entry .lily-pond {
+    display: block;
+    position: relative;
+    flex: 0 0 auto;
+    width: min(760px, 100%);
+    height: clamp(170px, 28vw, 230px);
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: #6c8e7e;
+    transform: none;
+    -webkit-tap-highlight-color: transparent;
+    --ripple-x: 50%;
+    --ripple-y: 60%;
+}
+.birdwatch-entry .lily-pond:hover { background: transparent; transform: none; }
+.lily-pond:focus-visible { outline: 2px dashed #b7c7b2; outline-offset: 5px; }
+.pond-water { display: block; position: absolute; inset: 0; pointer-events: none; }
+.pond-water::before {
+    content: ""; position: absolute; inset: 20% 1% 2%; border-radius: 50%;
+    background: radial-gradient(ellipse, #182d2a55, #0c191b33 54%, transparent 73%);
+}
+.pond-pad, .pond-bloom { position: absolute; display: block; }
+.pond-pad img, .pond-bloom img { width: 100%; height: auto; display: block; }
+.pond-pad img, .pond-bloom img {
+    animation: pond-bob 6s ease-in-out infinite alternate;
+    animation-play-state: paused;
+}
+.lily-pond.is-visible .pond-pad img, .lily-pond.is-visible .pond-bloom img { animation-play-state: running; }
+.pad-one { width: 23%; left: 7%; top: 31%; transform: rotate(-16deg); }
+.pad-two { width: 24%; left: 57%; top: 19%; transform: rotate(-21deg); }
+.pad-three { width: 22%; left: 32%; top: 42%; transform: rotate(12deg); }
+.pad-four { width: 20%; left: 69%; top: 55%; transform: rotate(150deg); }
+.pad-five { width: 16%; left: 20%; top: 67%; transform: rotate(182deg); }
+.pad-two img { animation-delay: -3s; }
+.pad-three img { animation-delay: -1.5s; }
+.pad-four img { animation-delay: -4s; }
+.pad-five img { animation-delay: -2s; }
+.pond-bloom { width: 21%; left: 37%; top: 17%; filter: drop-shadow(0 3px 5px #d5e6bb16); }
+.pond-bloom img { animation-delay: -1.5s; }
+.pond-lines { position: absolute; font: 12px/1 Menlo, Consolas, monospace; letter-spacing: .25em; white-space: pre; opacity: .45; }
+.pond-lines-back { left: 21%; top: 18%; }
+.pond-lines-front { right: 15%; bottom: 4%; }
+.pond-ripple {
+    position: absolute; left: var(--ripple-x); top: var(--ripple-y);
+    width: 90px; height: 29px; margin: -14px 0 0 -45px;
+    border: 1px solid #adc9af; border-radius: 50%; opacity: 0;
+}
+.lily-pond.is-rippling .pond-ripple { animation: pond-ripple 1.8s ease-out both; }
+.lily-pond.is-rippling .ripple-two { animation-delay: .25s; }
+@keyframes pond-bob { from { transform: translateY(2px) rotate(-1deg); } to { transform: translateY(-3px) rotate(1deg); } }
+@keyframes pond-ripple { from { opacity: .6; transform: scale(.2); } to { opacity: 0; transform: scale(2.7); } }
+@media (max-width: 600px) {
+    .birdwatch-entry { padding-inline: 12px; }
+    .pond-lines { font-size: 9px; letter-spacing: 0; }
+    .birdwatch-entry .lily-pond { height: 190px; }
+    .pad-one { width: 27%; left: 1%; }
+    .pad-two { width: 30%; left: 59%; }
+    .pad-three { width: 32%; left: 30%; top: 44%; }
+    .pad-four { width: 27%; left: 71%; top: 62%; }
+    .pad-five { width: 23%; left: 11%; }
+    .pond-bloom { width: 36%; left: 33%; top: 20%; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .pond-pad img, .pond-bloom img { animation: none; }
+    .lily-pond.is-rippling .pond-ripple { animation: pond-ripple-still .8s ease-out both; }
+    @keyframes pond-ripple-still { from { opacity: .6; } to { opacity: 0; } }
+}

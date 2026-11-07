@@ -1,6 +1,6 @@
 # For Cameron
 
-A little something: peanut-free welcome → interactive ASCII lilies → Cameron and mathematical flowers → roaming ASCII whale → birdwatching → animated Desmos heart → piano and harmonica.
+A little something: peanut-free welcome → interactive ASCII lilies → Cameron and mathematical flowers → roaming ASCII whale → birdwatching and lily pads → piano and harmonica → animated Desmos heart → chocolate milk and George's goodbye.
 
 ## Run locally
 
@@ -18,9 +18,11 @@ Open `http://localhost:8000`. The source is a static website with no build step.
 - Enter the garden moves to Cameron's flowers. Explore enables graph interaction and personal flower notes. Done closes the card and restores page scrolling. Escape closes an open note first, then exits Explore.
 - The whale stays inside its ocean section by default and pauses when that section is offscreen. “Let the whale roam” lets it swim across the main page; the floating “Bring the whale back” button returns it to the ocean. Reloading starts with the whale contained again. Tapping it away from other controls preserves its heart reaction.
 - The glowing character-art binoculars open the Split-Rocker scene with the green hummingbird and red cardinal. The entire illustration is a keyboard-accessible link; the scene's back link returns directly to the garden.
+- Beneath the binoculars, green lily pads and a white water lily bob on a little pond. Tap the water (or focus it and press Enter/Space) to make ripples. The pond pauses offscreen and when the tab is hidden; reduced motion keeps the pads still.
+- On “okay bye”, take the chocolate milk and George, the brown-gray lop-eared rabbit, hops away. You can also tap him, then use “pspsps, George” to bring him back. Giving the milk back or revisiting the section resets him. Reduced motion keeps him sitting beside the gift. The artwork uses local SVG text characters and does not publish the reference photos.
 - The heart's equation and slider stay open. Use the slider's native play/pause control to control the animation. The heart pauses offscreen and when the tab is hidden, while preserving an explicit pause choice.
 - Reduced motion disables automatic heart playback and uses a stationary whale. The native slider's play control can still explicitly enable the heart. Lily growth responds without the rain animation.
-- The final music section has a playable piano and a C harmonica. Tap/hold keys or holes. Once focused inside the section, use A–K (W E T Y U for sharps) for piano and 1–0 for harmonica. Blow/Draw changes the reed tuning. Volume can be taken to zero. Escape, leaving the section, tab hiding, and window blur release held notes.
+- The music section has a playable piano and a C harmonica. Tap/hold keys or holes. Once focused inside the section, use A–K (W E T Y U for sharps) for piano and 1–0 for harmonica. Blow/Draw changes the reed tuning. Volume can be taken to zero. Escape, leaving the section, tab hiding, and window blur release held notes.
 
 ## Flower notes
 

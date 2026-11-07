@@ -10,7 +10,8 @@
     <link rel="stylesheet" href="css/peanut-gate.css?v=4">
     <link rel="stylesheet" href="css/flower-math.css?v=7">
     <link rel="stylesheet" href="css/music.css?v=2">
-    <link rel="stylesheet" href="css/goodbye.css?v=1">
+    <link rel="stylesheet" href="css/goodbye.css?v=2">
+    <link rel="stylesheet" href="css/pond.css?v=1">
     <!-- Local controls initialize without waiting for the external graph library. -->
     <script defer src="js/main.js?v=5"></script>
     <script defer src="js/flower-notes.js?v=5"></script>
@@ -23,7 +24,8 @@
     <script defer src="js/heart.js?v=5"></script>
     <script defer src="js/graph-loader.js?v=5"></script>
     <script defer src="js/music.js?v=2"></script>
-    <script defer src="js/goodbye.js?v=1"></script>
+    <script defer src="js/goodbye.js?v=2"></script>
+    <script defer src="js/pond.js?v=1"></script>
 </head>
 <body class="peanut-lock">
     <div id="peanutGate" class="peanut-gate" role="dialog" aria-modal="true"
@@ -95,6 +97,19 @@
                 <img class="binocular-art" src="assets/binoculars.svg" width="630" height="408" alt="">
                 <span class="binocular-prompt">take a little look <span aria-hidden="true">↗</span></span>
             </a>
+            <button class="lily-pond" id="lilyPond" type="button" aria-label="A white water lily among green lily pads. Tap the water to make a ripple.">
+                <span class="pond-water" aria-hidden="true">
+                    <span class="pond-lines pond-lines-back">· ·  ~   ·   ~  ·  ·   ~    ·</span>
+                    <span class="pond-pad pad-one"><img src="assets/lily-pad.svg" alt="" width="210" height="120" loading="lazy"></span>
+                    <span class="pond-pad pad-two"><img src="assets/lily-pad.svg" alt="" width="210" height="120" loading="lazy"></span>
+                    <span class="pond-pad pad-three"><img src="assets/lily-pad.svg" alt="" width="210" height="120" loading="lazy"></span>
+                    <span class="pond-pad pad-four"><img src="assets/lily-pad.svg" alt="" width="210" height="120" loading="lazy"></span>
+                    <span class="pond-pad pad-five"><img src="assets/lily-pad.svg" alt="" width="210" height="120" loading="lazy"></span>
+                    <span class="pond-bloom"><img src="assets/water-lily.svg" alt="" width="246" height="165" loading="lazy"></span>
+                    <span class="pond-ripple ripple-one"></span><span class="pond-ripple ripple-two"></span>
+                    <span class="pond-lines pond-lines-front">~   ·    ·  ~    ·    ~   ·</span>
+                </span>
+            </button>
         </section>
 
         <section class="music-section" id="musicFinale" aria-labelledby="musicHeading" tabindex="-1">
@@ -297,6 +312,17 @@
                 </svg>
                 <span class="milk-hint" id="milkHint">take it ↑</span>
             </button>
+            <div class="george-meadow" id="georgeMeadow">
+                <div class="george-grass" aria-hidden="true">,  .   ,,     .   ,    ,,  .    ,   .   ,,    .  ,</div>
+                <div class="george-crossing" id="georgeCrossing">
+                    <span class="george-shadow" aria-hidden="true"></span>
+                    <button class="george-button" id="georgeHop" type="button" aria-label="George, Cameron's lop-eared rabbit. Tap to watch him hop away.">
+                        <img class="george-sprite" src="assets/george.svg" alt="" width="300" height="210" loading="lazy">
+                        <span class="george-name" aria-hidden="true">george ♡</span>
+                    </button>
+                </div>
+                <button class="george-recall" id="recallGeorge" type="button" hidden>pspsps, George</button>
+            </div>
             <p class="goodbye-status" id="milkStatus" role="status" aria-live="polite"></p>
         </section>
     </main>
