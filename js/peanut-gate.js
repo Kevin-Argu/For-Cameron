@@ -4,11 +4,10 @@
     const gate = document.getElementById('peanutGate');
     const enter = document.getElementById('enterPeanutFree');
     const main = document.querySelector('main');
-    if (!gate || !enter) return;
+    if (!gate || !enter || !main) return;
     let closing = false;
     let finished = false;
     let fallbackTimer;
-    window.scrollTo({ top: 0, behavior: 'instant' });
 
     // The document stays locked, but a short-screen welcome can scroll itself.
     function preventBackgroundScroll(event) {
@@ -21,12 +20,21 @@
         }
     }
     const options = { passive: false, capture: true };
+    // The birdwatching page links to the actual garden, not the welcome flow.
+    const gardenReturn = window.location.hash === '#gardenStart'
+        ? document.getElementById('gardenStart') : null;
+    if (gardenReturn) {
+        completeEntry(gardenReturn);
+        return;
+    }
+
+    window.scrollTo({ top: 0, behavior: 'instant' });
     document.addEventListener('wheel', preventBackgroundScroll, options);
     document.addEventListener('touchmove', preventBackgroundScroll, options);
     document.addEventListener('keydown', trapFocus, true);
     enter.focus({ preventScroll: true });
 
-    function completeEntry() {
+    function completeEntry(target = null) {
         if (finished) return;
         finished = true;
         clearTimeout(fallbackTimer);
@@ -40,10 +48,15 @@
         document.removeEventListener('wheel', preventBackgroundScroll, options);
         document.removeEventListener('touchmove', preventBackgroundScroll, options);
         document.removeEventListener('keydown', trapFocus, true);
-        window.scrollTo({ top: 0, behavior: 'instant' });
         window.CameronSite.entered = true;
+        if (target) {
+            target.scrollIntoView({ behavior: 'instant', block: 'start' });
+            target.focus({ preventScroll: true });
+        } else {
+            window.scrollTo({ top: 0, behavior: 'instant' });
+            document.getElementById('waterLilies').focus({ preventScroll: true });
+        }
         document.dispatchEvent(new CustomEvent('cameron:entered'));
-        document.getElementById('waterLilies').focus({ preventScroll: true });
     }
     function onTransitionEnd(event) {
         if (event.target === gate && event.propertyName === 'opacity') completeEntry();
@@ -60,3 +73,4 @@
         fallbackTimer = setTimeout(completeEntry, 550);
     });
 })();
+

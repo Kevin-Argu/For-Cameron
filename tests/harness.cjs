@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 
-function harness({ reduced = false, desmos = true, root = path.resolve(__dirname, '..') } = {}) {
+function harness({ reduced = false, desmos = true, hash = '', root = path.resolve(__dirname, '..') } = {}) {
     let document, clock = 0, nextId = 1;
     const frames = new Map(), timers = new Map(), intersections = [], resizes = [], calculators = [];
     const canvasCalls = new Map();
@@ -133,7 +133,7 @@ function harness({ reduced = false, desmos = true, root = path.resolve(__dirname
         calculators.push(calc); return calc;
     } };
     const context = {
-        console, document, Math, Map, Set, Promise, innerWidth: 1440, innerHeight: 900, devicePixelRatio: 1, scrollY: 0,
+        console, document, Math, Map, Set, Promise, location: { hash }, innerWidth: 1440, innerHeight: 900, devicePixelRatio: 1, scrollY: 0,
         matchMedia: () => motion, scrollTo() {},
         addEventListener: windowEvents.addEventListener.bind(windowEvents),
         requestAnimationFrame: callback => { const id = nextId++; frames.set(id, callback); return id; },
@@ -171,3 +171,4 @@ function harness({ reduced = false, desmos = true, root = path.resolve(__dirname
     };
 }
 module.exports = { harness };
+

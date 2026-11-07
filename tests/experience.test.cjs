@@ -75,6 +75,30 @@ test('welcome entry works before Desmos loads; only background scrolling is bloc
     assert.equal(h.document.activeElement, h.get('waterLilies'));
 });
 
+test('the birdwatching return opens the garden directly and initializes its graph', async () => {
+    const birdwatch = fs.readFileSync(path.resolve(__dirname, '../birdwatch.html'), 'utf8');
+    assert.match(birdwatch, /href="index\.html#gardenStart"/);
+    const h = start({ hash: '#gardenStart', desmos: false });
+    h.run('peanut-gate.js');
+    assert.equal(h.context.CameronSite.entered, true);
+    assert.equal(h.get('peanutGate').hidden, true);
+    assert.equal(h.document.querySelector('main').inert, false);
+    assert.equal(h.document.documentElement.classList.contains('peanut-locked'), false);
+    assert.equal(h.document.body.classList.contains('peanut-lock'), false);
+    assert.equal(h.get('gardenStart').scrolledIntoView, true);
+    assert.equal(h.document.activeElement, h.get('gardenStart'));
+    const wheel = { type: 'wheel', target: h.get('gardenStart') };
+    const tab = { type: 'keydown', key: 'Tab' };
+    h.document.dispatchEvent(wheel); h.document.dispatchEvent(tab);
+    assert.ok(!wheel.defaultPrevented); assert.ok(!tab.defaultPrevented);
+    h.run('flowers.js'); h.run('heart.js'); h.run('graph-loader.js');
+    h.intersect('gardenStart', 1);
+    assert.equal(h.requests().length, 1);
+    h.succeedLibrary(); await flush();
+    assert.equal(h.get('exploreButton').disabled, false);
+    assert.equal(h.get('flowerStatus').hidden, true);
+});
+
 test('loader handles timeout, retry, shared loading and lazy heart initialization', async () => {
     const h = start({ desmos: false });
     h.run('flowers.js'); h.run('heart.js'); h.run('graph-loader.js');
@@ -154,3 +178,4 @@ test('HTML has unique IDs and all referenced local scripts/styles exist', () => 
         if (!url.startsWith('http')) assert.ok(fs.existsSync(path.join(root, url.split('?')[0])), url);
     }
 });
+
