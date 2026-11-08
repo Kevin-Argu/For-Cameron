@@ -2,7 +2,8 @@
     --music-pink: #e8b5cd; --music-sage: #a9c6a3;
     position: relative; z-index: 20; min-height: 100vh; min-height: 100svh;
     padding: clamp(56px, 7vw, 90px) max(22px, env(safe-area-inset-left)) 48px;
-    background: #040609; color: #e9e5d9; text-align: center;
+    /* Warm charcoal lets the pink and sage instruments lead this section. */
+    background: var(--night-charcoal); color: #e9e5d9; text-align: center;
 }
 .music-heading h2 { font: italic normal clamp(30px, 5vw, 54px)/1.2 var(--serif); color: #eac3d5; }
 .music-heading p { margin-top: 18px; color: #9cae9d; font: 13px/1.6 Menlo, Consolas, monospace; letter-spacing: .055em; }

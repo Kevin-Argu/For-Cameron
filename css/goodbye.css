@@ -1,4 +1,4 @@
-/* Final page: center the bottle, seated pickle, and George in a quiet, dark scene. */
+/* Return to the lilies' plum for the bottle, seated pickle, and George. */
 .goodbye-section {
     --milk-cream: #ead7bb;
     --milk-pink: #e9b9cf;
@@ -11,7 +11,7 @@
     justify-content: center;
     overflow: hidden;
     padding: clamp(40px, 6vh, 68px) 20px max(32px, env(safe-area-inset-bottom));
-    background: #040609;
+    background: var(--night-plum);
     color: var(--milk-cream);
     text-align: center;
 }
@@ -91,7 +91,7 @@
     .milk-bottle { transform-origin: 100% 100%; }
     .dillbillies { transition: opacity .35s ease; }
     .goodbye-section.has-milk .dillbillies { opacity: .18; }
-    .goodbye-section.has-milk .milk-bottle { background: #040609; }
+    .goodbye-section.has-milk .milk-bottle { background: var(--night-plum); }
 }
 @media (hover: hover) {
     .goodbye-section .milk-gift:hover { background: transparent; transform: none; }

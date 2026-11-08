@@ -1,6 +1,7 @@
 :root {
   color-scheme: dark;
-  --night: #040609;
+  /* Continue the binocular scene's blue-green tone on its separate page. */
+  --night: var(--night-field);
   --petal: #f9bfd2;
   --muted: #a9b6a3;
 }

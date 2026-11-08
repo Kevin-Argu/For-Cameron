@@ -74,7 +74,7 @@ button:not(:disabled):active { transform: translateY(0); }
 
 .ascii-intro {
     position: relative; min-height: 100vh; min-height: 100svh; overflow: hidden;
-    background: #040609; color: #f7e9ef; display: flex; flex-direction: column;
+    background: var(--night-plum); color: var(--night-ink); display: flex; flex-direction: column;
     align-items: center; justify-content: center;
     padding: max(28px, env(safe-area-inset-top)) 18px max(26px, env(safe-area-inset-bottom));
 }
@@ -82,15 +82,31 @@ button:not(:disabled):active { transform: translateY(0); }
     display: block; width: min(100%, 900px); height: min(70vh, 720px); height: min(70svh, 720px);
     flex: 0 0 auto; min-height: 220px; cursor: ns-resize; touch-action: none; user-select: none;
 }
-.ascii-intro-controls { display: flex; flex-direction: column; align-items: center; gap: 14px; width: min(100%, 900px); position: relative; z-index: 20; }
-.ascii-actions { display: flex; justify-content: center; gap: 12px; width: 100%; }
-.ascii-enter-row { display: flex; justify-content: center; width: 100%; }
-.ascii-intro-controls button { color: #f9e5ed; background: #17151b; border-color: #68515f; --focus: #f2c9dc; }
-.ascii-intro-controls button:focus-visible { background: #382432; }
-.ascii-intro-controls .ascii-enter { background: var(--pink); color: #2b1824; border-color: var(--pink); min-width: min(100%, 260px); }
+/* One primary action; the small text controls still have 44px touch targets. */
+.ascii-intro-controls { display: flex; flex-direction: column; align-items: center; gap: 2px; width: min(100%, 900px); position: relative; z-index: 20; }
+.ascii-actions { display: flex; flex-direction: column; align-items: center; gap: 2px; width: 100%; }
+.ascii-secondary-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; }
+.ascii-enter-row { display: flex; justify-content: center; width: 100%; margin-top: 4px; }
+.ascii-intro-controls button {
+    color: var(--night-muted); background: transparent; border-color: transparent;
+    --focus: var(--night-pink);
+}
+.ascii-intro-controls .ascii-water {
+    min-width: min(100%, 220px); min-height: 48px; padding: 12px 24px;
+    background: var(--night-pink); color: #2b1824; border-color: var(--night-pink);
+    font-size: 16px;
+}
+.ascii-secondary-actions button {
+    padding: 10px 12px; border-radius: 8px;
+    font: 12px/1.5 Menlo, Consolas, "Liberation Mono", monospace;
+    text-decoration: underline; text-decoration-color: #9d7c9270; text-underline-offset: 4px;
+}
+/* Navigation stays available without competing with the watering interaction. */
+.ascii-intro-controls .ascii-enter { padding: 10px 16px; font-style: italic; font-size: 14px; }
 @media (hover: hover) {
-    .ascii-intro-controls button:hover { background: #382432; border-color: #dcb5c7; }
-    .ascii-intro-controls .ascii-enter:hover { background: #ffdfec; color: #2b1824; }
+    .ascii-intro-controls button:hover { background: transparent; color: var(--night-ink); transform: none; }
+    .ascii-intro-controls .ascii-water:hover { background: var(--night-pink-hover); color: #2b1824; border-color: var(--night-pink-hover); }
+    .ascii-secondary-actions button:hover { text-decoration-color: currentColor; }
 }
 
 #roamingWhale { position: absolute; inset: 0; z-index: 15; pointer-events: none; }
@@ -99,14 +115,15 @@ button:not(:disabled):active { transform: translateY(0); }
 #roamingWhale:focus-visible { outline: 2px dashed #c2dbe4; outline-offset: -8px; }
 .whale-section {
     min-height: 100vh; min-height: 100svh; display: flex; align-items: center; justify-content: center;
-    text-align: center; background: radial-gradient(ellipse at 50% 55%, #15334b, #060e1b 75%);
+    /* A dusky blue variation gives the ocean its own atmosphere. */
+    text-align: center; background: radial-gradient(ellipse at 50% 55%, var(--night-blue-glow), var(--night-blue) 75%);
     color: #e1f5fa; padding: 5rem 1.5rem; position: relative; overflow: hidden;
 }
 .whale-section h2 { font: normal clamp(38px,7vw,80px)/1.12 var(--serif); letter-spacing: .025em; text-wrap: balance; }
 .whale-section p { font: italic clamp(15px,2vw,20px)/1.5 var(--serif); color: #9abacb; margin-top: 1rem; text-wrap: balance; }
 .whale-stars { position: absolute; inset: 0; opacity: .3; pointer-events: none; background-image: radial-gradient(#d3f5ff 1px, transparent 1px); background-size: 67px 71px; }
 /* Before the click, the empty stage gives BALLENAS the whole page. */
-.whale-section[data-whale-state="waiting"] { background: #060e1b; }
+.whale-section[data-whale-state="waiting"] { background: var(--night-blue); }
 .whale-section[data-whale-state="waiting"] .whale-stars { opacity: 0; }
 .whale-drop-button {
     position: relative; z-index: 26; padding: 18px 28px;
@@ -153,7 +170,7 @@ button:not(:disabled):active { transform: translateY(0); }
     position: relative; z-index: 20; min-height: 82vh; min-height: 82svh;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     gap: clamp(20px, 4vh, 40px); padding: 64px 20px 56px;
-    background: #040609; color: #b7c7b2; text-align: center;
+    background: var(--night-field); color: #b7c7b2; text-align: center;
 }
 .birdwatch-entry h2 {
     font: italic normal clamp(26px, 4.5vw, 46px)/1.25 var(--serif);
@@ -199,10 +216,8 @@ button:not(:disabled):active { transform: translateY(0); }
 @media (max-width: 600px) {
     .cameron-title { font-size: clamp(40px, 11.5vw, 68px); }
     #asciiLiliesCanvas { height: 62vh; height: 62svh; }
-    .ascii-actions { display: grid; grid-template-columns: 1.25fr 1fr 1fr; gap: 7px; max-width: 430px; }
-    .ascii-actions button { padding: 10px 7px; font-size: 13px; min-width: 0; }
-    .ascii-intro-controls { gap: 10px; }
-    .ascii-enter-row .ascii-enter { min-width: min(100%, 230px); }
+    /* Preserve the same action hierarchy on phones without squeezing labels. */
+    .ascii-secondary-actions { gap: 2px; }
     .heart-section { padding-inline: 12px; }
 }
 @media (max-height: 500px) {

@@ -3,21 +3,22 @@ body.peanut-lock { position: fixed; inset: 0; width: 100%; height: 100%; overflo
 #peanutGate {
     position: fixed; inset: 0; z-index: 1000; display: flex; align-items: flex-start;
     padding: max(24px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left));
-    background: #000; color: #f2f2f2; font-family: Arial, Helvetica, sans-serif; text-align: center;
+    /* The welcome shares the softer night palette used by the character scenes. */
+    background: var(--night-charcoal); color: var(--night-ink); font-family: Arial, Helvetica, sans-serif; text-align: center;
     overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; isolation: isolate;
     opacity: 1; transition: opacity .45s ease;
 }
 #peanutGate.is-closing { opacity: 0; }
 .peanut-gate-card { flex: 0 0 auto; width: 100%; max-width: 1100px; margin: auto; padding: 8px 0; }
-.peanut-gate-icon { display: block; width: clamp(88px, 10vw, 132px); height: clamp(88px, 10vw, 132px); margin: 0 auto 30px; color: #d1d1d1; }
+.peanut-gate-icon { display: block; width: clamp(88px, 10vw, 132px); height: clamp(88px, 10vw, 132px); margin: 0 auto 30px; color: var(--night-pink); }
 #peanutGate h1 { margin-bottom: 28px; font: 700 clamp(25px,3.5vw,36px)/1.2 Arial, sans-serif; letter-spacing: -.7px; text-wrap: balance; }
-#peanutGate p { margin: 0 auto 28px; font: 400 clamp(17px,2.5vw,27px)/1.45 Arial, sans-serif; color: #c7c7c7; text-wrap: pretty; }
+#peanutGate p { margin: 0 auto 28px; font: 400 clamp(17px,2.5vw,27px)/1.45 Arial, sans-serif; color: var(--night-muted); text-wrap: pretty; }
 #peanutGate .peanut-gate-btn {
     min-width: min(300px, 100%); max-width: 100%; min-height: 70px; padding: 20px 40px;
-    border: 0; border-radius: 23px; background: #232325; color: #f3f3f3;
-    font: 700 clamp(19px,2.6vw,30px)/1.2 Arial, sans-serif; --focus: #f5f5f5;
+    border: 0; border-radius: 23px; background: var(--night-pink); color: #2b1824;
+    font: 700 clamp(19px,2.6vw,30px)/1.2 Arial, sans-serif; --focus: var(--night-pink);
 }
-@media (hover: hover) { #peanutGate .peanut-gate-btn:hover { background: #343437; } }
+@media (hover: hover) { #peanutGate .peanut-gate-btn:hover { background: var(--night-pink-hover); } }
 @media (max-width: 650px) {
     .peanut-gate-icon { margin-bottom: 24px; }
     #peanutGate h1 { margin-bottom: 22px; }

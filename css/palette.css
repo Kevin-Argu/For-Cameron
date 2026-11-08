@@ -1,0 +1,14 @@
+/* Shared night colors keep the character-art scenes related across both pages. */
+:root {
+    --night-plum: #211a23;
+    --night-blue: #1c2937;
+    --night-blue-glow: #2a4051;
+    --night-field: #202c2d;
+    --night-charcoal: #292426;
+    --night-panel: #302431;
+    --night-ink: #f7e9ef;
+    --night-muted: #cbb9c5;
+    --night-border: #9d7c92;
+    --night-pink: #f2c9dc;
+    --night-pink-hover: #ffdfec;
+}

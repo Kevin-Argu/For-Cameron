@@ -222,8 +222,8 @@
 
     const width = canvas.width / pixelRatio;
     const height = canvas.height / pixelRatio;
-    ctx.fillStyle = '#040609';
-    ctx.fillRect(0, 0, width, height);
+    // Keep the canvas transparent so the plum section shows through at every size.
+    ctx.clearRect(0, 0, width, height);
     ctx.shadowBlur = 5;
     for (let i = 0; i < pixels.length; i++) {
       const pix = pixels[i];

@@ -12,7 +12,6 @@
 
   const palette = { petals: ['#e8a6e5', '#ffc17f', '#ed88a9', '#f9e49f'], pollen: '#fff1b9' };
   const leaves = ['#669765', '#7eaf70', '#a5c17b', '#92b67b'];
-  const background = '#040609';
   const world = { left: 14, top: -12, width: 146, height: 156 };
 
   // Hand-drawn contours follow the two halves of Split-Rocker. Paths only
@@ -131,8 +130,8 @@
   }
 
   function paint() {
-    ctx.fillStyle = background;
-    ctx.fillRect(0, 0, width, height);
+    // Let the shared page color show between glyphs instead of painting a black box.
+    ctx.clearRect(0, 0, width, height);
     ctx.font = '600 ' + (stepY * scale * .89) + 'px Menlo, Consolas, monospace';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
