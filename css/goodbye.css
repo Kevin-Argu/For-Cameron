@@ -1,4 +1,4 @@
-/* A warm cocoa finish pairs with the chocolate milk and wooden rocking chair. */
+/* Neutral black keeps the pink farewell and character artwork easy to see. */
 .goodbye-section {
     --milk-cream: #ead7bb;
     --milk-pink: #e9b9cf;
@@ -11,7 +11,7 @@
     justify-content: center;
     overflow: hidden;
     padding: clamp(40px, 6vh, 68px) 20px max(32px, env(safe-area-inset-bottom));
-    background: var(--night-cocoa);
+    background: var(--night-black);
     color: var(--milk-cream);
     text-align: center;
 }
@@ -91,7 +91,7 @@
     .milk-bottle { transform-origin: 100% 100%; }
     .dillbillies { transition: opacity .35s ease; }
     .goodbye-section.has-milk .dillbillies { opacity: .18; }
-    .goodbye-section.has-milk .milk-bottle { background: var(--night-cocoa); }
+    .goodbye-section.has-milk .milk-bottle { background: var(--night-black); }
 }
 @media (hover: hover) {
     .goodbye-section .milk-gift:hover { background: transparent; transform: none; }
