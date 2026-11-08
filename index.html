@@ -8,7 +8,7 @@
     <title>Cameron</title>
     <link rel="stylesheet" href="css/palette.css?v=1">
     <link rel="stylesheet" href="css/style.css?v=12">
-    <link rel="stylesheet" href="css/peanut-gate.css?v=6">
+    <link rel="stylesheet" href="css/peanut-gate.css?v=7">
     <link rel="stylesheet" href="css/flower-math.css?v=9">
     <link rel="stylesheet" href="css/music.css?v=3">
     <link rel="stylesheet" href="css/goodbye.css?v=8">
@@ -17,7 +17,7 @@
     <script defer src="js/main.js?v=5"></script>
     <script defer src="js/flower-notes.js?v=6"></script>
     <script defer src="js/flower-details.js?v=1"></script>
-    <script defer src="js/peanut-gate.js?v=7"></script>
+    <script defer src="js/peanut-gate.js?v=8"></script>
     <script defer src="js/ascii-lilies.js?v=7"></script>
     <script defer src="js/whale.js?v=14"></script>
     <script defer src="js/bouquet-data.js?v=2"></script>
@@ -55,9 +55,12 @@
                  aria-label="George, a gray-brown lop-eared rabbit, waiting to hop into the garden with you.">
                 <span class="peanut-george-shadow" aria-hidden="true">. . . . . . . . .</span>
                 <div class="peanut-george-travel" id="welcomeGeorge" aria-hidden="true">
-                    <div class="peanut-george-body">
-                        <img class="peanut-george-art" src="assets/george-welcome.svg" width="320" height="243" alt="" fetchpriority="high">
-                        <img class="peanut-george-ear" src="assets/george-welcome-ear.svg" width="320" height="243" alt="" fetchpriority="high">
+                    <!-- Facing is separate from the bounce, so turning never overrides a hop. -->
+                    <div class="peanut-george-facing">
+                        <div class="peanut-george-body">
+                            <img class="peanut-george-art" src="assets/george-welcome.svg" width="320" height="243" alt="" fetchpriority="high">
+                            <img class="peanut-george-ear" src="assets/george-welcome-ear.svg" width="320" height="243" alt="" fetchpriority="high">
+                        </div>
                     </div>
                 </div>
                 <span class="peanut-george-name" aria-hidden="true">george ♡</span>

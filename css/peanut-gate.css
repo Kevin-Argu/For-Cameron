@@ -64,24 +64,41 @@ body.peanut-lock { position: fixed; inset: 0; width: 100%; height: 100%; overflo
     transform: translateX(-50%);
     color: #b9ab9d; font: 11px/1.2 'Courier New', monospace; letter-spacing: .1em;
 }
-/* Two short bounds finish before the gate fades. Keep the 960ms travel in sync
+/* Five forward and five return hops finish before the gate fades. Keep the 4800ms travel in sync
    with the guarded fallback in peanut-gate.js; nested animations do not finish entry. */
 #peanutGate.is-george-hopping .peanut-george-travel,
 #peanutGate.is-george-hopping .peanut-george-shadow {
-    animation: george-welcome-travel 960ms linear forwards;
+    animation: george-welcome-travel 4800ms linear forwards;
+}
+#peanutGate.is-george-hopping .peanut-george-facing {
+    /* Turn on the ground after the fifth hop, then face left for the return. */
+    animation: george-welcome-facing 4800ms steps(1, end) forwards;
 }
 #peanutGate.is-george-hopping .peanut-george-body {
-    animation: george-welcome-bound 480ms ease-in-out 2;
+    animation: george-welcome-bound 480ms ease-in-out 10;
 }
 #peanutGate.is-george-hopping .peanut-george-ear {
-    animation: george-welcome-ear 480ms ease-in-out 2;
+    animation: george-welcome-ear 480ms ease-in-out 10;
 }
 #peanutGate.is-george-hopping .peanut-george-name { opacity: 0; }
 #peanutGate .peanut-gate-btn[aria-disabled="true"] { cursor: default; }
 @keyframes george-welcome-travel {
-    0%, 9% { transform: translateX(0); }
-    43%, 59% { transform: translateX(calc(var(--george-travel) * .5)); }
-    93%, 100% { transform: translateX(var(--george-travel)); }
+    /* Each 10% segment is one bound. Small landing pauses match the body animation. */
+    0%, 1.8% { transform: translateX(0); }
+    8.6%, 11.8% { transform: translateX(calc(var(--george-travel) * .2)); }
+    18.6%, 21.8% { transform: translateX(calc(var(--george-travel) * .4)); }
+    28.6%, 31.8% { transform: translateX(calc(var(--george-travel) * .6)); }
+    38.6%, 41.8% { transform: translateX(calc(var(--george-travel) * .8)); }
+    48.6%, 51.8% { transform: translateX(var(--george-travel)); }
+    58.6%, 61.8% { transform: translateX(calc(var(--george-travel) * .8)); }
+    68.6%, 71.8% { transform: translateX(calc(var(--george-travel) * .6)); }
+    78.6%, 81.8% { transform: translateX(calc(var(--george-travel) * .4)); }
+    88.6%, 91.8% { transform: translateX(calc(var(--george-travel) * .2)); }
+    98.6%, 100% { transform: translateX(0); }
+}
+@keyframes george-welcome-facing {
+    0% { transform: scaleX(1); }
+    50%, 100% { transform: scaleX(-1); }
 }
 @keyframes george-welcome-bound {
     0%, 100% { transform: translateY(0) rotate(0); }
@@ -104,6 +121,7 @@ body.peanut-lock { position: fixed; inset: 0; width: 100%; height: 100%; overflo
 @media (prefers-reduced-motion: reduce) {
     #peanutGate.is-george-hopping .peanut-george-travel,
     #peanutGate.is-george-hopping .peanut-george-shadow,
+    #peanutGate.is-george-hopping .peanut-george-facing,
     #peanutGate.is-george-hopping .peanut-george-body,
     #peanutGate.is-george-hopping .peanut-george-ear { animation: none; }
 }

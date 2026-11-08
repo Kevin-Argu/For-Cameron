@@ -85,7 +85,7 @@
         fallbackTimer = setTimeout(completeEntry, 550);
     }
     function onHopEnd(event) {
-        // Only the complete sideways journey finishes the two hops. Ear and body
+        // Only the complete round trip finishes all ten hops. Ear and body
         // animation events bubble through the same element and must be ignored.
         if (event.target === george && event.animationName === 'george-welcome-travel') beginFade();
     }
@@ -106,9 +106,9 @@
         georgeScene.scrollIntoView({ behavior: 'instant', block: 'nearest' });
         george.addEventListener('animationend', onHopEnd);
         gate.classList.add('is-george-hopping');
-        // CSS ends after 960ms; this bound also opens the site if animation events
+        // CSS ends after 4800ms; this bound also opens the site if animation events
         // are suppressed or the tab was backgrounded during the welcome.
-        hopTimer = setTimeout(beginFade, 1120);
+        hopTimer = setTimeout(beginFade, 4960);
     });
 })();
 

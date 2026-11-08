@@ -9,7 +9,7 @@ function welcome(options = {}) {
     return h;
 }
 
-test('entry waits for both George hops, ignores child animations and repeated clicks, then restores lily focus', () => {
+test('entry waits for George’s full round trip, ignores child animations and repeated clicks, then restores lily focus', () => {
     const h = welcome();
     const gate = h.get('peanutGate'), george = h.get('welcomeGeorge');
     assert.equal(gate.classList.contains('is-george-hopping'), false);
@@ -20,6 +20,7 @@ test('entry waits for both George hops, ignores child animations and repeated cl
     h.advance(450);
     h.get('enterPeanutFree').click();
     george.dispatchEvent({ type: 'animationend', target: george.querySelector('.peanut-george-body'), animationName: 'george-welcome-bound' });
+    h.advance(3500);
     assert.equal(gate.classList.contains('is-closing'), false);
     george.dispatchEvent({ type: 'animationend', animationName: 'george-welcome-travel' });
     assert.equal(gate.classList.contains('is-closing'), true);
@@ -39,6 +40,8 @@ test('missing animation events cannot keep the visitor locked on the welcome', (
     h.advance(700);
     h.get('enterPeanutFree').click();
     h.advance(1000);
+    assert.equal(h.context.CameronSite.entered, false);
+    h.advance(3900);
     assert.equal(h.context.CameronSite.entered, true);
     assert.equal(h.get('peanutGate').hidden, true);
     assert.equal(entries, 1);

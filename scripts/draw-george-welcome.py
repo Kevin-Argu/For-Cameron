@@ -2,7 +2,7 @@
 
 Run: python3 scripts/draw-george-welcome.py
 The outlines are sampling guides only. Both exported SVGs contain text alone;
-the separate near ear can swing naturally during the two welcome hops.
+the separate near ear can swing naturally during the welcome hops.
 """
 from html import escape
 from math import sin, cos, sqrt, hypot, tau
