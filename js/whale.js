@@ -11,7 +11,7 @@
   canvas.id = 'roamingWhale';
   canvas.setAttribute('role', 'button');
   canvas.setAttribute('tabindex', '-1');
-  canvas.setAttribute('aria-label', 'ASCII whale. Tap or press Enter to make it flip or swim upward.');
+  canvas.setAttribute('aria-label', 'ASCII whale. Tap or press Enter to make it flip, swim upward, or turn around.');
   canvas.setAttribute('data-whale-trick', 'idle');
   home.appendChild(canvas);
   const ctx = canvas.getContext('2d');
@@ -240,16 +240,19 @@
     if (!site.entered || entrance !== 'swimming' || trick || (!roaming && !homeVisible)) return;
     hasReacted = true;
     hearts = 1;
+    // Each completed click advances through all three reactions before the sequence repeats.
+    const kind = ['flip', 'swoop', 'turn'][nextTrick++ % 3];
     if (reduced) {
-      // Keep the response visible without spinning or moving for reduced-motion visitors.
-      status.textContent = 'The whale sends you a little heart.';
+      // A direction change can still be shown instantly without animating a turn or moving the whale.
+      if (kind === 'turn') direction *= -1;
+      status.textContent = kind === 'turn' ? 'The whale turns to face the other way.' : 'The whale sends you a little heart.';
       clearTimeout(heartTimer);
       heartTimer = setTimeout(() => { hearts = 0; requestFrame(); }, 900);
     } else {
-      const kind = nextTrick++ % 2 === 0 ? 'flip' : 'swoop';
       trick = { kind, ms: 0, startX: x, startY: y, heading: direction };
       canvas.setAttribute('data-whale-trick', kind);
-      status.textContent = kind === 'flip' ? 'The whale does an upward flip!' : 'The whale swims up in a big swoop!';
+      status.textContent = kind === 'flip' ? 'The whale does an upward flip!' :
+        kind === 'swoop' ? 'The whale swims up in a big swoop!' : 'The whale turns around and swims the other way!';
     }
     requestFrame();
   }
@@ -420,7 +423,7 @@
     const fitScale = Math.max(.1, (w-32)/(spriteWidth+24));
     const goalScale = Math.min(atHome ? 1.08 : .66, fitScale, h*.45/spriteHeight);
     const goalY = h*(atHome ? .65 : atIntro ? .58 : .64);
-    let compression = 0, shake = 0, turn = 0;
+    let compression = 0, shake = 0, turn = 0, turnWidth = 1;
     if (entering) {
       scale = goalScale;
       x = w/2;
@@ -446,21 +449,35 @@
       }
     } else if (trick) {
       trick.ms += dt*16.67;
-      const t = clamp(trick.ms/(trick.kind === 'flip' ? 2100 : 2500), 0, 1);
+      const turningAround = trick.kind === 'turn';
+      const t = clamp(trick.ms/(turningAround ? 950 : trick.kind === 'flip' ? 2100 : 2500), 0, 1);
       const eased = t*t*(3-2*t);
       const arc = Math.sin(Math.PI*t);
-      turn = trick.kind === 'flip' ? -Math.PI*2*eased : -.55*Math.sin(Math.PI*2*t);
-      // Fit the rotated sprite on narrow screens, then move along a smooth arc back to its starting point.
-      const cos = Math.abs(Math.cos(turn)), sin = Math.abs(Math.sin(turn));
-      const rotatedWidth = cos*spriteWidth+sin*(spriteHeight+50);
-      const rotatedHeight = sin*spriteWidth+cos*(spriteHeight+50);
-      scale = Math.min(goalScale, (w-36)/(rotatedWidth+24), (h-48)/(rotatedHeight+24));
-      const halfWidth = rotatedWidth*scale/2+16, halfHeight = rotatedHeight*scale/2+16;
-      const lift = Math.min(h*(trick.kind === 'flip' ? .19 : .28), trick.kind === 'flip' ? 180 : 260);
-      const drift = trick.kind === 'flip' ? Math.sin(Math.PI*2*t)*24 : arc*Math.min(w*.12, 100);
-      x = clamp(trick.startX+trick.heading*drift, halfWidth, w-halfWidth);
-      y = clamp(trick.startY-arc*lift, halfHeight, h-halfHeight);
-      direction = trick.heading;
+      if (turningAround) {
+        // Narrow the silhouette as it turns, swap its facing at the midpoint, then swim out in the new direction.
+        // Keeping direction after this trick makes the following swimming frames continue the reversal.
+        turnWidth = Math.max(.18, Math.abs(Math.cos(Math.PI*eased)));
+        direction = eased < .5 ? trick.heading : -trick.heading;
+        turn = -.06*Math.sin(Math.PI*2*t);
+        scale = goalScale;
+        const halfWidth = (spriteWidth/2+12)*scale+12;
+        const exit = clamp((t-.5)*2, 0, 1);
+        x = clamp(trick.startX-trick.heading*Math.min(w*.08, 80)*exit*exit, halfWidth, w-halfWidth);
+        y = trick.startY-arc*Math.min(h*.035, 24);
+      } else {
+        turn = trick.kind === 'flip' ? -Math.PI*2*eased : -.55*Math.sin(Math.PI*2*t);
+        // Fit the rotated sprite on narrow screens, then move along a smooth arc back to its starting point.
+        const cos = Math.abs(Math.cos(turn)), sin = Math.abs(Math.sin(turn));
+        const rotatedWidth = cos*spriteWidth+sin*(spriteHeight+50);
+        const rotatedHeight = sin*spriteWidth+cos*(spriteHeight+50);
+        scale = Math.min(goalScale, (w-36)/(rotatedWidth+24), (h-48)/(rotatedHeight+24));
+        const halfWidth = rotatedWidth*scale/2+16, halfHeight = rotatedHeight*scale/2+16;
+        const lift = Math.min(h*(trick.kind === 'flip' ? .19 : .28), trick.kind === 'flip' ? 180 : 260);
+        const drift = trick.kind === 'flip' ? Math.sin(Math.PI*2*t)*24 : arc*Math.min(w*.12, 100);
+        x = clamp(trick.startX+trick.heading*drift, halfWidth, w-halfWidth);
+        y = clamp(trick.startY-arc*lift, halfHeight, h-halfHeight);
+        direction = trick.heading;
+      }
       if (t === 1) cancelTrick();
     } else if (reduced) {
       scale = goalScale;
@@ -488,7 +505,7 @@
     const bob = reduced || entering || doingTrick ? 0 : Math.sin(elapsed*.019)*5;
     ctx.translate(x+shake, y+bob);
     if (direction < 0) ctx.scale(-1,1);
-    ctx.scale(scale*(1+.12*compression), scale*(1-.25*compression));
+    ctx.scale(scale*turnWidth*(1+.12*compression), scale*(1-.25*compression));
     ctx.rotate(doingTrick ? turn : reduced || entering ? 0 : Math.sin(elapsed*.014)*.012);
     const dark = !roaming || darkRects.some(rect => rect.top <= y && rect.bottom > y);
     draw(dark);

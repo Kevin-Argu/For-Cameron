@@ -76,12 +76,55 @@ test('whale reactions pause offscreen and in a hidden tab, and stop when motion 
     assert.equal(h.frames.size, 0);
 });
 
+for (const width of [1440, 390]) {
+    test(`the third reaction reverses facing and keeps the new direction at ${width}px`, () => {
+        const h = swimming(), whale = h.get('roamingWhale'), ctx = whale.getContext('2d');
+        if (width === 390) { h.resize('whaleHome', width, 844); h.advance(100); }
+        let mirrors = 0;
+        const originalScale = ctx.scale;
+        ctx.scale = (sx, sy) => { if (sx === -1 && sy === 1) mirrors++; originalScale(sx, sy); };
+        const calls = h.canvasCalls.get(whale);
+        const click = () => whale.dispatchEvent({ type: 'keydown', key: 'Enter' });
+
+        // Run two complete cycles to verify both directions, including the normal frames after each turn.
+        for (let cycle = 0; cycle < 2; cycle++) {
+            click(); assert.equal(whale.getAttribute('data-whale-trick'), 'flip'); h.advance(2300);
+            click(); assert.equal(whale.getAttribute('data-whale-trick'), 'swoop'); h.advance(2700);
+            click(); assert.equal(whale.getAttribute('data-whale-trick'), 'turn');
+            h.advance(300); click(); // A tap during the turn must not queue or restart the reaction.
+            h.advance(800);
+            assert.equal(whale.getAttribute('data-whale-trick'), 'idle');
+            const start = calls.translations.length;
+            mirrors = 0; h.advance(350);
+            assert.equal(mirrors > 0, cycle === 0, 'the facing direction should alternate after each turn');
+            if (width === 1440) {
+                const positions = calls.translations.slice(start).filter(([, y]) => y > 500);
+                const distance = positions.at(-1)[0]-positions[0][0];
+                assert.ok(cycle === 0 ? distance < 0 : distance > 0, 'ordinary swimming should keep the chosen direction');
+            }
+        }
+    });
+}
+
 test('reduced motion keeps a bounded heart response, and ordinary controls do not trigger tricks', () => {
     const h = swimming({ reduced: true }), whale = h.get('roamingWhale');
     h.windowEvent('click', { target: h.get('whaleRoam'), clientX: 720, clientY: 585 });
     assert.equal(whale.getAttribute('data-whale-trick'), 'idle');
     whale.dispatchEvent({ type: 'keydown', key: 'Enter' }); h.advance(17);
     assert.match(h.get('whaleStatus').textContent, /heart/);
+    assert.equal(whale.getAttribute('data-whale-trick'), 'idle');
+    h.advance(1000);
+    assert.equal(h.frames.size, 0);
+
+    // Reduced motion still gets the third option as a static facing change.
+    const ctx = whale.getContext('2d');
+    let mirrors = 0;
+    const originalScale = ctx.scale;
+    ctx.scale = (sx, sy) => { if (sx === -1 && sy === 1) mirrors++; originalScale(sx, sy); };
+    whale.dispatchEvent({ type: 'keydown', key: 'Enter' }); h.advance(1000);
+    whale.dispatchEvent({ type: 'keydown', key: 'Enter' }); h.advance(17);
+    assert.match(h.get('whaleStatus').textContent, /other way/);
+    assert.ok(mirrors > 0);
     assert.equal(whale.getAttribute('data-whale-trick'), 'idle');
     h.advance(1000);
     assert.equal(h.frames.size, 0);
