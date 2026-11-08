@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 
-function harness({ reduced = false, desmos = true, hash = '', root = path.resolve(__dirname, '..') } = {}) {
+function harness({ reduced = false, desmos = true, hash = '', imagesLoaded = true, deferScreenshots = false, root = path.resolve(__dirname, '..') } = {}) {
     let document, clock = 0, nextId = 1;
     const frames = new Map(), timers = new Map(), intersections = [], resizes = [], calculators = [];
     const canvasCalls = new Map();
@@ -31,12 +31,13 @@ function harness({ reduced = false, desmos = true, hash = '', root = path.resolv
         constructor(tag) {
             super(); this.tagName = tag.toLowerCase(); this.children = []; this.attributes = {};
             this.style = {}; this.hidden = false; this.disabled = false; this.inert = false;
+            if (tag === 'img') { this.complete = imagesLoaded; this.naturalWidth = imagesLoaded ? 600 : 0; }
             this.className = ''; this.width = 900; this.height = 666;
             this.rect = { width: 1440, height: 900, top: 0, bottom: 900, left: 0, right: 1440 };
             this.classList = {
                 contains: name => this.className.split(/\s+/).includes(name),
                 add: name => { this.className = [...new Set([...this.className.split(/\s+/).filter(Boolean), name])].join(' '); },
-                remove: name => { this.className = this.className.split(/\s+/).filter(x => x !== name).join(' '); },
+                remove: (...names) => { this.className = this.className.split(/\s+/).filter(x => !names.includes(x)).join(' '); },
                 toggle: (name, force) => { const add = force ?? !this.classList.contains(name); this.classList[add ? 'add' : 'remove'](name); return add; }
             };
         }
@@ -126,6 +127,11 @@ function harness({ reduced = false, desmos = true, hash = '', root = path.resolv
             updateSettings(settings) { Object.assign(this.settings, settings); },
             setExpression(expression) { expressions.set(expression.id, { ...expressions.get(expression.id), ...expression }); },
             setExpressions(list) { this.batches++; list.forEach(expression => this.setExpression(expression)); },
+            screenshotCallbacks: [],
+            asyncScreenshot(options, callback) {
+                if (deferScreenshots) this.screenshotCallbacks.push(callback);
+                else callback('data:image/png;base64,');
+            },
             getExpressions() { return [...expressions.values()]; },
             get graphpaperBounds() { return { pixelCoordinates: element.rect, mathCoordinates: this.bounds }; },
             notifyLayout() { observed.get('graphpaperBounds')?.(); },
@@ -176,5 +182,6 @@ function harness({ reduced = false, desmos = true, hash = '', root = path.resolv
     };
 }
 module.exports = { harness };
+
 
 

@@ -36,7 +36,7 @@ flowerCalculator.setMathBounds({
 
 const initialExpressions = [];
 
-// Preserve each layer's intended transparency during the reveal animation.
+// Preserve each layer's intended transparency when switching to the live graph.
 const flowerRevealGroups = {
     sakura: [],
     petunia: [],
@@ -667,6 +667,7 @@ const originalAreas = new Map(flowerClickAreas.map(flower => [flower.id, { ...fl
 const originalCurves = new Map(initialExpressions.filter(expression => expression.parametricDomain)
     .map(expression => [expression.id, expression.latex]));
 let currentLayout = '';
+let expressionsLoaded = false;
 function arrangeFlowers(layoutName) {
     if (layoutName === currentLayout) return;
     currentLayout = layoutName;
@@ -681,13 +682,32 @@ function arrangeFlowers(layoutName) {
             updates.push({ id: expression.id, latex: expression.latex });
         });
     });
-    flowerCalculator.setExpressions(updates);
+    // Arrange before the first upload so Desmos only parses the final positions once.
+    if (expressionsLoaded) flowerCalculator.setExpressions(updates);
 }
 
-flowerCalculator.setExpressions(initialExpressions);
 const site = window.CameronSite;
 const section = document.getElementById('gardenStart');
 const wrapper = section.querySelector('.desmos-wrapper');
+const revealOrder = ['sakura', 'pansy', 'wisteria', 'petunia', 'sunflower',
+    'plumeria', 'marigold', 'hibiscus', 'forgetmenots', 'chrysanthemum', 'daisy', 'lilac'];
+const previewLayer = document.createElement('div');
+previewLayer.className = 'flower-reveal-layer';
+previewLayer.setAttribute('aria-hidden', 'true');
+wrapper.appendChild(previewLayer);
+// These transparent renders were exported from these exact Desmos curves.
+// Their crop boxes match the click areas, including the responsive uniform scale.
+const previewImages = new Map(flowerClickAreas.map(flower => {
+    const image = document.createElement('img');
+    image.className = 'flower-reveal-image';
+    image.alt = '';
+    image.decoding = 'async';
+    image.draggable = false;
+    image.style.animationDelay = revealOrder.indexOf(flower.id) * 150 + 'ms';
+    image.src = 'assets/flower-previews/' + flower.id + '.png';
+    previewLayer.appendChild(image);
+    return [flower.id, image];
+}));
 const layer = document.createElement('div');
 layer.className = 'flower-click-layer';
 layer.hidden = true;
@@ -747,10 +767,12 @@ function updateClickPositions() {
         const a = flowerCalculator.mathToPixels({ x: flower.cx - flower.width / 2, y: flower.cy + flower.height / 2 });
         const b = flowerCalculator.mathToPixels({ x: flower.cx + flower.width / 2, y: flower.cy - flower.height / 2 });
         if (![a.x, a.y, b.x, b.y].every(Number.isFinite)) return;
-        Object.assign(button.style, {
+        const position = {
             left: a.x + 'px', top: a.y + 'px',
             width: Math.max(0, b.x - a.x) + 'px', height: Math.max(0, b.y - a.y) + 'px'
-        });
+        };
+        Object.assign(button.style, position);
+        Object.assign(previewImages.get(flower.id).style, position);
     });
 }
 function fitGarden() {
@@ -775,6 +797,8 @@ function queueResize() {
 if ('ResizeObserver' in window) new ResizeObserver(queueResize).observe(flowerElement);
 else window.addEventListener('resize', queueResize, { passive: true });
 fitGarden();
+flowerCalculator.setExpressions(initialExpressions);
+expressionsLoaded = true;
 site.flowerUI = {
     closeNote,
     setInteractive(enabled) {
@@ -782,66 +806,99 @@ site.flowerUI = {
         layer.hidden = !enabled;
         hint.hidden = !enabled;
         if (!enabled) { closeNote(); fitGarden(); }
+        presentFlowers(false);
     }
 };
 
-// Reveal all twelve groups in a short sequence; stop sending updates when done.
-const revealOrder = ['sakura', 'pansy', 'wisteria', 'petunia', 'sunflower',
-    'plumeria', 'marigold', 'hibiscus', 'forgetmenots', 'chrysanthemum', 'daisy', 'lilac'];
-const lastProgress = new Map();
+// Fade twelve cached images on the compositor, rather than changing 254 curves
+// on every animation tick. Only entering/leaving Explore updates live opacity.
+let previewsReady = false;
+let previewFailed = false;
+let pendingEntrance = true;
+let liveFlowersShown = false;
+let livePaintPending = false;
+let presentationVersion = 0;
 let revealFrame = 0;
+let revealTimer = 0;
 let visible = false;
 let ratio = 0;
-function updateReveal(values) {
-    const updates = [];
-    revealOrder.forEach((name, i) => {
-        const progress = Math.max(0, Math.min(1, values[i]));
-        if (lastProgress.get(name) === progress) return;
-        lastProgress.set(name, progress);
-        flowerRevealGroups[name].forEach(curve => updates.push({
-            id: curve.id,
-            ...Object.fromEntries(Object.entries(curve.opacities).map(([key, opacity]) => [key, opacity * progress]))
-        }));
+function setLiveFlowers(shown, onPaint) {
+    const version = ++presentationVersion;
+    if (liveFlowersShown === shown && !livePaintPending) { onPaint(); return; }
+    if (liveFlowersShown !== shown) {
+        liveFlowersShown = shown;
+        const updates = [];
+        revealOrder.forEach(name => {
+            flowerRevealGroups[name].forEach(curve => updates.push({
+                id: curve.id,
+                ...Object.fromEntries(Object.entries(curve.opacities).map(([key, opacity]) => [key, shown ? opacity : 0]))
+            }));
+        });
+        flowerCalculator.setExpressions(updates);
+    }
+    livePaintPending = true;
+    // The documented async export waits for evaluation. A single pixel acts as
+    // a cheap readiness barrier; stale callbacks cannot undo a later Done/leave.
+    const ready = () => {
+        if (version !== presentationVersion) return;
+        livePaintPending = false;
+        onPaint();
+    };
+    if (typeof flowerCalculator.asyncScreenshot === 'function') {
+        flowerCalculator.asyncScreenshot({ width: 1, height: 1, targetPixelRatio: 1 }, ready);
+    } else ready();
+}
+function cancelReveal() {
+    cancelAnimationFrame(revealFrame);
+    clearTimeout(revealTimer);
+    revealFrame = 0;
+    revealTimer = 0;
+}
+function presentFlowers(animate) {
+    pendingEntrance = animate;
+    cancelReveal();
+    if (interactive || site.reducedMotion.matches || previewFailed) {
+        setLiveFlowers(true, () => { previewLayer.hidden = true; });
+        hint.style.opacity = '1';
+        return;
+    }
+    setLiveFlowers(false, () => {
+        previewLayer.hidden = false;
+        previewLayer.classList.remove('is-revealing', 'is-revealed');
+        if (!previewsReady || !visible) return;
+        if (!animate) {
+            previewLayer.classList.add('is-revealed');
+            hint.style.opacity = '1';
+            return;
+        }
+        hint.style.opacity = '0';
+        // Two setup frames restart the CSS entrance after a quick scroll away
+        // and back. There is no JavaScript loop during the actual fade.
+        revealFrame = requestAnimationFrame(() => {
+            revealFrame = requestAnimationFrame(() => {
+                revealFrame = 0;
+                previewLayer.classList.add('is-revealing');
+                revealTimer = setTimeout(() => {
+                    revealTimer = 0;
+                    previewLayer.classList.remove('is-revealing');
+                    previewLayer.classList.add('is-revealed');
+                    hint.style.opacity = '1';
+                }, 700 + 150 * (revealOrder.length - 1));
+            });
+        });
     });
-    if (updates.length) flowerCalculator.setExpressions(updates);
 }
 function stopReveal() {
-    cancelAnimationFrame(revealFrame);
-    revealFrame = 0;
+    cancelReveal();
+    ++presentationVersion;
     visible = false;
-    updateReveal(revealOrder.map(() => 0));
+    previewLayer.classList.remove('is-revealing', 'is-revealed');
     hint.style.opacity = '0';
 }
 function startReveal() {
     if (visible || document.hidden) return;
     visible = true;
-    updateReveal(revealOrder.map(() => 0));
-    hint.style.opacity = '0';
-    if (site.reducedMotion.matches) {
-        updateReveal(revealOrder.map(() => 1));
-        hint.style.opacity = '1';
-        return;
-    }
-    let started = null;
-    let lastTick = -1;
-    const duration = 760, stagger = 250;
-    const total = duration + stagger * (revealOrder.length - 1);
-    function frame(now) {
-        if (!visible) return;
-        if (started === null) started = now;
-        const elapsed = now - started;
-        const tick = Math.floor(elapsed / 70);
-        if (tick !== lastTick || elapsed >= total) {
-            lastTick = tick;
-            updateReveal(revealOrder.map((_, i) => {
-                const t = Math.max(0, Math.min(1, (elapsed - i * stagger) / duration));
-                return t * t * (3 - 2 * t);
-            }));
-        }
-        if (elapsed < total) revealFrame = requestAnimationFrame(frame);
-        else { revealFrame = 0; hint.style.opacity = '1'; }
-    }
-    revealFrame = requestAnimationFrame(frame);
+    presentFlowers(true);
 }
 function updateVisibility() {
     if (document.hidden || ratio <= .08) stopReveal();
@@ -864,9 +921,41 @@ if ('IntersectionObserver' in window) {
 }
 document.addEventListener('visibilitychange', updateVisibility);
 site.reducedMotion.addEventListener('change', () => {
-    if (visible) { stopReveal(); startReveal(); }
+    if (visible) presentFlowers(true);
+});
+// Wait for all twelve files before starting the stagger so slow downloads do
+// not turn into random pop-ins. A missing image falls back to the live bouquet.
+let pendingPreviews = previewImages.size;
+previewImages.forEach(image => {
+    let settled = false;
+    let decoding = false;
+    function decoded() {
+        if (settled) return;
+        settled = true;
+        if (--pendingPreviews === 0) {
+            previewsReady = true;
+            if (visible && !interactive) presentFlowers(pendingEntrance);
+        }
+    }
+    function failed() {
+        if (settled) return;
+        settled = true;
+        previewFailed = true;
+        if (visible) presentFlowers(false);
+    }
+    function loaded() {
+        if (settled || decoding) return;
+        decoding = true;
+        // Decode before animation so the first frame never waits on a bitmap.
+        if (typeof image.decode === 'function') image.decode().then(decoded, failed);
+        else decoded();
+    }
+    image.addEventListener('load', loaded, { once: true });
+    image.addEventListener('error', failed, { once: true });
+    if (image.complete) { if (image.naturalWidth) loaded(); else failed(); }
 });
 };
 })();
+
 
 

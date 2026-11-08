@@ -34,12 +34,28 @@ Open `http://localhost:8000`. The source is a static website with no build step.
 
 `css/palette.css` holds the shared night palette: plum for the lilies, dusky blue
 for the ocean, a blue-green tone for birdwatching, warm charcoal for the welcome,
-midnight teal for music, and neutral black for goodbye. The two character canvases
+muted burgundy for music, and neutral black for goodbye. The two character canvases
 stay transparent so their backgrounds always match their sections. The Desmos scenes keep their light paper
 and graph backgrounds. Lily watering is the primary pink action; secondary text
 controls retain 44px touch targets and visible keyboard focus.
 
 ## Flower notes
+
+The garden entrance uses twelve transparent PNG previews exported from the same
+Desmos curves. They decode before a 2.35-second staggered CSS fade; revisiting the
+garden replays it without changing graph expressions. This replaces 52 batches
+of curve-opacity updates per entrance. Explore switches to the original live
+equations, and Done returns to the matching previews. Reduced motion or an image
+load failure shows the live bouquet directly. The initial geometry is arranged
+before its single upload to Desmos.
+
+The preview crop boxes share the flower hitboxes, so wide and tall layouts stay
+aligned. When changing flower shapes or their crop sizes, run
+`node scripts/export-flower-previews.cjs`, open `/flower-export.html` in the local
+preview, and export/download the artwork. Import that file with
+`node scripts/export-flower-previews.cjs --import /path/to/flower-previews.json`.
+The generated `dist/flower-export.html` is a local development tool and is not
+published. The twelve PNG files total about 970 KiB and are reused from cache.
 
 The thirteen flower names and personal messages live in `js/flower-notes.js` under `entries`.
 Fill each `note` string with Kevin's wording. Blank entries show “This one reminds me of…”

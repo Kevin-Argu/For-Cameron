@@ -86,16 +86,91 @@ test('Done closes flower notes and restores scroll mode and focus; repeated visi
     assert.equal(h.get('doneButton').hidden, true);
 });
 
-test('flower reveals replay on re-entry and stop after finishing', () => {
-    const h = start(); flowers(h); h.intersect('gardenStart', 1); h.advance(4000);
+test('flower entrances replay with no Desmos updates or per-frame JavaScript loop', () => {
+    const h = start(); flowers(h);
     const calc = h.calculators[0];
-    assert.equal(calc.expressions.get('wisteria_1297').fillOpacity, 1);
-    const batches = calc.batches; h.advance(1000); assert.equal(calc.batches, batches);
-    h.intersect('gardenStart', 0); assert.equal(calc.expressions.get('sakuraOuter').fillOpacity, 0);
+    const preview = h.document.querySelector('.flower-reveal-layer');
+    const images = preview.querySelectorAll('img');
+    assert.equal(images.length, 12);
+    assert.equal(calc.batches, 1, 'upload the final responsive geometry once');
+    const batches = calc.batches;
+    h.intersect('gardenStart', 1); h.advance(100);
+    assert.equal(preview.classList.contains('is-revealing'), true);
+    assert.equal(h.frames.size, 0, 'CSS continues the animation without a JS frame loop');
+    h.advance(3000);
+    assert.equal(preview.classList.contains('is-revealed'), true);
+    assert.equal(calc.batches, batches, 'no expression updates during the entrance');
+    h.intersect('gardenStart', 0);
+    assert.equal(preview.classList.contains('is-revealed'), false);
     h.intersect('gardenStart', 1); h.advance(4000);
-    assert.equal(calc.expressions.get('wisteria_1297').fillOpacity, 1);
+    assert.equal(preview.classList.contains('is-revealed'), true);
     h.hidden(true); assert.equal(h.frames.size, 0);
-    h.hidden(false); h.advance(4000); assert.equal(calc.expressions.get('sakuraOuter').fillOpacity, 1);
+    h.hidden(false); h.advance(4000);
+    assert.equal(preview.classList.contains('is-revealed'), true);
+    assert.equal(calc.batches, batches);
+});
+
+test('Explore hands off to live math and Done restores aligned cached flowers', () => {
+    const h = start(); flowers(h); h.intersect('gardenStart', 1); h.advance(300);
+    const calc = h.calculators[0];
+    const preview = h.document.querySelector('.flower-reveal-layer');
+    h.get('exploreButton').click();
+    assert.equal(calc.expressions.get('sakuraOuter').fillOpacity, 1);
+    assert.equal(calc.expressions.get('sakuraMiddle1').fillOpacity, .2);
+    assert.equal(preview.hidden, true);
+    const batches = calc.batches; h.advance(4000); assert.equal(calc.batches, batches);
+    h.get('doneButton').click();
+    assert.equal(calc.expressions.get('sakuraOuter').fillOpacity, 0);
+    assert.equal(preview.hidden, false);
+    assert.equal(preview.classList.contains('is-revealed'), true);
+    h.resize('flowerCalculator', 390, 844); h.advance(100);
+    const zones = h.document.querySelector('.flower-click-layer').querySelectorAll('button');
+    preview.querySelectorAll('img').forEach((image, i) => {
+        for (const property of ['left','top','width','height']) assert.equal(image.style[property], zones[i].style[property]);
+    });
+});
+
+test('slow or missing previews cannot cause partial pop-ins or hide the bouquet', () => {
+    const h = start({ imagesLoaded: false }); flowers(h); h.intersect('gardenStart', 1); h.advance(1000);
+    const preview = h.document.querySelector('.flower-reveal-layer');
+    const images = preview.querySelectorAll('img');
+    assert.equal(preview.classList.contains('is-revealing'), false);
+    images.slice(0, 11).forEach(image => image.dispatchEvent({ type: 'load' })); h.advance(100);
+    assert.equal(preview.classList.contains('is-revealing'), false);
+    images[11].dispatchEvent({ type: 'error' });
+    assert.equal(preview.hidden, true);
+    assert.equal(h.calculators[0].expressions.get('sakuraOuter').fillOpacity, 1);
+});
+
+test('stale graph readiness cannot hide previews after Done or a quick re-entry', () => {
+    const h = start({ deferScreenshots: true }); flowers(h); h.intersect('gardenStart', 1); h.advance(3000);
+    const calc = h.calculators[0];
+    const preview = h.document.querySelector('.flower-reveal-layer');
+    h.get('exploreButton').click();
+    h.get('doneButton').click();
+    assert.equal(calc.screenshotCallbacks.length, 2);
+    calc.screenshotCallbacks[1](); calc.screenshotCallbacks[0]();
+    assert.equal(preview.hidden, false);
+    assert.equal(preview.classList.contains('is-revealed'), true);
+    h.get('exploreButton').click();
+    h.intersect('gardenStart', 0); h.intersect('gardenStart', 1); h.advance(3000);
+    calc.screenshotCallbacks.forEach(callback => callback());
+    h.advance(3000);
+    assert.equal(preview.hidden, false);
+    assert.equal(preview.classList.contains('is-revealed'), true);
+});
+
+test('changing reduced motion settles the flowers without leaving an entrance running', () => {
+    const h = start(); flowers(h); h.intersect('gardenStart', 1); h.advance(200);
+    const preview = h.document.querySelector('.flower-reveal-layer');
+    h.setReduced(true);
+    assert.equal(preview.hidden, true);
+    assert.equal(h.frames.size, 0);
+    assert.equal(h.calculators[0].expressions.get('sakuraOuter').fillOpacity, 1);
+    h.setReduced(false); h.advance(3000);
+    assert.equal(preview.hidden, false);
+    assert.equal(preview.classList.contains('is-revealed'), true);
+    assert.equal(h.calculators[0].expressions.get('sakuraOuter').fillOpacity, 0);
 });
 
 test('every flower opens live math and a size slider without a personal-message area', () => {
@@ -424,5 +499,6 @@ test('HTML has unique IDs and all referenced local scripts/styles exist', () => 
         if (!url.startsWith('http')) assert.ok(fs.existsSync(path.join(root, url.split('?')[0])), url);
     }
 });
+
 
 
