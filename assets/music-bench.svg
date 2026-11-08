@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="270" height="190" viewBox="0 0 270 190">
+<title>A small wooden piano bench</title>
+<!-- An unpolished outline and character stitches match the piano cabinet. -->
+<g stroke="#c6af93" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+ <path d="M28 48L249 43 241 61 30 65Z" fill="#563b41"/>
+ <path d="M36 67L53 66 44 179H30Z M221 62L238 61 247 176H233Z" fill="#35252c"/>
+ <path d="M47 75L228 72M40 145L237 143" fill="none" stroke="#846d60"/>
+ <path d="M17 30Q19 23 31 22L245 17Q256 18 258 28L253 47 21 53Z" fill="#6c4950"/>
+ <path d="M22 43L253 37M34 27L242 22" fill="none" stroke="#ad8778"/>
+ <path d="M35 71L34 168M238 75L244 167" fill="none" stroke-width=".6"/>
+</g>
+<text x="137" y="36" fill="#c1a08b" opacity=".7" text-anchor="middle" font-family="monospace" font-size="10" letter-spacing="8">· · · · · · · · ·</text>
+</svg>

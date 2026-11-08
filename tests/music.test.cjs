@@ -188,7 +188,7 @@ test('stopping while audio unlocks cannot start a delayed tune', async () => {
     assert.equal(t.h.document.querySelectorAll('.is-performing-note').length, 0);
 });
 
-test('reduced motion keeps the tune playable without randomly moving keys', () => {
+test('reduced motion keeps the tune playable without moving keys', () => {
     const t = setup(); t.h.enter(); t.h.setReduced(true);
     t.h.get('pianoPlay').click(); t.h.advance(500);
     assert.ok(t.oscillators.length > 0);
@@ -208,5 +208,52 @@ test('a finished tune returns to rest without looping or leaving keys held', () 
     const count = t.oscillators.length;
     t.h.advance(2000);
     assert.equal(t.oscillators.length, count);
+});
+
+test('the duet starts both instruments and highlights the notes actually sounding', () => {
+    const t = setup(); t.h.enter(); t.h.get('duetPlay').click();
+    assert.equal(t.h.get('duetPlay').getAttribute('aria-pressed'), 'true');
+    // Two piano notes have four partials each; one harmonica note has a reed and vibrato.
+    assert.equal(t.oscillators.length, 10);
+    assert.ok(t.oscillators[8].wave);
+    assert.ok(Math.abs(t.oscillators[8].frequency.value - 392) < .1);
+    assert.ok(t.button('a').classList.contains('is-performing-note'));
+    assert.ok(t.button('d').classList.contains('is-performing-note'));
+    assert.ok(t.button('3').classList.contains('is-performing-note'));
+    assert.equal(t.button('s').classList.contains('is-performing-note'), false);
+    t.h.advance(460);
+    assert.ok(t.button('g').classList.contains('is-performing-note'));
+    assert.ok(t.button('4').classList.contains('is-performing-note'));
+    assert.equal(t.button('a').classList.contains('is-performing-note'), false);
+});
+
+test('duet stop, manual interruption, and leaving cancel both parts', () => {
+    const exits = [
+        t => t.h.get('duetPlay').click(),
+        t => { t.down('a'); t.up('a'); },
+        t => t.h.intersect('musicFinale', 0)
+    ];
+    for (const exit of exits) {
+        const t = setup(); t.h.enter(); t.h.get('duetPlay').click();
+        t.h.advance(500); exit(t);
+        const count = t.oscillators.length;
+        t.h.advance(20000);
+        assert.equal(t.oscillators.length, count);
+        assert.equal(t.h.get('duetPlay').getAttribute('aria-pressed'), 'false');
+        assert.equal(t.h.document.querySelectorAll('.is-performing-note').length, 0);
+        assert.ok(t.oscillators.every(node => node.stops.at(-1) === .18));
+    }
+});
+
+test('the duet finishes once and cancelling an audio unlock cannot revive it', async () => {
+    const t = setup(); t.h.enter(); t.h.get('duetPlay').click(); t.h.advance(16000);
+    assert.equal(t.h.get('duetPlay').getAttribute('aria-pressed'), 'false');
+    assert.equal(t.h.document.querySelectorAll('.is-performing-note').length, 0);
+    const count = t.oscillators.length; t.h.advance(5000);
+    assert.equal(t.oscillators.length, count);
+    const pending = setup({ suspended: true }); pending.h.enter();
+    pending.h.get('duetPlay').click(); pending.h.get('duetPlay').click();
+    pending.resume(); await flush(); pending.h.advance(2000);
+    assert.equal(pending.oscillators.length, 0);
 });
 

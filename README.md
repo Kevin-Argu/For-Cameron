@@ -28,7 +28,7 @@ Open `http://localhost:8000`. The source is a static website with no build step.
 - On “okay bye”, tap the glass bottle of chocolate milk to enlarge it; tap again to shrink it beside Dillbillies' chair. George's original goodbye scene remains commented out, including his meadow and recall button. Its markup, `assets/george.svg`, CSS, and guarded interactions in `js/goodbye.js` are preserved separately from the redesigned welcome rabbit. To restore that older scene, remove the comment wrapper around `georgeMeadow` in `index.html`; its hop and recall controls will resume automatically.
 - The heart's equation and slider stay open. Use the slider's native play/pause control to control the animation. The heart pauses offscreen and when the tab is hidden, while preserving an explicit pause choice.
 - Reduced motion disables automatic heart playback and uses a stationary whale. The native slider's play control can still explicitly enable the heart. Lily growth responds without the rain animation.
-- Click the piano body or harmonica cover (or its “click to play” control) for a short built-in tune. Click again to stop; switching instruments ends the previous tune. Keys and hammers move in loose decorative patterns, independently of the melody. Individual keys and holes are still playable and take over from an automatic tune. Open “play your own notes” for keyboard shortcuts and harmonica Blow/Draw. Volume can be taken to zero. Escape, leaving the section, tab hiding, and window blur stop all sound and queued movement.
+- The music page is one drawn scene: an upright piano with an open action, a sheet of music, and a small brass harmonica on a bench. “Play together” starts one short duet, with piano accompaniment and harmonica melody on the same clock. Keys, hammers, and reeds follow the notes. Click the piano body or harmonica cover for a solo, or tap individual keys and holes to play. Open “or, play a little yourself” for keyboard shortcuts and harmonica Blow/Draw. Volume can be taken to zero. Escape, leaving the section, tab hiding, and window blur stop every part.
 
 ## Scene colors
 
@@ -75,24 +75,24 @@ linked to the same growth state used by watering and dragging.
 ## Music
 
 `js/music.js` synthesizes a soft piano from decaying harmonics and a reed-like
-harmonica from a periodic waveform with slight vibrato. Two short original phrases
-provide click-to-play previews; Spotify and external song playback are not connected.
-Audio starts only after a gesture and needs no download or microphone permission.
-The manual ten-hole C Richter tuning follows
-[Hohner's tuning chart](https://hohner.de/fileadmin/documents/instruments/harmonicas/HOHNER-Tuningcharts-Marineband-1896.pdf).
+harmonica from a periodic waveform with slight vibrato. A short original duet pairs
+piano accompaniment with a harmonica melody; two original solo phrases are also
+available. Spotify and external song playback are not connected. Audio starts only
+after a gesture and needs no download or microphone permission. The ten-hole C
+Richter tuning follows [Hohner's tuning chart](https://hohner.de/fileadmin/documents/instruments/harmonicas/HOHNER-Tuningcharts-Marineband-1896.pdf).
 
-The piano drawing, strings, hammers, and HTML keyboard share a single scalable stage;
-the keys sit within its front rim, above the legs. The smaller harmonica rests beside
-it with softer sage metal covers. Song controls lead the page; keyboard legends and
-breath selection live under “play your own notes.” Manual keys still respond directly.
+The upright piano illustration, open strings and hammers, and two-octave HTML
+keyboard share a 760 × 520 stage. The smaller brass harmonica rests on its bench;
+on narrow screens the bench moves forward. Flat colors, fine irregular outlines,
+and small character marks keep the two objects consistent with the handmade site.
+The poem line is retained, while a single shared play button leads the controls.
 
-Automatic playing uses separate audio and decorative-animation schedules: random
-small groups of keys and hammers move without matching the notes one for one. The
-harmonica rocks gently, lights a reed, and releases little breath marks. Reduced
-motion removes the decorative movement while preserving playback and active controls.
-Only one tune can play at a time. All queued work and active voices are cleared when
-a tune stops, finishes, loses visibility, or is interrupted by a manual note. Pending
-audio resumes cannot restart a cancelled tune.
+A duet uses one step schedule for both instruments. The sounding pitches drive the
+key, hammer, and reed highlights; solo bass notes below the displayed keyboard are
+shown one octave higher. Reduced motion disables automatic key movement while
+preserving playback. All queued work and active voices are cleared when a tune
+stops, finishes, loses visibility, or is interrupted by a manual note. Pending audio
+resumes cannot restart a cancelled tune.
 
 ## Desmos configuration
 

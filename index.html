@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="css/style.css?v=14">
     <link rel="stylesheet" href="css/peanut-gate.css?v=7">
     <link rel="stylesheet" href="css/flower-math.css?v=9">
-    <link rel="stylesheet" href="css/music.css?v=6">
+    <link rel="stylesheet" href="css/music.css?v=7">
     <link rel="stylesheet" href="css/goodbye.css?v=10">
     <link rel="stylesheet" href="css/pond.css?v=1">
     <!-- Local controls initialize without waiting for the external graph library. -->
@@ -24,7 +24,7 @@
     <script defer src="js/flowers.js?v=11"></script>
     <script defer src="js/heart.js?v=5"></script>
     <script defer src="js/graph-loader.js?v=5"></script>
-    <script defer src="js/music.js?v=3"></script>
+    <script defer src="js/music.js?v=4"></script>
     <script defer src="js/goodbye.js?v=4"></script>
     <script defer src="js/pond.js?v=1"></script>
 </head>
@@ -146,126 +146,161 @@
 
         <section class="music-section" id="musicFinale" aria-labelledby="musicHeading" tabindex="-1">
             <header class="music-heading">
-                <span class="music-stars" aria-hidden="true">· * ·</span>
                 <h2 id="musicHeading">and in the sweetest sounds,</h2>
-                <p>play a little something.</p>
             </header>
+            <!-- One little room: the piano, its open action, and a harmonica on the bench.
+                 The illustration and playable keys share coordinates, so they stay aligned. -->
             <div class="music-instruments">
-                <div class="instrument piano-instrument" role="group" aria-labelledby="pianoHeading">
-                    <h3 id="pianoHeading">piano</h3>
-                    <!-- Art, action, and playable keys share one coordinate system. The keys
-                         are siblings of the play button so there are no nested buttons. -->
+                <svg class="music-floor" viewBox="0 0 1000 600" aria-hidden="true" focusable="false">
+                    <path d="M45 568Q365 566 688 570M725 569L974 568M94 577L256 576M808 576L938 575"/>
+                </svg>
+                <div class="instrument piano-instrument" role="group" aria-label="Piano">
                     <div class="piano-scene">
-                    <button class="piano-visual" id="pianoPlay" type="button" data-play-instrument="piano"
-                            aria-label="Play a little piano tune" aria-pressed="false">
-                        <img class="piano-art" src="assets/piano.svg?v=2" width="630" height="410" alt="">
-                        <svg class="piano-mechanism" viewBox="0 0 630 410" aria-hidden="true" focusable="false">
-                            <g transform="matrix(1.25 0 0 1 -65 0)">
-                            <path class="piano-rail" d="M124 194H496"/>
-                            <g data-piano-note="60">
-                                <path class="piano-string" d="M138 130L277 55.0 M140 130L279 55.0 M142 130L281 55.0"/>
-                                <g class="piano-hammer"><path d="M140 196V181"/><rect x="133" y="175" width="14" height="6" rx="2"/><text x="140" y="181">··</text></g>
-                                <text class="piano-spark" x="140" y="162">♪</text>
-                            </g>
-                            <g data-piano-note="61">
-                                <path class="piano-string" d="M166 130L290 58.3 M168 130L292 58.3 M170 130L294 58.3"/>
-                                <g class="piano-hammer"><path d="M168 196V181"/><rect x="161" y="175" width="14" height="6" rx="2"/><text x="168" y="181">··</text></g>
-                                <text class="piano-spark" x="168" y="162">·</text>
-                            </g>
-                            <g data-piano-note="62">
-                                <path class="piano-string" d="M194 130L303 61.6 M196 130L305 61.6 M198 130L307 61.6"/>
-                                <g class="piano-hammer"><path d="M196 196V181"/><rect x="189" y="175" width="14" height="6" rx="2"/><text x="196" y="181">··</text></g>
-                                <text class="piano-spark" x="196" y="162">♫</text>
-                            </g>
-                            <g data-piano-note="63">
-                                <path class="piano-string" d="M222 130L316 64.9 M224 130L318 64.9 M226 130L320 64.9"/>
-                                <g class="piano-hammer"><path d="M224 196V181"/><rect x="217" y="175" width="14" height="6" rx="2"/><text x="224" y="181">··</text></g>
-                                <text class="piano-spark" x="224" y="162">♪</text>
-                            </g>
-                            <g data-piano-note="64">
-                                <path class="piano-string" d="M250 130L329 68.2 M252 130L331 68.2 M254 130L333 68.2"/>
-                                <g class="piano-hammer"><path d="M252 196V181"/><rect x="245" y="175" width="14" height="6" rx="2"/><text x="252" y="181">··</text></g>
-                                <text class="piano-spark" x="252" y="162">·</text>
-                            </g>
-                            <g data-piano-note="65">
-                                <path class="piano-string" d="M278 130L342 71.5 M280 130L344 71.5 M282 130L346 71.5"/>
-                                <g class="piano-hammer"><path d="M280 196V181"/><rect x="273" y="175" width="14" height="6" rx="2"/><text x="280" y="181">··</text></g>
-                                <text class="piano-spark" x="280" y="162">♫</text>
-                            </g>
-                            <g data-piano-note="66">
-                                <path class="piano-string" d="M306 130L355 74.8 M308 130L357 74.8 M310 130L359 74.8"/>
-                                <g class="piano-hammer"><path d="M308 196V181"/><rect x="301" y="175" width="14" height="6" rx="2"/><text x="308" y="181">··</text></g>
-                                <text class="piano-spark" x="308" y="162">♪</text>
-                            </g>
-                            <g data-piano-note="67">
-                                <path class="piano-string" d="M334 130L368 78.1 M336 130L370 78.1 M338 130L372 78.1"/>
-                                <g class="piano-hammer"><path d="M336 196V181"/><rect x="329" y="175" width="14" height="6" rx="2"/><text x="336" y="181">··</text></g>
-                                <text class="piano-spark" x="336" y="162">·</text>
-                            </g>
-                            <g data-piano-note="68">
-                                <path class="piano-string" d="M362 130L381 81.4 M364 130L383 81.4 M366 130L385 81.4"/>
-                                <g class="piano-hammer"><path d="M364 196V181"/><rect x="357" y="175" width="14" height="6" rx="2"/><text x="364" y="181">··</text></g>
-                                <text class="piano-spark" x="364" y="162">♫</text>
-                            </g>
-                            <g data-piano-note="69">
-                                <path class="piano-string" d="M390 130L394 84.7 M392 130L396 84.7 M394 130L398 84.7"/>
-                                <g class="piano-hammer"><path d="M392 196V181"/><rect x="385" y="175" width="14" height="6" rx="2"/><text x="392" y="181">··</text></g>
-                                <text class="piano-spark" x="392" y="162">♪</text>
-                            </g>
-                            <g data-piano-note="70">
-                                <path class="piano-string" d="M418 130L407 88.0 M420 130L409 88.0 M422 130L411 88.0"/>
-                                <g class="piano-hammer"><path d="M420 196V181"/><rect x="413" y="175" width="14" height="6" rx="2"/><text x="420" y="181">··</text></g>
-                                <text class="piano-spark" x="420" y="162">·</text>
-                            </g>
-                            <g data-piano-note="71">
-                                <path class="piano-string" d="M446 130L420 91.3 M448 130L422 91.3 M450 130L424 91.3"/>
-                                <g class="piano-hammer"><path d="M448 196V181"/><rect x="441" y="175" width="14" height="6" rx="2"/><text x="448" y="181">··</text></g>
-                                <text class="piano-spark" x="448" y="162">♫</text>
-                            </g>
-                            <g data-piano-note="72">
-                                <path class="piano-string" d="M474 130L433 94.6 M476 130L435 94.6 M478 130L437 94.6"/>
-                                <g class="piano-hammer"><path d="M476 196V181"/><rect x="469" y="175" width="14" height="6" rx="2"/><text x="476" y="181">··</text></g>
-                                <text class="piano-spark" x="476" y="162">♪</text>
-                            </g>
-                            </g>
-                        </svg>
-                    </button>
-                    <div class="piano-keyboard" id="pianoKeys" role="group" aria-label="Playable piano keys">
-                        <div class="piano-white-keys">
-                            <button class="piano-key white-key" type="button" data-instrument="piano" data-midi="60" data-key="a" aria-label="Piano C4, keyboard A"><span>C</span></button>
-                            <button class="piano-key white-key" type="button" data-instrument="piano" data-midi="62" data-key="s" aria-label="Piano D4, keyboard S"><span>D</span></button>
-                            <button class="piano-key white-key" type="button" data-instrument="piano" data-midi="64" data-key="d" aria-label="Piano E4, keyboard D"><span>E</span></button>
-                            <button class="piano-key white-key" type="button" data-instrument="piano" data-midi="65" data-key="f" aria-label="Piano F4, keyboard F"><span>F</span></button>
-                            <button class="piano-key white-key" type="button" data-instrument="piano" data-midi="67" data-key="g" aria-label="Piano G4, keyboard G"><span>G</span></button>
-                            <button class="piano-key white-key" type="button" data-instrument="piano" data-midi="69" data-key="h" aria-label="Piano A4, keyboard H"><span>A</span></button>
-                            <button class="piano-key white-key" type="button" data-instrument="piano" data-midi="71" data-key="j" aria-label="Piano B4, keyboard J"><span>B</span></button>
-                            <button class="piano-key white-key" type="button" data-instrument="piano" data-midi="72" data-key="k" aria-label="Piano C5, keyboard K"><span>C</span></button>
-                        </div>
-                        <button class="piano-key black-key" style="--key-position:1" type="button" data-instrument="piano" data-midi="61" data-key="w" aria-label="Piano C sharp 4, keyboard W"></button>
-                        <button class="piano-key black-key" style="--key-position:2" type="button" data-instrument="piano" data-midi="63" data-key="e" aria-label="Piano D sharp 4, keyboard E"></button>
-                        <button class="piano-key black-key" style="--key-position:4" type="button" data-instrument="piano" data-midi="66" data-key="t" aria-label="Piano F sharp 4, keyboard T"></button>
-                        <button class="piano-key black-key" style="--key-position:5" type="button" data-instrument="piano" data-midi="68" data-key="y" aria-label="Piano G sharp 4, keyboard Y"></button>
-                        <button class="piano-key black-key" style="--key-position:6" type="button" data-instrument="piano" data-midi="70" data-key="u" aria-label="Piano A sharp 4, keyboard U"></button>
-                    </div>
-                    </div>
-                    <button class="instrument-play" type="button" data-play-instrument="piano" aria-pressed="false" aria-label="Play a little piano tune">
-                        <span class="play-icon" aria-hidden="true">▷</span><span class="play-label">click to play</span>
-                    </button>
-                </div>
-
-                <div class="instrument harmonica-instrument" role="group" aria-labelledby="harmonicaHeading">
-                    <h3 id="harmonicaHeading">harmonica</h3>
-                    <div class="harmonica-scene">
-                    <div class="harmonica-space" aria-hidden="true"><span>♪</span><span>·</span><span>♫</span></div>
-                    <div class="harmonica-air" aria-hidden="true"><span>~ ·</span><span>~</span><span>· ~</span></div>
-                    <div class="harmonica-shell">
-                        <button class="harmonica-cover" id="harmonicaPlay" type="button" data-play-instrument="harmonica"
-                                aria-label="Play a little harmonica tune" aria-pressed="false">
-                            <span class="harmonica-screw screw-left">+</span>
-                            <span class="harmonica-engraving">· &nbsp; C &nbsp; ·</span>
-                            <span class="harmonica-screw screw-right">+</span>
-                            <span class="harmonica-cover-line"></span>
+                        <button class="piano-visual" id="pianoPlay" type="button" data-play-instrument="piano" aria-label="Play a piano solo" aria-pressed="false">
+                            <img class="piano-art" src="assets/piano.svg?v=3" width="760" height="520" alt="A little upright piano, with a sheet of music and an open panel of strings">
+                            <svg class="piano-mechanism" viewBox="0 0 760 520" aria-hidden="true" focusable="false">
+                                <path class="piano-rail" d="M113 277H647"/>
+                                <g data-piano-note="60">
+ <path class="piano-string" d="M116.67 153V252 M120.67 153V252"/>
+ <g class="piano-hammer"><path d="M118.67 279V260"/><rect x="114.67" y="252" width="8" height="9" rx="1"/></g>
+ </g>
+<g data-piano-note="61">
+ <path class="piano-string" d="M135.33 153V252 M139.33 153V252"/>
+ <g class="piano-hammer"><path d="M137.33 279V260"/><rect x="133.33" y="252" width="8" height="9" rx="1"/></g>
+ </g>
+<g data-piano-note="62">
+ <path class="piano-string" d="M154.00 153V252 M158.00 153V252"/>
+ <g class="piano-hammer"><path d="M156.00 279V260"/><rect x="152.00" y="252" width="8" height="9" rx="1"/></g>
+ </g>
+<g data-piano-note="63">
+ <path class="piano-string" d="M172.67 153V252 M176.67 153V252"/>
+ <g class="piano-hammer"><path d="M174.67 279V260"/><rect x="170.67" y="252" width="8" height="9" rx="1"/></g>
+ </g>
+<g data-piano-note="64">
+ <path class="piano-string" d="M191.33 153V252 M195.33 153V252"/>
+ <g class="piano-hammer"><path d="M193.33 279V260"/><rect x="189.33" y="252" width="8" height="9" rx="1"/></g>
+ </g>
+<g data-piano-note="65">
+ <path class="piano-string" d="M228.67 153V252 M232.67 153V252"/>
+ <g class="piano-hammer"><path d="M230.67 279V260"/><rect x="226.67" y="252" width="8" height="9" rx="1"/></g>
+ </g>
+<g data-piano-note="66">
+ <path class="piano-string" d="M247.33 153V252 M251.33 153V252"/>
+ <g class="piano-hammer"><path d="M249.33 279V260"/><rect x="245.33" y="252" width="8" height="9" rx="1"/></g>
+ </g>
+<g data-piano-note="67">
+ <path class="piano-string" d="M266.00 153V252 M270.00 153V252"/>
+ <g class="piano-hammer"><path d="M268.00 279V260"/><rect x="264.00" y="252" width="8" height="9" rx="1"/></g>
+ </g>
+<g data-piano-note="68">
+ <path class="piano-string" d="M284.67 153V252 M288.67 153V252"/>
+ <g class="piano-hammer"><path d="M286.67 279V260"/><rect x="282.67" y="252" width="8" height="9" rx="1"/></g>
+ </g>
+<g data-piano-note="69">
+ <path class="piano-string" d="M303.33 153V252 M307.33 153V252"/>
+ <g class="piano-hammer"><path d="M305.33 279V260"/><rect x="301.33" y="252" width="8" height="9" rx="1"/></g>
+ </g>
+<g data-piano-note="70">
+ <path class="piano-string" d="M322.00 153V252 M326.00 153V252"/>
+ <g class="piano-hammer"><path d="M324.00 279V260"/><rect x="320.00" y="252" width="8" height="9" rx="1"/></g>
+ </g>
+<g data-piano-note="71">
+ <path class="piano-string" d="M340.67 153V252 M344.67 153V252"/>
+ <g class="piano-hammer"><path d="M342.67 279V260"/><rect x="338.67" y="252" width="8" height="9" rx="1"/></g>
+ </g>
+<g data-piano-note="72">
+ <path class="piano-string" d="M378.00 153V252 M382.00 153V252"/>
+ <g class="piano-hammer"><path d="M380.00 279V260"/><rect x="376.00" y="252" width="8" height="9" rx="1"/></g>
+ </g>
+<g data-piano-note="73">
+ <path class="piano-string" d="M396.67 153V252 M400.67 153V252"/>
+ <g class="piano-hammer"><path d="M398.67 279V260"/><rect x="394.67" y="252" width="8" height="9" rx="1"/></g>
+ </g>
+<g data-piano-note="74">
+ <path class="piano-string" d="M415.33 153V252 M419.33 153V252"/>
+ <g class="piano-hammer"><path d="M417.33 279V260"/><rect x="413.33" y="252" width="8" height="9" rx="1"/></g>
+ </g>
+<g data-piano-note="75">
+ <path class="piano-string" d="M434.00 153V252 M438.00 153V252"/>
+ <g class="piano-hammer"><path d="M436.00 279V260"/><rect x="432.00" y="252" width="8" height="9" rx="1"/></g>
+ </g>
+<g data-piano-note="76">
+ <path class="piano-string" d="M452.67 153V252 M456.67 153V252"/>
+ <g class="piano-hammer"><path d="M454.67 279V260"/><rect x="450.67" y="252" width="8" height="9" rx="1"/></g>
+ </g>
+<g data-piano-note="77">
+ <path class="piano-string" d="M490.00 153V252 M494.00 153V252"/>
+ <g class="piano-hammer"><path d="M492.00 279V260"/><rect x="488.00" y="252" width="8" height="9" rx="1"/></g>
+ </g>
+<g data-piano-note="78">
+ <path class="piano-string" d="M508.67 153V252 M512.67 153V252"/>
+ <g class="piano-hammer"><path d="M510.67 279V260"/><rect x="506.67" y="252" width="8" height="9" rx="1"/></g>
+ </g>
+<g data-piano-note="79">
+ <path class="piano-string" d="M527.33 153V252 M531.33 153V252"/>
+ <g class="piano-hammer"><path d="M529.33 279V260"/><rect x="525.33" y="252" width="8" height="9" rx="1"/></g>
+ </g>
+<g data-piano-note="80">
+ <path class="piano-string" d="M546.00 153V252 M550.00 153V252"/>
+ <g class="piano-hammer"><path d="M548.00 279V260"/><rect x="544.00" y="252" width="8" height="9" rx="1"/></g>
+ </g>
+<g data-piano-note="81">
+ <path class="piano-string" d="M564.67 153V252 M568.67 153V252"/>
+ <g class="piano-hammer"><path d="M566.67 279V260"/><rect x="562.67" y="252" width="8" height="9" rx="1"/></g>
+ </g>
+<g data-piano-note="82">
+ <path class="piano-string" d="M583.33 153V252 M587.33 153V252"/>
+ <g class="piano-hammer"><path d="M585.33 279V260"/><rect x="581.33" y="252" width="8" height="9" rx="1"/></g>
+ </g>
+<g data-piano-note="83">
+ <path class="piano-string" d="M602.00 153V252 M606.00 153V252"/>
+ <g class="piano-hammer"><path d="M604.00 279V260"/><rect x="600.00" y="252" width="8" height="9" rx="1"/></g>
+ </g>
+<g data-piano-note="84">
+ <path class="piano-string" d="M639.33 153V252 M643.33 153V252"/>
+ <g class="piano-hammer"><path d="M641.33 279V260"/><rect x="637.33" y="252" width="8" height="9" rx="1"/></g>
+ </g>
+                            </svg>
                         </button>
+                        <div class="piano-keyboard" id="pianoKeys" role="group" aria-label="Playable piano keys">
+                            <div class="piano-white-keys"><button class="piano-key white-key" type="button" data-instrument="piano" data-midi="60" data-key="a" aria-label="Piano C4, keyboard A"><span>C</span></button>
+<button class="piano-key white-key" type="button" data-instrument="piano" data-midi="62" data-key="s" aria-label="Piano D4, keyboard S"><span>D</span></button>
+<button class="piano-key white-key" type="button" data-instrument="piano" data-midi="64" data-key="d" aria-label="Piano E4, keyboard D"><span>E</span></button>
+<button class="piano-key white-key" type="button" data-instrument="piano" data-midi="65" data-key="f" aria-label="Piano F4, keyboard F"><span>F</span></button>
+<button class="piano-key white-key" type="button" data-instrument="piano" data-midi="67" data-key="g" aria-label="Piano G4, keyboard G"><span>G</span></button>
+<button class="piano-key white-key" type="button" data-instrument="piano" data-midi="69" data-key="h" aria-label="Piano A4, keyboard H"><span>A</span></button>
+<button class="piano-key white-key" type="button" data-instrument="piano" data-midi="71" data-key="j" aria-label="Piano B4, keyboard J"><span>B</span></button>
+<button class="piano-key white-key" type="button" data-instrument="piano" data-midi="72" data-key="k" aria-label="Piano C5, keyboard K"><span>C</span></button>
+<button class="piano-key white-key" type="button" data-instrument="piano" data-midi="74" aria-label="Piano D5"><span>D</span></button>
+<button class="piano-key white-key" type="button" data-instrument="piano" data-midi="76" aria-label="Piano E5"><span>E</span></button>
+<button class="piano-key white-key" type="button" data-instrument="piano" data-midi="77" aria-label="Piano F5"><span>F</span></button>
+<button class="piano-key white-key" type="button" data-instrument="piano" data-midi="79" aria-label="Piano G5"><span>G</span></button>
+<button class="piano-key white-key" type="button" data-instrument="piano" data-midi="81" aria-label="Piano A5"><span>A</span></button>
+<button class="piano-key white-key" type="button" data-instrument="piano" data-midi="83" aria-label="Piano B5"><span>B</span></button>
+<button class="piano-key white-key" type="button" data-instrument="piano" data-midi="84" aria-label="Piano C6"><span>C</span></button></div>
+                            <button class="piano-key black-key" style="--key-position:1" type="button" data-instrument="piano" data-midi="61" data-key="w" aria-label="Piano C sharp4, keyboard W"></button>
+<button class="piano-key black-key" style="--key-position:2" type="button" data-instrument="piano" data-midi="63" data-key="e" aria-label="Piano D sharp4, keyboard E"></button>
+<button class="piano-key black-key" style="--key-position:4" type="button" data-instrument="piano" data-midi="66" data-key="t" aria-label="Piano F sharp4, keyboard T"></button>
+<button class="piano-key black-key" style="--key-position:5" type="button" data-instrument="piano" data-midi="68" data-key="y" aria-label="Piano G sharp4, keyboard Y"></button>
+<button class="piano-key black-key" style="--key-position:6" type="button" data-instrument="piano" data-midi="70" data-key="u" aria-label="Piano A sharp4, keyboard U"></button>
+<button class="piano-key black-key" style="--key-position:8" type="button" data-instrument="piano" data-midi="73" aria-label="Piano C sharp5"></button>
+<button class="piano-key black-key" style="--key-position:9" type="button" data-instrument="piano" data-midi="75" aria-label="Piano D sharp5"></button>
+<button class="piano-key black-key" style="--key-position:11" type="button" data-instrument="piano" data-midi="78" aria-label="Piano F sharp5"></button>
+<button class="piano-key black-key" style="--key-position:12" type="button" data-instrument="piano" data-midi="80" aria-label="Piano G sharp5"></button>
+<button class="piano-key black-key" style="--key-position:13" type="button" data-instrument="piano" data-midi="82" aria-label="Piano A sharp5"></button>
+                        </div>
+                    </div>
+                </div>
+                <img class="music-bench" src="assets/music-bench.svg" width="270" height="190" alt="" aria-hidden="true">
+                <div class="instrument harmonica-instrument" role="group" aria-label="Harmonica">
+                    <div class="harmonica-scene">
+                        <div class="harmonica-shell">
+                            <button class="harmonica-cover" id="harmonicaPlay" type="button" data-play-instrument="harmonica" aria-label="Play a harmonica solo" aria-pressed="false">
+                                <span class="harmonica-screw screw-left" aria-hidden="true">+</span>
+                                <span class="harmonica-engraving" aria-hidden="true">C</span>
+                                <span class="harmonica-screw screw-right" aria-hidden="true">+</span>
+                                <span class="harmonica-cover-line" aria-hidden="true"></span>
+                            </button>
                         <div class="harmonica-holes" id="harmonicaHoles" role="group" aria-label="Playable harmonica holes">
                             <button type="button" data-instrument="harmonica" data-hole="0" data-key="1" aria-label="Harmonica hole 1, blow C4"><span>1</span><i class="harmonica-reed" aria-hidden="true"></i></button>
                             <button type="button" data-instrument="harmonica" data-hole="1" data-key="2" aria-label="Harmonica hole 2, blow E4"><span>2</span><i class="harmonica-reed" aria-hidden="true"></i></button>
@@ -278,27 +313,30 @@
                             <button type="button" data-instrument="harmonica" data-hole="8" data-key="9" aria-label="Harmonica hole 9, blow G6"><span>9</span><i class="harmonica-reed" aria-hidden="true"></i></button>
                             <button type="button" data-instrument="harmonica" data-hole="9" data-key="0" aria-label="Harmonica hole 10, blow C7"><span>10</span><i class="harmonica-reed" aria-hidden="true"></i></button>
                         </div>
-                        <div class="harmonica-bottom" aria-hidden="true"><span>· : · : · : · : · : · : · : ·</span></div>
+
+                            <div class="harmonica-bottom" aria-hidden="true">· · · · · · · · · · ·</div>
+                        </div>
                     </div>
-                    </div>
-                    <button class="instrument-play" type="button" data-play-instrument="harmonica" aria-pressed="false" aria-label="Play a little harmonica tune">
-                        <span class="play-icon" aria-hidden="true">▷</span><span class="play-label">click to play</span>
-                    </button>
                 </div>
             </div>
             <div class="music-footer">
-                <div class="music-volume"><label for="musicVolume">volume</label><input id="musicVolume" type="range" min="0" max="100" value="35" aria-label="Instrument volume"></div>
-                <p id="musicStatus" class="music-status" role="status">pick an instrument, let it play.</p>
+                <div class="music-transport">
+                    <button class="instrument-play duet-play" id="duetPlay" type="button" data-play-instrument="duet" aria-pressed="false" aria-label="Play piano and harmonica together">
+                        <span class="play-icon" aria-hidden="true">▷</span><span class="play-label">play together</span>
+                    </button>
+                    <div class="music-volume"><label for="musicVolume">volume</label><input id="musicVolume" type="range" min="0" max="100" value="35" aria-label="Instrument volume"></div>
+                </div>
+                <p id="musicStatus" class="music-status" role="status">piano &amp; harmonica</p>
                 <details class="music-manual">
-                    <summary>play your own notes</summary>
-                    <p>Tap the keys or holes. Piano: A–K, with W E T Y U for sharps. Harmonica: 1–0.</p>
+                    <summary>or, play a little yourself</summary>
+                    <p>Tap the keys or holes. Piano: A–K, with W E T Y U for sharps. Harmonica: 1–0. Tap an instrument's body for a solo.</p>
                     <div class="harmonica-breath" role="group" aria-label="Harmonica breath">
                         <button id="harmonicaBlow" type="button" aria-pressed="true">blow</button>
                         <button id="harmonicaDraw" type="button" aria-pressed="false">draw</button>
                     </div>
                 </details>
             </div>
-            <noscript><p class="music-status">Enable JavaScript to play the instruments.</p></noscript>
+            <noscript><p>Enable JavaScript to play the instruments.</p></noscript>
         </section>
 
         <section class="heart-section" id="heartFinale" aria-labelledby="heartHeading">

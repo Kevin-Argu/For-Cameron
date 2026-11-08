@@ -1,197 +1,43 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="630" height="410" viewBox="0 0 630 410">
-<title>A grand piano in little characters</title>
-<!-- The HTML keys fit inside the front rim, between y=207 and y=300. -->
-<g font-family="Menlo,Consolas,Liberation Mono,monospace" font-size="12" font-weight="600" text-anchor="middle">
-<text fill="#b4c7a8" y="35.0" x="638.125">.</text>
-<text fill="#efd4db" y="35.0" x="278.125 289.375 300.625 311.875 323.125 334.375 345.625 356.875 368.125 379.375 390.625 401.875 413.125 424.375 435.625 446.875 458.125 469.375 480.625 491.875">//_______________\\\</text>
-<text fill="#efd4db" y="46.5" x="244.375 255.625 266.875 278.125 491.875 503.125 514.375 525.625 536.875">////\\\\\</text>
-<text fill="#a5bba0" y="58.0" x="503.125">/</text>
-<text fill="#b4c7a8" y="58.0" x="8.125">*</text>
-<text fill="#efd4db" y="58.0" x="210.625 221.875 233.125 536.875 548.125 559.375 570.625">///\\\\</text>
-<text fill="#a2879b" y="69.5" x="300.625 424.375 548.125">:::</text>
-<text fill="#a5bba0" y="69.5" x="491.875 503.125">//</text>
-<text fill="#efd4db" y="69.5" x="165.625 176.875 188.125 199.375 570.625 581.875">////\\</text>
-<text fill="#a2879b" y="81.0" x="199.375 323.125 446.875">:::</text>
-<text fill="#a5bba0" y="81.0" x="480.625 491.875">//</text>
-<text fill="#efd4db" y="81.0" x="131.875 143.125 154.375 165.625 581.875 593.125">////\\</text>
-<text fill="#a2879b" y="92.5" x="221.875 345.625">::</text>
-<text fill="#a5bba0" y="92.5" x="469.375 480.625">//</text>
-<text fill="#efd4db" y="92.5" x="120.625 131.875 593.125 604.375">//\\</text>
-<text fill="#a2879b" y="104.0" x="244.375 368.125 491.875">:::</text>
-<text fill="#a5bba0" y="104.0" x="458.125 469.375">//</text>
-<text fill="#efd4db" y="104.0" x="98.125 109.375 604.375">//\</text>
-<text fill="#a2879b" y="115.5" x="266.875 390.625 514.375">:::</text>
-<text fill="#a5bba0" y="115.5" x="446.875 458.125">//</text>
-<text fill="#efd4db" y="115.5" x="86.875 98.125 604.375">//\</text>
-<text fill="#a2879b" y="127.0" x="289.375 413.125 536.875">:::</text>
-<text fill="#b397a8" y="127.0" x="131.875 154.375 165.625 188.125 199.375 221.875 233.125 255.625 266.875 300.625 323.125 334.375 356.875 368.125 390.625 401.875 424.375 458.125 469.375 491.875 503.125 525.625 559.375 570.625">........................</text>
-<text fill="#a5bba0" y="127.0" x="435.625 446.875">//</text>
-<text fill="#efd4db" y="127.0" x="64.375 75.625 604.375">//\</text>
-<text fill="#a5bba0" y="138.5" x="435.625">/</text>
-<text fill="#efd4db" y="138.5" x="53.125 64.375 75.625 86.875 98.125 109.375 120.625 131.875 143.125 154.375 165.625 176.875 188.125 199.375 210.625 221.875 233.125 244.375 255.625 266.875 278.125 289.375 300.625 311.875 323.125 334.375 345.625 356.875 368.125 379.375 390.625 401.875 413.125 424.375 446.875 458.125 469.375 480.625 491.875 503.125 514.375 525.625 536.875 548.125 559.375 570.625 581.875 593.125 604.375">_________________________________________________</text>
-<text fill="#dfbfd0" x="64" y="151" font-size="12">|</text>
-<text fill="#c9acbf" x="594" y="151" font-size="12">)</text>
-<text fill="#dfbfd0" x="64" y="162" font-size="12">|</text>
-<text fill="#c9acbf" x="594" y="162" font-size="12">)</text>
-<text fill="#dfbfd0" x="64" y="173" font-size="12">|</text>
-<text fill="#c9acbf" x="594" y="173" font-size="12">)</text>
-<text fill="#dfbfd0" x="64" y="184" font-size="12">|</text>
-<text fill="#c9acbf" x="594" y="184" font-size="12">)</text>
-<text fill="#dfbfd0" x="64" y="195" font-size="12">|</text>
-<text fill="#c9acbf" x="594" y="195" font-size="12">)</text>
-<text fill="#dfbfd0" x="64" y="206" font-size="12">|</text>
-<text fill="#c9acbf" x="594" y="206" font-size="12">)</text>
-<text fill="#dfbfd0" x="64" y="217" font-size="12">|</text>
-<text fill="#c9acbf" x="594" y="217" font-size="12">)</text>
-<text fill="#dfbfd0" x="64" y="228" font-size="12">|</text>
-<text fill="#c9acbf" x="594" y="228" font-size="12">)</text>
-<text fill="#dfbfd0" x="64" y="239" font-size="12">|</text>
-<text fill="#c9acbf" x="594" y="239" font-size="12">)</text>
-<text fill="#dfbfd0" x="64" y="250" font-size="12">|</text>
-<text fill="#c9acbf" x="594" y="250" font-size="12">)</text>
-<text fill="#dfbfd0" x="64" y="261" font-size="12">|</text>
-<text fill="#c9acbf" x="594" y="261" font-size="12">)</text>
-<text fill="#dfbfd0" x="64" y="272" font-size="12">|</text>
-<text fill="#c9acbf" x="594" y="272" font-size="12">)</text>
-<text fill="#dfbfd0" x="64" y="283" font-size="12">|</text>
-<text fill="#c9acbf" x="594" y="283" font-size="12">)</text>
-<text fill="#dfbfd0" x="64" y="294" font-size="12">|</text>
-<text fill="#c9acbf" x="594" y="294" font-size="12">)</text>
-<text fill="#dfbfd0" x="64" y="305" font-size="12">|</text>
-<text fill="#c9acbf" x="594" y="305" font-size="12">)</text>
-<text fill="#dfbfd0" x="64" y="316" font-size="12">|</text>
-<text fill="#c9acbf" x="594" y="316" font-size="12">)</text>
-<text fill="#d2a3be" x="75" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="75" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="85" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="85" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="95" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="95" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="105" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="105" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="115" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="115" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="125" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="125" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="135" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="135" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="145" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="145" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="155" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="155" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="165" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="165" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="175" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="175" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="185" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="185" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="195" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="195" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="205" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="205" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="215" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="215" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="225" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="225" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="235" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="235" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="245" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="245" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="255" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="255" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="265" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="265" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="275" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="275" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="285" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="285" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="295" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="295" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="305" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="305" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="315" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="315" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="325" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="325" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="335" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="335" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="345" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="345" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="355" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="355" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="365" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="365" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="375" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="375" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="385" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="385" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="395" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="395" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="405" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="405" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="415" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="415" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="425" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="425" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="435" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="435" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="445" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="445" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="455" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="455" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="465" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="465" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="475" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="475" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="485" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="485" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="495" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="495" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="505" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="505" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="515" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="515" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="525" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="525" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="535" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="535" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="545" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="545" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="555" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="555" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="565" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="565" y="315" font-size="12">=</text>
-<text fill="#d2a3be" x="575" y="151" font-size="12">=</text>
-<text fill="#d2a3be" x="575" y="315" font-size="12">=</text>
-<text fill="#dfbfd0" x="94" y="328" font-size="12">|</text>
-<text fill="#dfbfd0" x="549" y="328" font-size="12">|</text>
-<text fill="#9d8199" x="588" y="328" font-size="12">|</text>
-<text fill="#dfbfd0" x="94" y="339" font-size="12">|</text>
-<text fill="#dfbfd0" x="549" y="339" font-size="12">|</text>
-<text fill="#9d8199" x="588" y="339" font-size="12">|</text>
-<text fill="#dfbfd0" x="94" y="350" font-size="12">|</text>
-<text fill="#dfbfd0" x="549" y="350" font-size="12">|</text>
-<text fill="#9d8199" x="588" y="350" font-size="12">|</text>
-<text fill="#dfbfd0" x="94" y="361" font-size="12">|</text>
-<text fill="#dfbfd0" x="549" y="361" font-size="12">|</text>
-<text fill="#9d8199" x="588" y="361" font-size="12">|</text>
-<text fill="#dfbfd0" x="94" y="372" font-size="12">|</text>
-<text fill="#dfbfd0" x="549" y="372" font-size="12">|</text>
-<text fill="#9d8199" x="588" y="372" font-size="12">|</text>
-<text fill="#dfbfd0" x="94" y="383" font-size="12">|</text>
-<text fill="#dfbfd0" x="549" y="383" font-size="12">|</text>
-<text fill="#9d8199" x="588" y="383" font-size="12">|</text>
-<text fill="#b6caa9" x="90" y="401" font-size="12">o</text>
-<text fill="#b6caa9" x="545" y="401" font-size="12">o</text>
-<text fill="#b6caa9" x="588" y="401" font-size="12">o</text>
-<text fill="#aaa88f" x="286" y="341" font-size="12">|</text>
-<text fill="#d4c7a5" x="286" y="351" font-size="12">_</text>
-<text fill="#aaa88f" x="301" y="341" font-size="12">|</text>
-<text fill="#d4c7a5" x="301" y="351" font-size="12">_</text>
-<text fill="#aaa88f" x="316" y="341" font-size="12">|</text>
-<text fill="#d4c7a5" x="316" y="351" font-size="12">_</text>
-<text fill="#b7cba9" x="35" y="220" font-size="12">·</text>
-<text fill="#b7cba9" x="614" y="279" font-size="12">*</text>
-<text fill="#b7cba9" x="343" y="385" font-size="12">·</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="520" viewBox="0 0 760 520">
+<title>A little upright piano</title>
+<defs>
+ <pattern id="wood" width="34" height="25" patternUnits="userSpaceOnUse"><path d="M5 7h12M22 18h7" stroke="#c6ae92" stroke-width=".7" opacity=".13"/></pattern>
+</defs>
+<!-- Cabinet and stepped cornice. The open action sits above the HTML keyboard. -->
+<g stroke="#cdbb9e" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+ <path d="M75 111L686 108 686 454 674 470H88L76 455Z" fill="#302127"/>
+ <path d="M85 117H674V452H86Z" fill="url(#wood)" stroke="none"/>
+ <path d="M66 96L693 94 699 107 691 116 71 117 63 108Z" fill="#51383e"/>
+ <path d="M66 106L693 104M78 122L685 120" fill="none" stroke="#9e8475"/>
+ <path d="M83 136H677V281H83Z" fill="#251b20"/>
+ <path d="M94 143L665 141 665 279H94Z" fill="#392b2c" stroke="#8c7364"/>
+ <path d="M108 152H652V248H108Z" fill="#2b2326" stroke="#6e594e"/>
+ <path d="M111 154L648 245M111 171L563 245" fill="none" stroke="#9b8262" stroke-width="4" opacity=".28"/>
+ <path d="M71 283L690 281 702 293 699 370 63 370 61 295Z" fill="#51383e"/>
+ <path d="M63 294L698 292M72 366L692 364" fill="none" stroke="#a68b78"/>
+ <path d="M100 292H660V369H100Z" fill="#211a1e" stroke="#d2bca1"/>
+ <path d="M88 381L673 379 670 451 92 453Z" fill="#35252b" stroke="#806859"/>
+ <path d="M105 391L657 389 655 441 107 443Z" fill="url(#wood)" stroke="#705a50"/>
+ <path d="M77 371L96 373 99 493 81 493Z M663 373L683 371 677 493 659 493Z" fill="#483139"/>
+ <path d="M73 489L105 489 106 500 73 500Z M653 489H683V500H651Z" fill="#38262c"/>
+ <path d="M362 453V476M383 452V476M405 452V476" stroke="#a68c65" stroke-width="3"/>
+ <path d="M353 476Q358 470 368 474L367 481H351Z M375 476Q380 470 390 474L389 481H373Z M397 476Q402 470 412 474L411 481H395Z" fill="#bea47b" stroke="#cfbc96"/>
+ <!-- A modest music rest connects the paper to the instrument. -->
+ <path d="M299 61L461 61 468 99H291Z" fill="#291e24" stroke="#947a69"/>
+ <path d="M287 98L473 97" stroke-width="4"/>
+</g>
+<g transform="rotate(-3 381 69)">
+ <path d="M314 22Q347 17 380 23Q416 18 449 24L447 98Q416 93 381 98Q348 92 316 98Z" fill="#e2d3b8" stroke="#9d856f" stroke-width="1.2"/>
+ <path d="M380 24L381 96" stroke="#a99578" stroke-width=".7"/>
+ <text x="382" y="38" text-anchor="middle" fill="#5e4641" font-family="Georgia,serif" font-style="italic" font-size="10">a little duet</text>
+ <g stroke="#9f8e72" stroke-width=".5"><path d="M324 51H371M391 51H439"/><path d="M324 55H371M391 55H439"/><path d="M324 59H371M391 59H439"/><path d="M324 63H371M391 63H439"/><path d="M324 67H371M391 67H439"/><path d="M324 79H371M391 79H439"/><path d="M324 83H371M391 83H439"/><path d="M324 87H371M391 87H439"/></g><g fill="#71594b" stroke="#71594b" stroke-width=".8"><ellipse cx="331" cy="62" rx="2.3" ry="1.6" transform="rotate(-20 331 62)"/><path d="M333 62v-9"/><ellipse cx="344" cy="58" rx="2.3" ry="1.6" transform="rotate(-20 344 58)"/><path d="M346 58v-9"/><ellipse cx="357" cy="66" rx="2.3" ry="1.6" transform="rotate(-20 357 66)"/><path d="M359 66v-9"/><ellipse cx="400" cy="59" rx="2.3" ry="1.6" transform="rotate(-20 400 59)"/><path d="M402 59v-9"/><ellipse cx="414" cy="55" rx="2.3" ry="1.6" transform="rotate(-20 414 55)"/><path d="M416 55v-9"/><ellipse cx="431" cy="63" rx="2.3" ry="1.6" transform="rotate(-20 431 63)"/><path d="M433 63v-9"/><ellipse cx="338" cy="84" rx="2.3" ry="1.6" transform="rotate(-20 338 84)"/><path d="M340 84v-9"/><ellipse cx="358" cy="87" rx="2.3" ry="1.6" transform="rotate(-20 358 87)"/><path d="M360 87v-9"/><ellipse cx="405" cy="82" rx="2.3" ry="1.6" transform="rotate(-20 405 82)"/><path d="M407 82v-9"/><ellipse cx="425" cy="86" rx="2.3" ry="1.6" transform="rotate(-20 425 86)"/><path d="M427 86v-9"/></g></g>
+<!-- Small type marks tie the drawing to the rest of the site's character art. -->
+<g font-family="Menlo,Consolas,monospace" text-anchor="middle" fill="#bfa58a">
+ <text x="380" y="132" font-size="9" letter-spacing="7">· · ·</text>
+ <text x="380" y="424" font-size="12" opacity=".65">~  ·  ~</text>
+ <text x="83" y="333" font-size="15">:</text><text x="679" y="332" font-size="15">:</text>
+</g>
+<g fill="none" stroke="#bfa88e" stroke-width=".65" opacity=".6">
+ <path d="M71 101L243 100M502 99L685 98M80 127V264M681 130V257M111 383L313 382M475 448L647 447M87 379L88 480"/>
 </g>
 </svg>

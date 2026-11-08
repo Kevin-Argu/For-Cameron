@@ -17,8 +17,8 @@
     };
     const animatedNotes = new Set();
     let recital = null;
-    // Two small original phrases preview the experience until songs are selected.
-    // Their audio sequence and the decorative key movement are independent.
+    // Small original phrases keep this page self-contained. The duet has one
+    // shared step clock, so its accompaniment and melody cannot drift apart.
     const tunes = {
         piano: { beat: 440, steps: [
             [[60, 64], 1], [67, 1], [72, 1.5], [71, .5], [69, 1], [67, 1],
@@ -32,6 +32,17 @@
             [65, 1], [69, 1], [67, 1.5], [64, .5], [62, 1], [67, 1], [60, 3]
         ] }
     };
+    tunes.duet = { beat: 460, steps: [
+        [{ piano: [60, 64], harmonica: 67 }, 1], [{ piano: 67, harmonica: 72 }, 1],
+        [{ piano: [60, 64], harmonica: 76 }, 1.5], [{ piano: 67, harmonica: 74 }, .5],
+        [{ piano: [60, 64], harmonica: 72 }, 1], [{ piano: 67, harmonica: 67 }, 1],
+        [{ piano: [62, 65], harmonica: 71 }, 1], [{ piano: 69, harmonica: 72 }, 1],
+        [{ piano: [62, 65], harmonica: 74 }, 2], [{ piano: 69, harmonica: 72 }, 1],
+        [{ piano: [60, 65], harmonica: 71 }, 1], [{ piano: 67, harmonica: 67 }, 1],
+        [{ piano: [60, 64], harmonica: 64 }, 1], [{ piano: 67, harmonica: 67 }, 1],
+        [{ piano: [62, 67], harmonica: 71 }, 1], [{ piano: 65, harmonica: 74 }, 1],
+        [{ piano: [60, 64, 67], harmonica: 72 }, 3]
+    ] };
     // Standard C Richter tuning, holes 1 through 10 (MIDI pitches).
     const tuning = {
         blow: [60, 64, 67, 72, 76, 79, 84, 88, 91, 96],
@@ -40,7 +51,8 @@
     let breath = 'blow';
     let context, master, compressor, reedWave;
     const active = new Map();
-    const shortcuts = new Map(buttons.map(button => [button.getAttribute('data-key'), button]));
+    const shortcuts = new Map(buttons.filter(button => button.getAttribute('data-key'))
+        .map(button => [button.getAttribute('data-key'), button]));
     const Audio = window.AudioContext || window.webkitAudioContext;
     const pianoMechanisms = new Map([...section.querySelectorAll('[data-piano-note]')]
         .map(part => [part.getAttribute('data-piano-note'), part]));
@@ -76,7 +88,7 @@
         return context.state === 'running' ? null : context.resume();
     }
 
-    function voice(midi, instrument) {
+    function voice(midi, instrument, level = 1) {
         const now = context.currentTime;
         const frequency = 440 * Math.pow(2, (midi - 69) / 12);
         const nodes = [], envelopes = [];
@@ -89,7 +101,7 @@
             oscillator.frequency.value = frequency * partial * (harmonic ? 1 : 1 + .00018 * partial * partial);
             if (harmonic) oscillator.setPeriodicWave(reedWave);
             else oscillator.type = 'sine';
-            const peak = harmonic ? .24 : [.31, .11, .045, .02][index];
+            const peak = (harmonic ? .24 : [.31, .11, .045, .02][index]) * level;
             gain.gain.setValueAtTime(.0001, now);
             gain.gain.linearRampToValueAtTime(peak, now + (harmonic ? .045 : .006));
             if (!harmonic) {
@@ -142,15 +154,17 @@
         for (const control of playControls) {
             const instrument = control.getAttribute('data-play-instrument');
             const playing = recital?.instrument === instrument;
+            const name = instrument === 'duet' ? 'piano and harmonica together' : instrument + ' solo';
             control.setAttribute('aria-pressed', String(playing));
-            control.setAttribute('aria-label', (playing ? 'Stop the ' : 'Play a little ') + instrument + ' tune');
+            control.setAttribute('aria-label', (playing ? 'Stop ' : 'Play ') + name);
             const label = control.querySelector('.play-label');
             const icon = control.querySelector('.play-icon');
-            if (label) label.textContent = playing ? 'click to stop' : 'click to play';
+            if (label) label.textContent = playing ? 'stop playing' : 'play together';
             if (icon) icon.textContent = playing ? '□' : '▷';
         }
         for (const instrument of ['piano', 'harmonica']) {
-            scenes[instrument].classList.toggle('is-performing', recital?.instrument === instrument);
+            scenes[instrument].classList.toggle('is-performing',
+                recital?.instrument === instrument || recital?.instrument === 'duet');
         }
     }
     function stopRecital() {
@@ -164,7 +178,7 @@
         }
         clearDecorativeNotes();
         updatePlayControls();
-        if (previous) status.textContent = 'pick an instrument, let it play.';
+        if (previous) status.textContent = 'piano & harmonica';
     }
     // Every queued step belongs to one session. A switch, stop, or hidden tab
     // invalidates both pending audio resumes and all future notes/animations.
@@ -179,20 +193,27 @@
     function animateRecital(session) {
         clearDecorativeNotes();
         if (site.reducedMotion.matches || recital !== session) return;
-        const candidates = buttons.filter(button => button.getAttribute('data-instrument') === session.instrument);
-        const count = session.instrument === 'piano' ? 1 + Math.floor(Math.random() * 3) : 1;
-        for (let i = 0; i < count; i++) {
-            const index = Math.floor(Math.random() * candidates.length);
-            const button = candidates.splice(index, 1)[0];
+        // Use the notes that are actually sounding. Solo bass notes outside the
+        // visible two octaves are shown at the same pitch class on this keyboard.
+        for (const [instrument, midi] of session.currentNotes) {
+            let button;
+            if (instrument === 'piano') {
+                const displayed = midi < 60 ? midi + 12 * Math.ceil((60 - midi) / 12)
+                    : midi > 84 ? 72 + midi % 12 : midi;
+                button = buttons.find(item => item.getAttribute('data-instrument') === 'piano'
+                    && Number(item.getAttribute('data-midi')) === displayed);
+            } else {
+                let hole = tuning.blow.indexOf(midi);
+                if (hole < 0) hole = tuning.draw.indexOf(midi);
+                button = holes[hole];
+            }
+            if (!button) continue;
             animatedNotes.add(button);
             button.classList.add('is-performing-note');
-            if (session.instrument === 'piano') {
+            if (instrument === 'piano') {
                 pianoMechanisms.get(button.getAttribute('data-midi'))?.classList.add('is-performing-note');
             }
         }
-        // Small landing pauses make each new group visibly press and release.
-        later(session, clearDecorativeNotes, 150 + Math.random() * 90);
-        session.animation = later(session, () => animateRecital(session), 320 + Math.random() * 180);
     }
     function playStep(session, index) {
         const tune = tunes[session.instrument];
@@ -202,12 +223,22 @@
         }
         const [notes, beats] = tune.steps[index];
         const duration = beats * tune.beat;
-        const pitches = Array.isArray(notes) ? notes : [notes];
-        for (const midi of pitches) {
-            const stop = voice(midi, session.instrument);
-            session.voices.add(stop);
-            later(session, () => { stop(); session.voices.delete(stop); }, duration * .86);
+        const parts = session.instrument === 'duet' ? Object.entries(notes) : [[session.instrument, notes]];
+        session.currentNotes = [];
+        // Both parts start in this callback and share the same duration and stop
+        // session. Stopping, leaving, or manually playing a key cancels them both.
+        for (const [instrument, part] of parts) {
+            const pitches = Array.isArray(part) ? part : [part];
+            for (const midi of pitches) {
+                const level = session.instrument === 'duet' ? (instrument === 'piano' ? .65 : .6) : 1;
+                const stop = voice(midi, instrument, level);
+                session.voices.add(stop);
+                session.currentNotes.push([instrument, midi]);
+                later(session, () => { stop(); session.voices.delete(stop); }, duration * .86);
+            }
         }
+        animateRecital(session);
+        later(session, () => { session.currentNotes = []; clearDecorativeNotes(); }, duration * .86);
         later(session, () => playStep(session, index + 1), duration);
     }
     function toggleRecital(instrument) {
@@ -215,15 +246,14 @@
         if (recital?.instrument === instrument) { stopRecital(); return; }
         stopRecital();
         releaseAll();
-        const session = { instrument, timers: new Set(), voices: new Set(), started: false, animation: null };
+        const session = { instrument, timers: new Set(), voices: new Set(), started: false, currentNotes: [] };
         recital = session;
         updatePlayControls();
         function begin() {
             if (recital !== session) return;
             session.started = true;
-            status.textContent = 'a little ' + instrument + ' tune';
+            status.textContent = instrument === 'duet' ? 'a little duet · piano & harmonica' : instrument + ' solo';
             playStep(session, 0);
-            animateRecital(session);
         }
         function failed() {
             if (recital !== session) return;
@@ -242,8 +272,6 @@
     site.reducedMotion.addEventListener('change', () => {
         clearDecorativeNotes();
         if (!recital?.started) return;
-        clearTimeout(recital.animation);
-        recital.timers.delete(recital.animation);
         if (!site.reducedMotion.matches) animateRecital(recital);
     });
 
@@ -300,7 +328,7 @@
         }
         // Native keyboard activation and assistive-technology clicks have no pointer.
         button.addEventListener('click', event => {
-            if (event.detail === 0) press(button, 'tap:' + button.getAttribute('data-key'), 650);
+            if (event.detail === 0) press(button, 'tap:' + button.getAttribute('data-instrument') + ':' + (button.getAttribute('data-midi') || button.getAttribute('data-hole')), 650);
         });
     });
     section.addEventListener('keydown', event => {
@@ -321,7 +349,7 @@
         new IntersectionObserver(entries => { if (!entries[0].isIntersecting) silence(); }).observe(section);
     }
     function setBreath(next) {
-        if (recital?.instrument === 'harmonica') stopRecital();
+        if (recital?.instrument === 'harmonica' || recital?.instrument === 'duet') stopRecital();
         releaseAll('harmonica');
         breath = next;
         blow.setAttribute('aria-pressed', String(next === 'blow'));
