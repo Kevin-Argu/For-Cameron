@@ -10,6 +10,33 @@ function swimming(options) {
     return h;
 }
 
+test('the whale sends up a tall repeated fountain and stops spraying during tricks or reduced motion', () => {
+    const h = swimming(), whale = h.get('roamingWhale'), ctx = whale.getContext('2d');
+    const fillText = ctx.fillText;
+    let spray = [];
+    // Inspect the water glyphs drawn on the live layer; the cached skin is drawn separately as images.
+    ctx.fillText = (glyph, x, y) => {
+        fillText(glyph, x, y);
+        if (glyph === '|' || glyph === 'o') spray.push({ glyph, x, y });
+    };
+    let bursts = 0, wasSpraying = false, highestDrop = Infinity;
+    for (let i = 0; i < 85; i++) {
+        spray = []; h.advance(100);
+        const spraying = spray.length > 0;
+        if (spraying && !wasSpraying) bursts++;
+        for (const drop of spray) highestDrop = Math.min(highestDrop, drop.y);
+        wasSpraying = spraying;
+    }
+    assert.ok(bursts >= 2, 'the fountain should appear at least twice in an eight-second view');
+    assert.ok(highestDrop < 0, 'the spray should rise above the top of the whale sprite');
+    spray = [];
+    whale.dispatchEvent({ type: 'keydown', key: 'Enter' }); h.advance(500);
+    assert.equal(spray.length, 0, 'a flip should not drag a fountain around with it');
+    h.setReduced(true); h.advance(5000);
+    assert.equal(spray.length, 0);
+    assert.equal(h.frames.size, 0);
+});
+
 test('tapping the whale performs a full flip; keyboard activation then makes an upward swoop', () => {
     const h = swimming(), whale = h.get('roamingWhale'), calls = h.canvasCalls.get(whale);
     h.windowEvent('click', { target: h.get('whaleHome'), clientX: 720, clientY: 585 });

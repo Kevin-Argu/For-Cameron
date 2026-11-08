@@ -189,9 +189,27 @@ test('welcome entry works before Desmos loads; only background scrolling is bloc
     assert.equal(h.document.activeElement, h.get('waterLilies'));
 });
 
-test('the birdwatching return opens the garden directly and initializes its graph', async () => {
+test('the birdwatching Back link returns to the binoculars without the welcome or a garden jump', () => {
     const birdwatch = fs.readFileSync(path.resolve(__dirname, '../birdwatch.html'), 'utf8');
-    assert.match(birdwatch, /href="index\.html#gardenStart"/);
+    assert.match(birdwatch, /href="index\.html#birdwatchEntry">← Back<\/a>/);
+    const h = start({ hash: '#birdwatchEntry', desmos: false });
+    h.run('peanut-gate.js');
+    assert.equal(h.context.CameronSite.entered, true);
+    assert.equal(h.get('peanutGate').hidden, true);
+    assert.equal(h.document.querySelector('main').inert, false);
+    assert.equal(h.document.body.classList.contains('peanut-lock'), false);
+    assert.equal(h.document.documentElement.classList.contains('peanut-locked'), false);
+    assert.equal(h.get('birdwatchEntry').scrolledIntoView, true);
+    assert.ok(!h.get('gardenStart').scrolledIntoView);
+    assert.equal(h.document.activeElement, h.get('birdwatchEntry'));
+    assert.equal(h.get('birdwatchEntry').getAttribute('tabindex'), '-1');
+    const wheel = { type: 'wheel', target: h.get('birdwatchEntry') };
+    const tab = { type: 'keydown', key: 'Tab' };
+    h.document.dispatchEvent(wheel); h.document.dispatchEvent(tab);
+    assert.ok(!wheel.defaultPrevented); assert.ok(!tab.defaultPrevented);
+});
+
+test('existing garden direct links still open the garden and initialize its graph', async () => {
     const h = start({ hash: '#gardenStart', desmos: false });
     h.run('peanut-gate.js');
     assert.equal(h.context.CameronSite.entered, true);

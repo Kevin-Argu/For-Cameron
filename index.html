@@ -17,9 +17,9 @@
     <script defer src="js/main.js?v=5"></script>
     <script defer src="js/flower-notes.js?v=6"></script>
     <script defer src="js/flower-details.js?v=1"></script>
-    <script defer src="js/peanut-gate.js?v=5"></script>
+    <script defer src="js/peanut-gate.js?v=6"></script>
     <script defer src="js/ascii-lilies.js?v=7"></script>
-    <script defer src="js/whale.js?v=11"></script>
+    <script defer src="js/whale.js?v=12"></script>
     <script defer src="js/bouquet-data.js?v=2"></script>
     <script defer src="js/flowers.js?v=10"></script>
     <script defer src="js/heart.js?v=5"></script>
@@ -105,7 +105,8 @@
             <span class="whale-status" id="whaleStatus" role="status" aria-live="polite"></span>
         </section>
 
-        <section class="birdwatch-entry" id="birdwatchEntry" aria-labelledby="birdwatchHeading">
+        <!-- The return link can focus this section without adding it to normal Tab navigation. -->
+        <section class="birdwatch-entry" id="birdwatchEntry" aria-labelledby="birdwatchHeading" tabindex="-1">
             <h2 id="birdwatchHeading">In the simplest moments.</h2>
             <a class="binocular-link" href="birdwatch.html"
                aria-label="Look through the binoculars at the flower-covered cow, hummingbird and red cardinal">

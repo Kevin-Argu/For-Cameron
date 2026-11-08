@@ -149,6 +149,8 @@
   let scrollNudge = 0, previousScroll = scrollY, hearts = 0;
   let trick = null, nextTrick = 0;
   let hasReacted = false;
+  // A broad fountain lasts just over two seconds and returns about twice as often as before.
+  const breathCycle = 4.2, breathDuration = 2.2, breathHeight = 220;
 
   function cancelTrick() {
     trick = null;
@@ -309,19 +311,7 @@
     ctx.fillStyle = dark ? '#456f80' : '#35586b';
     ctx.fillText('::', 116*cellWidth, 16.4*rowHeight);
 
-    // An occasional quiet breath, still drawn from characters like the skin.
-    const breath = (elapsed/60) % 8;
-    if (!reduced && !trick && entrance === 'swimming' && breath < 1.65) {
-      const rise = breath/1.65;
-      ctx.globalAlpha = Math.sin(rise*Math.PI)*.72;
-      ctx.fillStyle = dark ? '#bed9e2' : '#577f91';
-      for (let i = 0; i < 13; i++) {
-        const fan = (i-6)/6;
-        ctx.fillText(i%3 ? '.' : "'", 117*cellWidth + fan*rise*33,
-          16*rowHeight - Math.sin(rise*Math.PI*.75)*(25 + (i%4)*11));
-      }
-      ctx.globalAlpha = 1;
-    }
+    drawBreath(dark);
     ctx.restore();
     if (hearts > 0) {
       ctx.fillStyle = dark ? '#f4afce' : '#ad608b';
@@ -331,6 +321,42 @@
         ctx.fillText('<3', -35+i*28, oy+50-i*13-(1-hearts)*60);
       ctx.globalAlpha = 1;
     }
+  }
+
+  function drawBreath(dark) {
+    const breath = (elapsed/60) % breathCycle;
+    // The spray uses the existing swimming clock, so offscreen pauses and reduced motion also apply here.
+    if (reduced || trick || entrance !== 'swimming' || breath >= breathDuration) return;
+    const progress = breath/breathDuration;
+    const nozzleX = 117*cellWidth, nozzleY = 16*rowHeight;
+    const fade = clamp(Math.min(breath/.18, (breathDuration-breath)/.45), 0, 1);
+    ctx.save();
+    ctx.font = "13px Menlo, Monaco, Consolas, 'Courier New', monospace";
+    ctx.globalAlpha = fade*.9;
+    ctx.fillStyle = dark ? '#d3f5ff' : '#356f8b';
+
+    // A narrow, bright column connects the larger droplets to the blowhole.
+    const jetHeight = Math.sin(progress*Math.PI)*breathHeight*.78;
+    for (let row = 0; row < 15; row++) {
+      const t = row/14;
+      const sway = Math.sin(row*.8-breath*8)*t*5;
+      for (let side = -1; side <= 1; side++) {
+        ctx.fillText(row%3 ? '|' : ':', nozzleX+sway+side*(2+t*4), nozzleY-t*jetHeight);
+      }
+    }
+
+    // Staggered arcs fan outward, then fall back down as the fountain fades.
+    ctx.fillStyle = dark ? '#a7e4f4' : '#397c9a';
+    for (let i = 0; i < 45; i++) {
+      const flight = (breath-(i%6)*.055)/1.85;
+      if (flight <= 0 || flight >= 1) continue;
+      const fan = (i-22)/22;
+      const lift = Math.sin(flight*Math.PI)*(breathHeight-(i%5)*14);
+      const spread = fan*flight*(70+flight*70);
+      ctx.globalAlpha = fade*(.6+.3*Math.sin(flight*Math.PI));
+      ctx.fillText(['o', '.', "'", ':'][i%4], nozzleX+spread, nozzleY-lift);
+    }
+    ctx.restore();
   }
 
   // Paint the ground in the same coordinate space as the whale, so contact stays aligned at every screen size.
@@ -474,17 +500,19 @@
       ctx.font = '12px Menlo, Consolas, monospace';
       ctx.textAlign = 'center';
       ctx.fillStyle = dark ? '#c0d7df' : '#35586b';
-      const hintX = clamp(x+direction*spriteWidth*scale*.22, 44, w-44);
+      // Keep the invitation near the middle of the whale, clear of the larger fountain.
+      const hintX = clamp(x+direction*spriteWidth*scale*.06, 44, w-44);
       const hintY = Math.max(26, y-spriteHeight*scale*.34-18);
       ctx.fillText('click me', hintX, hintY);
       ctx.fillText('v', hintX, hintY+15);
       ctx.restore();
     }
     if (entrance === 'impact') drawImpact(entranceMs/impactDuration);
-    // Include fin rotation, the breath and hearts in the cleared rectangle once swimming resumes.
+    // Include the entire taller fountain so fading droplets cannot leave trails on the page.
+    const sprayClearance = Math.max(80, breathHeight-16*rowHeight+32);
     lastRect = { x: x-spriteWidth*scale/2-32,
-      y: y-spriteHeight*scale/2-80*scale-32,
-      width: spriteWidth*scale+64, height: (spriteHeight+160)*scale+64 };
+      y: y-spriteHeight*scale/2-sprayClearance*scale-32,
+      width: spriteWidth*scale+64, height: (spriteHeight+2*sprayClearance)*scale+64 };
     if (!reduced) hearts = Math.max(0, hearts-.012*dt);
     if (!reduced) requestFrame();
   }

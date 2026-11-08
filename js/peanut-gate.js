@@ -20,11 +20,12 @@
         }
     }
     const options = { passive: false, capture: true };
-    // The birdwatching page links to the actual garden, not the welcome flow.
-    const gardenReturn = window.location.hash === '#gardenStart'
-        ? document.getElementById('gardenStart') : null;
-    if (gardenReturn) {
-        completeEntry(gardenReturn);
+    // Returning from birdwatching restores its binoculars section without replaying the welcome.
+    // Keep existing direct garden links working as well.
+    const returnSection = ['#birdwatchEntry', '#gardenStart'].includes(window.location.hash)
+        ? document.getElementById(window.location.hash.slice(1)) : null;
+    if (returnSection) {
+        completeEntry(returnSection);
         return;
     }
 
