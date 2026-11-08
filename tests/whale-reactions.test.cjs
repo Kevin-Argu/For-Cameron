@@ -3,11 +3,27 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const { harness } = require('./harness.cjs');
 
-function swimming(options) {
+function swimming({ width = 1440, ...options } = {}) {
     const h = harness(options);
-    h.run('main.js'); h.run('whale.js'); h.enter();
+    h.run('main.js'); h.run('whale.js');
+    if (width !== 1440) h.resize('whaleHome', width, 844);
+    h.enter();
     h.get('whaleDrop').click(); h.advance(2300);
     return h;
+}
+
+
+// The first translation after each clear places the whale on the page; later ones articulate its fins.
+function trackPosition(whale) {
+    const ctx = whale.getContext('2d'), positions = [];
+    const originalClear = ctx.clearRect, originalTranslate = ctx.translate;
+    let nextIsPosition = false;
+    ctx.clearRect = (...args) => { nextIsPosition = true; originalClear(...args); };
+    ctx.translate = (x, y) => {
+        if (nextIsPosition) { positions.push([x, y]); nextIsPosition = false; }
+        originalTranslate(x, y);
+    };
+    return positions;
 }
 
 test('the whale sends up a tall repeated fountain and stops spraying during tricks or reduced motion', () => {
@@ -48,10 +64,9 @@ test('tapping the whale performs a full flip; keyboard activation then makes an 
     whale.dispatchEvent({ type: 'keydown', key: 'Enter' });
     h.advance(1000);
     assert.equal(whale.getAttribute('data-whale-trick'), 'idle');
-    const firstMove = calls.translations.length;
+    const worldMoves = trackPosition(whale);
     whale.dispatchEvent({ type: 'keydown', key: 'Enter' }); h.advance(1100);
     assert.equal(whale.getAttribute('data-whale-trick'), 'swoop');
-    const worldMoves = calls.translations.slice(firstMove).filter(([x]) => x > 600);
     assert.ok(worldMoves.some(([, y]) => y < 430));
     h.advance(1600);
     assert.equal(whale.getAttribute('data-whale-trick'), 'idle');
@@ -77,34 +92,54 @@ test('whale reactions pause offscreen and in a hidden tab, and stop when motion 
 });
 
 for (const width of [1440, 390]) {
-    test(`the third reaction reverses facing and keeps the new direction at ${width}px`, () => {
-        const h = swimming(), whale = h.get('roamingWhale'), ctx = whale.getContext('2d');
-        if (width === 390) { h.resize('whaleHome', width, 844); h.advance(100); }
+    test(`pointer clicks reverse both facing and swimming after the flip and turn at ${width}px`, () => {
+        const h = swimming({ width }), whale = h.get('roamingWhale'), ctx = whale.getContext('2d');
+        const positions = trackPosition(whale);
         let mirrors = 0;
         const originalScale = ctx.scale;
         ctx.scale = (sx, sy) => { if (sx === -1 && sy === 1) mirrors++; originalScale(sx, sy); };
-        const calls = h.canvasCalls.get(whale);
-        const click = () => whale.dispatchEvent({ type: 'keydown', key: 'Enter' });
+        h.advance(50);
+        const click = () => {
+            const [clientX, clientY] = positions.at(-1);
+            h.windowEvent('click', { target: h.get('whaleHome'), clientX, clientY });
+        };
+        const assertSwimming = heading => {
+            const start = positions.length;
+            mirrors = 0; h.advance(350);
+            assert.equal(mirrors > 0, heading < 0, 'the whale should face the direction it swims');
+            const movement = positions.slice(start);
+            assert.ok((movement.at(-1)[0]-movement[0][0])*heading > 1,
+                'the whale must travel in the new direction, including on a phone');
+        };
 
-        // Run two complete cycles to verify both directions, including the normal frames after each turn.
+        // Exercise actual pointer hit testing and repeat the complete sequence in both headings.
         for (let cycle = 0; cycle < 2; cycle++) {
             click(); assert.equal(whale.getAttribute('data-whale-trick'), 'flip'); h.advance(2300);
+            assertSwimming(-1);
             click(); assert.equal(whale.getAttribute('data-whale-trick'), 'swoop'); h.advance(2700);
             click(); assert.equal(whale.getAttribute('data-whale-trick'), 'turn');
-            h.advance(300); click(); // A tap during the turn must not queue or restart the reaction.
+            h.advance(300); click(); // A tap during the turn must not restart or queue a reaction.
             h.advance(800);
             assert.equal(whale.getAttribute('data-whale-trick'), 'idle');
-            const start = calls.translations.length;
-            mirrors = 0; h.advance(350);
-            assert.equal(mirrors > 0, cycle === 0, 'the facing direction should alternate after each turn');
-            if (width === 1440) {
-                const positions = calls.translations.slice(start).filter(([, y]) => y > 500);
-                const distance = positions.at(-1)[0]-positions[0][0];
-                assert.ok(cycle === 0 ? distance < 0 : distance > 0, 'ordinary swimming should keep the chosen direction');
-            }
+            assertSwimming(1);
         }
     });
 }
+
+test('a slow rendering rate does not stretch a flip or landing into a long wait', () => {
+    const h = harness();
+    h.run('main.js'); h.run('whale.js'); h.enter(); h.get('whaleDrop').click();
+    h.advance(2400, 100);
+    assert.equal(h.get('whaleHome').getAttribute('data-whale-state'), 'swimming');
+    const whale = h.get('roamingWhale'), positions = trackPosition(whale);
+    whale.dispatchEvent({ type: 'keydown', key: 'Enter' });
+    h.advance(2300, 100);
+    assert.equal(whale.getAttribute('data-whale-trick'), 'idle');
+    const start = positions.length;
+    h.advance(500, 100);
+    const movement = positions.slice(start);
+    assert.ok(movement.at(-1)[0] < movement[0][0]);
+});
 
 test('reduced motion keeps a bounded heart response, and ordinary controls do not trigger tricks', () => {
     const h = swimming({ reduced: true }), whale = h.get('roamingWhale');
@@ -116,15 +151,16 @@ test('reduced motion keeps a bounded heart response, and ordinary controls do no
     h.advance(1000);
     assert.equal(h.frames.size, 0);
 
-    // Reduced motion still gets the third option as a static facing change.
+    // The first click already reversed facing; the third restores it without ongoing animation.
     const ctx = whale.getContext('2d');
     let mirrors = 0;
     const originalScale = ctx.scale;
     ctx.scale = (sx, sy) => { if (sx === -1 && sy === 1) mirrors++; originalScale(sx, sy); };
     whale.dispatchEvent({ type: 'keydown', key: 'Enter' }); h.advance(1000);
+    assert.ok(mirrors > 0); mirrors = 0;
     whale.dispatchEvent({ type: 'keydown', key: 'Enter' }); h.advance(17);
     assert.match(h.get('whaleStatus').textContent, /other way/);
-    assert.ok(mirrors > 0);
+    assert.equal(mirrors, 0);
     assert.equal(whale.getAttribute('data-whale-trick'), 'idle');
     h.advance(1000);
     assert.equal(h.frames.size, 0);

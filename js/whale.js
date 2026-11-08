@@ -11,7 +11,7 @@
   canvas.id = 'roamingWhale';
   canvas.setAttribute('role', 'button');
   canvas.setAttribute('tabindex', '-1');
-  canvas.setAttribute('aria-label', 'ASCII whale. Tap or press Enter to make it flip, swim upward, or turn around.');
+  canvas.setAttribute('aria-label', 'ASCII whale. Tap or press Enter to flip and swim the other way, swim upward, or turn around.');
   canvas.setAttribute('data-whale-trick', 'idle');
   home.appendChild(canvas);
   const ctx = canvas.getContext('2d');
@@ -244,14 +244,14 @@
     const kind = ['flip', 'swoop', 'turn'][nextTrick++ % 3];
     if (reduced) {
       // A direction change can still be shown instantly without animating a turn or moving the whale.
-      if (kind === 'turn') direction *= -1;
-      status.textContent = kind === 'turn' ? 'The whale turns to face the other way.' : 'The whale sends you a little heart.';
+      if (kind !== 'swoop') direction *= -1;
+      status.textContent = kind !== 'swoop' ? 'The whale turns to face the other way and sends you a little heart.' : 'The whale sends you a little heart.';
       clearTimeout(heartTimer);
       heartTimer = setTimeout(() => { hearts = 0; requestFrame(); }, 900);
     } else {
       trick = { kind, ms: 0, startX: x, startY: y, heading: direction };
       canvas.setAttribute('data-whale-trick', kind);
-      status.textContent = kind === 'flip' ? 'The whale does an upward flip!' :
+      status.textContent = kind === 'flip' ? 'The whale flips and swims the other way!' :
         kind === 'swoop' ? 'The whale swims up in a big swoop!' : 'The whale turns around and swims the other way!';
     }
     requestFrame();
@@ -412,7 +412,10 @@
     if (!roaming && !homeVisible) { last = 0; lastDraw = 0; return; }
     if (!reduced && lastDraw && now-lastDraw < 1000/30-.5) { requestFrame(); return; }
     lastDraw = now;
-    const dt = Math.min((last ? now-last : 16.67)/16.67, 2);
+    // Keep gesture durations in real time even when a busy page renders below 30 fps.
+    // Movement still uses a bounded step, and pause/resume clears last so hidden time is excluded.
+    const frameMs = last ? Math.max(0, now-last) : 16.67;
+    const dt = Math.min(frameMs/16.67, 2);
     last = now;
     if (!reduced) elapsed += dt;
     const entering = entrance !== 'swimming';
@@ -421,13 +424,15 @@
     if (entering || doingTrick) ctx.clearRect(0, 0, w, h);
     else if (lastRect) ctx.clearRect(lastRect.x, lastRect.y, lastRect.width, lastRect.height);
     const fitScale = Math.max(.1, (w-32)/(spriteWidth+24));
-    const goalScale = Math.min(atHome ? 1.08 : .66, fitScale, h*.45/spriteHeight);
+    // Leave room to actually swim on phones instead of filling the width and swaying in place.
+    const swimFit = w < 640 ? w*.78/(spriteWidth+24) : fitScale;
+    const goalScale = Math.min(atHome ? 1.08 : .66, fitScale, swimFit, h*.45/spriteHeight);
     const goalY = h*(atHome ? .65 : atIntro ? .58 : .64);
     let compression = 0, shake = 0, turn = 0, turnWidth = 1;
     if (entering) {
       scale = goalScale;
       x = w/2;
-      entranceMs += dt*16.67;
+      entranceMs += frameMs;
       const groundY = h*.83;
       const landingY = groundY-84*scale;
       if (entrance === 'falling') {
@@ -448,7 +453,7 @@
         if (t === 1) finishLanding();
       }
     } else if (trick) {
-      trick.ms += dt*16.67;
+      trick.ms += frameMs;
       const turningAround = trick.kind === 'turn';
       const t = clamp(trick.ms/(turningAround ? 950 : trick.kind === 'flip' ? 2100 : 2500), 0, 1);
       const eased = t*t*(3-2*t);
@@ -461,8 +466,9 @@
         turn = -.06*Math.sin(Math.PI*2*t);
         scale = goalScale;
         const halfWidth = (spriteWidth/2+12)*scale+12;
+        const travel = Math.max(0, w-halfWidth*2);
         const exit = clamp((t-.5)*2, 0, 1);
-        x = clamp(trick.startX-trick.heading*Math.min(w*.08, 80)*exit*exit, halfWidth, w-halfWidth);
+        x = clamp(trick.startX-trick.heading*Math.min(w*.08, 80, travel*.15)*exit*exit, halfWidth, w-halfWidth);
         y = trick.startY-arc*Math.min(h*.035, 24);
       } else {
         turn = trick.kind === 'flip' ? -Math.PI*2*eased : -.55*Math.sin(Math.PI*2*t);
@@ -473,10 +479,18 @@
         scale = Math.min(goalScale, (w-36)/(rotatedWidth+24), (h-48)/(rotatedHeight+24));
         const halfWidth = rotatedWidth*scale/2+16, halfHeight = rotatedHeight*scale/2+16;
         const lift = Math.min(h*(trick.kind === 'flip' ? .19 : .28), trick.kind === 'flip' ? 180 : 260);
-        const drift = trick.kind === 'flip' ? Math.sin(Math.PI*2*t)*24 : arc*Math.min(w*.12, 100);
+        let drift = trick.kind === 'flip' ? Math.sin(Math.PI*2*t)*24 : arc*Math.min(w*.12, 100);
+        direction = trick.heading;
+        if (trick.kind === 'flip') {
+          // Finish the first click with a visible turn and departure, preserving the new heading afterward.
+          const reverse = clamp((t-.7)/.3, 0, 1);
+          turnWidth = Math.max(.18, Math.abs(Math.cos(Math.PI*reverse)));
+          direction = reverse < .5 ? trick.heading : -trick.heading;
+          const travel = Math.max(0, w-2*((spriteWidth/2+12)*goalScale+12));
+          drift -= Math.min(w*.08, 80, travel*.15)*reverse*reverse;
+        }
         x = clamp(trick.startX+trick.heading*drift, halfWidth, w-halfWidth);
         y = clamp(trick.startY-arc*lift, halfHeight, h-halfHeight);
-        direction = trick.heading;
       }
       if (t === 1) cancelTrick();
     } else if (reduced) {
@@ -491,14 +505,11 @@
       scrollNudge *= Math.pow(.90, dt);
       const half = (spriteWidth/2+12)*scale+12;
       const travel = Math.max(0, w-half*2);
-      if (travel < 90) {
-        x += (w/2 + Math.sin(elapsed*.012)*travel*.25-x)*Math.min(1,.08*dt);
-        x = clamp(x, half, w-half);
-      } else {
-        x += direction*(atHome ? .5 : .85)*dt;
-        if (x < half) { x = half; direction = 1; }
-        if (x > w-half) { x = w-half; direction = -1; }
-      }
+      // All widths follow the chosen heading; a smaller travel area needs a slower swim, not an unrelated sway.
+      const speed = Math.min(atHome ? .5 : .85, travel/300);
+      x += direction*speed*dt;
+      if (x < half) { x = half; direction = 1; }
+      if (x > w-half) { x = w-half; direction = -1; }
     }
     if (entrance === 'falling' || entrance === 'impact') drawGround(shake);
     ctx.save();

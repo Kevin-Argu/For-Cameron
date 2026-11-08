@@ -61,6 +61,14 @@ button:not(:disabled):active { transform: translateY(0); }
 .explore-button:focus-visible { outline-color: #773545; outline-offset: 7px; }
 .explore-button:disabled { opacity: 1; background: #ac7680; }
 .explore-button:not(:disabled):active { transform: translate(-50%, 3px); box-shadow: 0 2px 0 #773545; }
+/* Keep Done easy to reach and fully cover the corner label while the garden is interactive. */
+.done-button {
+    right: max(4px, env(safe-area-inset-right));
+    bottom: max(4px, env(safe-area-inset-bottom));
+    width: min(220px, calc(100% - 20px)); min-height: 88px; padding: 18px 32px;
+    border: 2px solid #c6beb5; border-radius: 18px;
+    background: var(--paper); font: italic bold 26px/1.2 var(--serif);
+}
 @media (hover: hover) {
     .explore-button:not(:disabled):hover { background: #843d4c; transform: translate(-50%, -2px); }
 }
