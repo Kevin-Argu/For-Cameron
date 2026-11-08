@@ -7,7 +7,7 @@
     <meta name="desmos-api-key" content="b836d5b9911b48079c3f012e7dff2ae0">
     <title>Cameron</title>
     <link rel="stylesheet" href="css/palette.css?v=1">
-    <link rel="stylesheet" href="css/style.css?v=12">
+    <link rel="stylesheet" href="css/style.css?v=13">
     <link rel="stylesheet" href="css/peanut-gate.css?v=7">
     <link rel="stylesheet" href="css/flower-math.css?v=9">
     <link rel="stylesheet" href="css/music.css?v=4">
@@ -91,7 +91,7 @@
         <section class="hero" id="gardenStart" aria-label="Cameron's mathematical garden" tabindex="-1">
             <div class="desmos-wrapper">
                 <div id="flowerCalculator" inert></div>
-                <h1 class="cameron-title">Cameron.</h1>
+                <h1 class="cameron-title">Cameron,</h1>
                 <div class="graph-status" id="flowerStatus">
                     <p role="status">Opening the garden…</p>
                     <button type="button" data-retry="flowers" hidden>Try again</button>
@@ -110,9 +110,10 @@
             </div>
         </section>
 
-        <!-- The ocean stays empty until BALLENAS is pressed. The existing roaming control appears after landing. -->
-        <section class="whale-section" id="whaleHome" aria-label="The whale" data-whale-state="waiting">
+        <!-- The poem stays above the entrance button and remains after the whale lands. -->
+        <section class="whale-section" id="whaleHome" aria-labelledby="whaleHeading" data-whale-state="waiting">
             <div class="whale-stars" aria-hidden="true"></div>
+            <h2 class="whale-words" id="whaleHeading">in the silliest moments,</h2>
             <button id="whaleDrop" class="whale-drop-button" type="button"
                     aria-controls="roamingWhale">BALLENAS</button>
             <button id="whaleRoam" class="whale-roam-button" type="button" hidden
@@ -122,7 +123,7 @@
 
         <!-- The return link can focus this section without adding it to normal Tab navigation. -->
         <section class="birdwatch-entry" id="birdwatchEntry" aria-labelledby="birdwatchHeading" tabindex="-1">
-            <h2 id="birdwatchHeading">In the simplest moments.</h2>
+            <h2 id="birdwatchHeading">in the smallest things,</h2>
             <a class="binocular-link" href="birdwatch.html"
                aria-label="Look through the binoculars at the flower-covered cow, hummingbird and red cardinal">
                 <img class="binocular-art" src="assets/binoculars.svg" width="630" height="408" alt="">
@@ -146,7 +147,7 @@
         <section class="music-section" id="musicFinale" aria-labelledby="musicHeading" tabindex="-1">
             <header class="music-heading">
                 <span class="music-stars" aria-hidden="true">· * ·</span>
-                <h2 id="musicHeading">In the sweetest sounds.</h2>
+                <h2 id="musicHeading">and in the sweetest sounds,</h2>
                 <p>play a little something.</p>
             </header>
             <div class="music-instruments">
@@ -300,7 +301,8 @@
             <noscript><p class="music-status">Enable JavaScript to play the instruments.</p></noscript>
         </section>
 
-        <section class="heart-section" id="heartFinale" aria-label="The animated mathematical heart">
+        <section class="heart-section" id="heartFinale" aria-labelledby="heartHeading">
+            <h2 class="heart-heading" id="heartHeading">my thoughts always find their way to you.</h2>
             <div class="heart-stage">
                 <div id="heartCalculator"></div>
                 <div class="graph-status" id="heartStatus">

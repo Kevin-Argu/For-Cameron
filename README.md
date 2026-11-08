@@ -2,6 +2,11 @@
 
 A little something: peanut-free welcome with George → interactive ASCII lilies → Cameron and mathematical flowers → roaming ASCII whale → birdwatching and lily pads → piano and harmonica → animated Desmos heart → chocolate milk and Dillbillies' goodbye.
 
+The main page unfolds as one short poem: “Cameron,” → “in the silliest moments,” →
+“in the smallest things,” → “and in the sweetest sounds,” → “my thoughts always
+find their way to you.” → “okay bye”. The whale line sits above BALLENAS and stays
+visible after entry; the final heartfelt line sits above the Desmos heart.
+
 ## Run locally
 
 From this folder, run:

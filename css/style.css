@@ -127,10 +127,10 @@ button:not(:disabled):active { transform: translateY(0); }
     text-align: center; background: radial-gradient(ellipse at 50% 55%, var(--night-blue-glow), var(--night-blue) 75%);
     color: #e1f5fa; padding: 5rem 1.5rem; position: relative; overflow: hidden;
 }
-.whale-section h2 { font: normal clamp(38px,7vw,80px)/1.12 var(--serif); letter-spacing: .025em; text-wrap: balance; }
+.whale-section h2 { font: italic normal clamp(30px,4.5vw,48px)/1.25 var(--serif); text-wrap: balance; }
 .whale-section p { font: italic clamp(15px,2vw,20px)/1.5 var(--serif); color: #9abacb; margin-top: 1rem; text-wrap: balance; }
 .whale-stars { position: absolute; inset: 0; opacity: .3; pointer-events: none; background-image: radial-gradient(#d3f5ff 1px, transparent 1px); background-size: 67px 71px; }
-/* Before the click, the empty stage gives BALLENAS the whole page. */
+/* Before the click, only the poem and BALLENAS appear over the quiet ocean. */
 .whale-section[data-whale-state="waiting"] { background: var(--night-blue); }
 .whale-section[data-whale-state="waiting"] .whale-stars { opacity: 0; }
 .whale-drop-button {
@@ -156,7 +156,11 @@ button:not(:disabled):active { transform: translateY(0); }
 @media (prefers-reduced-motion: reduce) {
     .whale-section[data-whale-state="impact"] .whale-stars { animation: none; }
 }
-.whale-words { position: relative; z-index: 1; transform: translateY(-18vh); transform: translateY(-18svh); pointer-events: none; }
+/* A fixed position within this section keeps the line in place when the button hides. */
+.whale-words {
+    position: absolute; top: clamp(48px, 14vh, 128px); top: clamp(48px, 14svh, 128px);
+    left: 24px; right: 24px; z-index: 25; pointer-events: none;
+}
 .whale-roam-button {
     position: absolute; left: 0; right: 0; bottom: max(24px, env(safe-area-inset-bottom));
     width: max-content; max-width: calc(100% - 32px); margin-inline: auto; z-index: 26;
@@ -216,8 +220,13 @@ button:not(:disabled):active { transform: translateY(0); }
     padding: max(32px, env(safe-area-inset-top)) var(--space) max(32px, env(safe-area-inset-bottom));
     background: var(--paper);
 }
+.heart-heading {
+    max-width: 1100px; color: var(--rose); text-align: center; text-wrap: balance;
+    font: italic normal clamp(26px, 4vw, 44px)/1.25 var(--serif);
+}
 .heart-stage {
-    position: relative; width: min(1100px, 100%); height: clamp(480px, 82vh, 760px); height: clamp(480px, 82svh, 760px);
+    /* Reserve room above the graph for the final line of the poem. */
+    position: relative; width: min(1100px, 100%); height: clamp(480px, 74vh, 720px); height: clamp(480px, 74svh, 720px);
     border-radius: 16px; background: #fff; box-shadow: 0 15px 50px rgba(36,33,31,.08); overflow: hidden;
 }
 #heartCalculator { position: absolute; inset: 0; z-index: 1; }
@@ -231,8 +240,8 @@ button:not(:disabled):active { transform: translateY(0); }
 @media (max-height: 500px) {
     .ascii-intro { padding-top: 16px; padding-bottom: 16px; }
     #asciiLiliesCanvas { min-height: 180px; height: 55vh; height: 55svh; }
-    .whale-words { transform: translateY(-12vh); transform: translateY(-12svh); }
-    .whale-section h2 { font-size: clamp(28px, 5vw, 48px); }
+    .whale-words { top: clamp(22px, 10vh, 48px); top: clamp(22px, 10svh, 48px); }
+    .whale-section h2 { font-size: clamp(26px, 4.5vw, 40px); }
 }
 @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
@@ -242,5 +251,6 @@ button:not(:disabled):active { transform: translateY(0); }
     .binocular-link:hover .binocular-art, .binocular-link:focus-visible .binocular-art,
     .binocular-link:active .binocular-art, .binocular-link:hover .binocular-prompt span { transform: none; }
 }
+
 
 
