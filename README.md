@@ -1,6 +1,6 @@
 # For Cameron
 
-A little something: peanut-free welcome → interactive ASCII lilies → Cameron and mathematical flowers → roaming ASCII whale → birdwatching and lily pads → piano and harmonica → animated Desmos heart → chocolate milk and Dillbillies' goodbye.
+A little something: peanut-free welcome with George → interactive ASCII lilies → Cameron and mathematical flowers → roaming ASCII whale → birdwatching and lily pads → piano and harmonica → animated Desmos heart → chocolate milk and Dillbillies' goodbye.
 
 ## Run locally
 
@@ -14,12 +14,13 @@ Open `http://localhost:8000`. The source is a static website with no build step.
 
 ## Controls
 
+- George rests beneath “Okay, let me in” on the peanut-free welcome. Pressing the button sends him through two little hops, with a floppy-ear bounce, before the welcome fades into the lilies. Repeated clicks cannot restart the entrance. Short screens scroll the welcome to keep him visible; reduced motion enters immediately. The warm gray-brown rabbit is drawn entirely from ASCII characters, with a rounded body, dark muzzle, and long drooping ears. His body and ear assets can be rebuilt with `python3 scripts/draw-george-welcome.py`; the reference photos are not included in the website.
 - Water the lilies or drag upward to grow them. The smaller Colors and Start again text controls cycle the original palettes and reset growth/rain.
 - Scroll to Cameron's flowers or use the small Enter the garden shortcut. Explore enables graph interaction and personal flower notes. Done closes the card and restores page scrolling. Escape closes an open note first, then exits Explore.
 - The whale stays inside its ocean section by default and pauses when that section is offscreen. Its blowhole sends up a tall character-art fountain about every 4.2 seconds, with each burst lasting 2.2 seconds. Spray pauses during tricks and is disabled for reduced motion. Successive clicks (or Enter/Space) cycle through a flip that reverses its swimming direction, an upward swoop, and a turn back the other way; each reaction finishes before another can begin. Both the flip and turn continue swimming in their new direction, including on narrow screens. Gesture durations use elapsed time so slow rendering does not prolong them. Reduced motion uses hearts and an instant facing change on the first and third clicks. “Let the whale roam” lets it swim across the main page; the floating “Bring the whale back” button returns it to the ocean. Reloading starts with the whale contained again.
 - The glowing character-art binoculars open the Split-Rocker scene with the green hummingbird and red cardinal. The entire illustration is a keyboard-accessible link; “← Back” returns directly to the binoculars section, restores keyboard focus there, and skips the welcome screen.
 - Beneath the binoculars, green lily pads and a white water lily bob on a little pond. Tap the water (or focus it and press Enter/Space) to make ripples. The pond pauses offscreen and when the tab is hidden; reduced motion keeps the pads still.
-- On “okay bye”, tap the glass bottle of chocolate milk to enlarge it; tap again to shrink it beside Dillbillies' chair. George is temporarily commented out, including his meadow and recall button. His markup, `assets/george.svg`, CSS, and guarded interactions in `js/goodbye.js` are preserved. To restore him, remove the comment wrapper around `georgeMeadow` in `index.html`; his hop and recall controls will resume automatically.
+- On “okay bye”, tap the glass bottle of chocolate milk to enlarge it; tap again to shrink it beside Dillbillies' chair. George's original goodbye scene remains commented out, including his meadow and recall button. Its markup, `assets/george.svg`, CSS, and guarded interactions in `js/goodbye.js` are preserved separately from the redesigned welcome rabbit. To restore that older scene, remove the comment wrapper around `georgeMeadow` in `index.html`; its hop and recall controls will resume automatically.
 - The heart's equation and slider stay open. Use the slider's native play/pause control to control the animation. The heart pauses offscreen and when the tab is hidden, while preserving an explicit pause choice.
 - Reduced motion disables automatic heart playback and uses a stationary whale. The native slider's play control can still explicitly enable the heart. Lily growth responds without the rain animation.
 - The music section has a playable piano and a C harmonica. Tap/hold keys or holes. Once focused inside the section, use A–K (W E T Y U for sharps) for piano and 1–0 for harmonica. Blow/Draw changes the reed tuning. Volume can be taken to zero. Escape, leaving the section, tab hiding, and window blur release held notes.
@@ -82,7 +83,7 @@ With Node.js 18 or later:
 node --test tests/*.test.cjs
 ```
 
-The dependency-free tests cover expression preservation, responsive math bounds, welcome entry without Desmos, timeout/retry and lazy loading, Explore/Done/Escape, live flower cards, lily growth controls, repeat reveals, idle/offscreen animation scheduling, reduced-motion resize, and native heart playback. The test doubles do not render HTML/CSS or execute the real Desmos library.
+The dependency-free tests cover expression preservation, responsive math bounds, welcome entry without Desmos, George's hop-before-entry sequence and bounded fallbacks, timeout/retry and lazy loading, Explore/Done/Escape, live flower cards, lily growth controls, repeat reveals, idle/offscreen animation scheduling, reduced-motion resize, and native heart playback. The test doubles do not render HTML/CSS or execute the real Desmos library.
 
 Before sharing, check the actual website in desktop and mobile browsers, including Safari: 320px and 390px portrait, landscape, tablet, and desktop; welcome scrolling on short screens; all lily controls; flower panning and note dismissal; repeated section visits; heart math and play/pause; reduced motion; and a throttled/blocked Desmos request. Confirm the API-key notice against the actual key and domain.
 

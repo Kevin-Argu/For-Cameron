@@ -26,3 +26,84 @@ body.peanut-lock { position: fixed; inset: 0; width: 100%; height: 100%; overflo
     #peanutGate .peanut-gate-btn { min-height: 60px; padding: 16px 30px; border-radius: 19px; }
 }
 @media (prefers-reduced-motion: reduce) { #peanutGate { transition: none; } }
+
+/* A quiet character scene beneath the entry button. The travel is bounded by
+   the scene width, including on 320px phones; nothing covers the welcome text. */
+.peanut-george-scene {
+    --george-size: clamp(170px, 26vw, 240px);
+    --george-travel: clamp(36px, 8vw, 90px);
+    position: relative;
+    width: min(480px, 100%);
+    height: calc(var(--george-size) * .76 + 18px);
+    margin: 16px auto 0;
+    pointer-events: none;
+}
+.peanut-george-travel {
+    position: absolute;
+    bottom: 15px;
+    left: calc(50% - var(--george-size) / 2);
+    width: var(--george-size);
+}
+.peanut-george-body { position: relative; transform-origin: 52% 93%; }
+.peanut-george-art, .peanut-george-ear { display: block; width: 100%; height: auto; }
+.peanut-george-ear {
+    position: absolute; inset: 0;
+    transform-origin: 67% 28%;
+}
+.peanut-george-shadow {
+    position: absolute; bottom: 14px;
+    left: calc(50% - var(--george-size) * .3);
+    width: calc(var(--george-size) * .65);
+    color: #8b7e72; opacity: .45;
+    font: 11px/1 'Courier New', monospace;
+    white-space: nowrap;
+}
+.peanut-george-name {
+    position: absolute; bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #b9ab9d; font: 11px/1.2 'Courier New', monospace; letter-spacing: .1em;
+}
+/* Two short bounds finish before the gate fades. Keep the 960ms travel in sync
+   with the guarded fallback in peanut-gate.js; nested animations do not finish entry. */
+#peanutGate.is-george-hopping .peanut-george-travel,
+#peanutGate.is-george-hopping .peanut-george-shadow {
+    animation: george-welcome-travel 960ms linear forwards;
+}
+#peanutGate.is-george-hopping .peanut-george-body {
+    animation: george-welcome-bound 480ms ease-in-out 2;
+}
+#peanutGate.is-george-hopping .peanut-george-ear {
+    animation: george-welcome-ear 480ms ease-in-out 2;
+}
+#peanutGate.is-george-hopping .peanut-george-name { opacity: 0; }
+#peanutGate .peanut-gate-btn[aria-disabled="true"] { cursor: default; }
+@keyframes george-welcome-travel {
+    0%, 9% { transform: translateX(0); }
+    43%, 59% { transform: translateX(calc(var(--george-travel) * .5)); }
+    93%, 100% { transform: translateX(var(--george-travel)); }
+}
+@keyframes george-welcome-bound {
+    0%, 100% { transform: translateY(0) rotate(0); }
+    13% { transform: translateY(2px) scale(1.035, .94); }
+    42% { transform: translateY(-22px) rotate(-5deg) scale(1.025, 1); }
+    63% { transform: translateY(-17px) rotate(3deg); }
+    86% { transform: translateY(1px) scale(1.025, .96); }
+}
+@keyframes george-welcome-ear {
+    0%, 100% { transform: rotate(0); }
+    24% { transform: rotate(9deg); }
+    58% { transform: rotate(-8deg); }
+    83% { transform: rotate(4deg); }
+}
+@media (max-height: 650px) and (min-width: 651px) {
+    .peanut-george-scene { --george-size: 150px; margin-top: 10px; }
+    .peanut-gate-icon { width: 80px; height: 80px; margin-bottom: 18px; }
+    #peanutGate h1, #peanutGate p { margin-bottom: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    #peanutGate.is-george-hopping .peanut-george-travel,
+    #peanutGate.is-george-hopping .peanut-george-shadow,
+    #peanutGate.is-george-hopping .peanut-george-body,
+    #peanutGate.is-george-hopping .peanut-george-ear { animation: none; }
+}
