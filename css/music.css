@@ -1,7 +1,8 @@
 .music-section {
     --music-pink: #e8b5cd; --music-sage: #a9c6a3;
     position: relative; z-index: 20; min-height: 100vh; min-height: 100svh;
-    padding: clamp(56px, 7vw, 90px) max(22px, env(safe-area-inset-left)) 48px;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: clamp(44px, 5vw, 72px) max(22px, env(safe-area-inset-left)) 48px;
     /* Warm charcoal lets the pink and sage instruments lead this section. */
     background: var(--night-charcoal); color: #e9e5d9; text-align: center;
 }
@@ -9,64 +10,87 @@
 .music-heading p { margin-top: 18px; color: #9cae9d; font: 13px/1.6 Menlo, Consolas, monospace; letter-spacing: .055em; }
 .music-stars { display: block; margin-bottom: 22px; color: #a9c6a3; letter-spacing: .4em; }
 .music-instruments {
-    width: min(1120px, 100%); margin: 56px auto 0;
-    display: grid; grid-template-columns: 1.25fr 1fr; align-items: end; gap: clamp(36px, 7vw, 90px);
+    width: min(1100px, 100%); margin: 38px auto 0;
+    display: grid; grid-template-columns: 1.45fr 1fr; align-items: center; gap: clamp(24px, 4vw, 52px);
 }
 .instrument { min-width: 0; }
 .instrument h3 { margin-bottom: 18px; color: #b5b5a6; font: 15px/1.5 Menlo, Consolas, monospace; letter-spacing: .12em; font-weight: normal; }
-.piano-visual { position: relative; margin-bottom: 12px; }
-.piano-art { display: block; width: 100%; height: auto; filter: drop-shadow(0 0 5px #e9b8cf24); }
+/* The image, mechanism, and real keyboard scale as one complete piano. */
+.piano-scene { position: relative; width: 100%; aspect-ratio: 630 / 410; }
+.music-section .piano-visual {
+    position: relative; display: block; width: 100%; height: 100%;
+    padding: 0; min-height: 0; border: 0; border-radius: 12px; background: transparent;
+    transform: none; -webkit-tap-highlight-color: transparent;
+}
+.music-section .piano-visual:hover, .music-section .piano-visual:active { background: transparent; transform: none; }
+.piano-art { display: block; width: 100%; height: auto; filter: drop-shadow(0 0 4px #e9b8cf35); transition: filter .25s ease; }
 .piano-mechanism { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
-.piano-rail { stroke: #705c69; stroke-width: 1; stroke-dasharray: 2 4; }
-.piano-string { fill: none; stroke: #a79a7b; stroke-width: .65; stroke-dasharray: 1 3; opacity: .48; }
+.piano-rail { stroke: #baa0af; stroke-width: 1; stroke-dasharray: 2 4; }
+.piano-string { fill: none; stroke: #d0b98d; stroke-width: .85; stroke-dasharray: 1 3; opacity: .72; }
 .piano-hammer { transition: transform .17s ease-out; }
 .piano-hammer path { stroke: #b1bca2; stroke-width: 1.4; }
-.piano-hammer rect { fill: #a67c94; stroke: #ddbdce; stroke-width: .7; }
+.piano-hammer rect { fill: #c899b4; stroke: #f3cedf; stroke-width: .7; }
 .piano-hammer text { fill: #ffe6ef; text-anchor: middle; font: 10px Menlo, Consolas, monospace; }
 .piano-spark { fill: #eac5d5; opacity: 0; text-anchor: middle; font: 15px Georgia, serif; }
-.is-playing > .piano-hammer { transform: translateY(-14px); }
-.is-playing > .piano-hammer rect { fill: #f3c9df; }
-.is-playing > .piano-string { opacity: 1; stroke: #f2d49a; stroke-width: 1.1; animation: piano-string .08s linear infinite alternate; }
-.is-playing > .piano-spark { animation: piano-note .8s ease-out; }
+.is-playing > .piano-hammer, .is-performing-note > .piano-hammer { transform: translateY(-14px); }
+.is-playing > .piano-hammer rect, .is-performing-note > .piano-hammer rect { fill: #f3c9df; }
+.is-playing > .piano-string, .is-performing-note > .piano-string { opacity: 1; stroke: #f2d49a; stroke-width: 1.1; animation: piano-string .08s linear infinite alternate; }
+.is-playing > .piano-spark, .is-performing-note > .piano-spark { animation: piano-note .8s ease-out; }
 @keyframes piano-string { from { transform: translateX(-.8px); } to { transform: translateX(.8px); } }
 @keyframes piano-note { 0% { opacity: 0; transform: translateY(0); } 20% { opacity: .9; } 100% { opacity: 0; transform: translateY(-36px); } }
-.piano-keyboard { position: relative; height: 126px; padding-top: 5px; border-top: 2px dotted #d5b3c2; }
-.piano-white-keys { display: grid; grid-template-columns: repeat(8, 1fr); gap: 3px; height: 100%; }
+.piano-keyboard {
+    position: absolute; left: 11.43%; top: 50.49%; width: 81.11%; height: 22.68%;
+    padding: 0; border-top: 2px solid #b38a9e;
+    box-shadow: 0 -4px 0 #3d3038, 0 5px 0 #3d3038;
+}
+.piano-white-keys { display: grid; grid-template-columns: repeat(8, 1fr); gap: 2px; height: 100%; }
 .music-section .piano-key {
-    min-width: 0; min-height: 0; border-radius: 0 0 5px 5px; padding: 8px 0;
+    min-width: 0; min-height: 0; border-radius: 0 0 5px 5px; padding: 6px 0;
     display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
     touch-action: none; user-select: none; transition: background-color .1s, box-shadow .1s, transform .1s;
     transform: none;
 }
 .music-section .white-key { background: #deded0; border: 1px solid #a6b2a0; border-bottom: 5px solid #829780; color: #3b4d42; gap: 5px; }
-.piano-key span { font: 13px/1 Menlo, Consolas, monospace; }
-.piano-key kbd { font: 10px/1.1 Menlo, Consolas, monospace; opacity: .6; }
+.piano-key span { font: clamp(8px, 1vw, 11px)/1 Menlo, Consolas, monospace; opacity: .6; }
 .music-section .black-key {
-    position: absolute; z-index: 2; top: 5px;
-    left: calc(var(--key-position) * 12.5% - 3.8%); width: 7.6%; height: 70px;
+    position: absolute; z-index: 2; top: 0;
+    left: calc(var(--key-position) * 12.5% - 3.8%); width: 7.6%; height: 62%;
     color: #ebc5d5; background: #13171a; border: 1px solid #80777d; border-bottom: 5px solid #4a3b48;
 }
-.music-section .white-key.is-playing { background: #f2c5db; border-color: #f4cee0; box-shadow: 0 0 20px #e7a9cd44; }
-.music-section .black-key.is-playing { background: #70455e; border-color: #f4b9d4; box-shadow: 0 0 15px #e7a9cd66; }
-.music-section .piano-key.is-playing { transform: translateY(3px); }
-.instrument-hint { min-height: 32px; margin-top: 18px; color: #8e9e91; font: 11px/1.7 Menlo, Consolas, monospace; }
-.harmonica-space { position: relative; height: 204px; color: #c9d7b5; }
-.harmonica-space span { position: absolute; font: 32px/1 var(--serif); text-shadow: 0 0 12px #b9d8a844; }
-.harmonica-space span:nth-child(1) { top: 40px; left: 24%; transform: rotate(-15deg); }
-.harmonica-space span:nth-child(2) { top: 24px; left: 53%; color: #eab8d0; }
-.harmonica-space span:nth-child(3) { top: 74px; left: 70%; transform: rotate(12deg); }
+.music-section .white-key.is-playing, .music-section .white-key.is-performing-note { background: #f2c5db; border-color: #f4cee0; box-shadow: 0 0 20px #e7a9cd44; }
+.music-section .black-key.is-playing, .music-section .black-key.is-performing-note { background: #70455e; border-color: #f4b9d4; box-shadow: 0 0 15px #e7a9cd66; }
+.music-section .piano-key.is-playing, .music-section .piano-key.is-performing-note { transform: translateY(3px); }
+.music-section .instrument-play {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    margin: 8px auto 0; min-height: 44px; padding: 9px 16px;
+    border: 1px solid transparent; border-radius: 6px; background: transparent;
+    color: #cbb2bf; font: 12px/1.6 Menlo, Consolas, monospace;
+    letter-spacing: .02em; transform: none;
+}
+.music-section .instrument-play:hover { background: #d9b2ca0b; border-color: #d9b2ca44; transform: none; }
+.music-section .instrument-play[aria-pressed="true"] { color: #f0c7db; }
+.play-icon { font: 19px/1 Georgia, serif; }
+.harmonica-instrument { width: min(100%, 405px); margin-inline: auto; transform: translateY(-16px); }
+.harmonica-scene { position: relative; padding: 0 4px 16px; }
+.harmonica-instrument .instrument-play { color: #b9cbb1; }
+.piano-instrument.is-performing .piano-art { filter: drop-shadow(0 0 9px #e9b8cf65); }
+.harmonica-space { position: relative; height: 65px; color: #c9d7b5; }
+.harmonica-space span { position: absolute; font: 24px/1 var(--serif); text-shadow: 0 0 12px #b9d8a844; }
+.harmonica-space span:nth-child(1) { top: 12px; left: 24%; transform: rotate(-15deg); }
+.harmonica-space span:nth-child(2) { top: 4px; left: 53%; color: #eab8d0; }
+.harmonica-space span:nth-child(3) { top: 23px; left: 70%; transform: rotate(12deg); }
 .harmonica-shell {
     position: relative; border-radius: 28px 28px 13px 13px;
     background: #503d2d; padding: 0 0 3px;
-    box-shadow: 0 5px 0 #191714, 0 12px 22px #0008; isolation: isolate;
+    box-shadow: 0 3px 0 #191714, 0 9px 18px #0004; isolation: isolate;
     transform: rotate(-3deg); transform-origin: center;
 }
-.harmonica-cover {
-    position: relative; height: 57px; display: grid; place-items: start center; padding-top: 10px;
+.music-section .harmonica-cover {
+    position: relative; width: 100%; min-height: 0; height: 57px; display: grid; place-items: start center; padding-top: 10px;
     border: 1px solid #cad0c5; border-bottom: 3px solid #4d5551;
     border-radius: 29px 29px 5px 5px / 22px 22px 5px 5px;
-    background: linear-gradient(175deg, #e0e1d2 0%, #acb7ad 12%, #63736b 33%, #aeb9ad 59%, #d4d9c9 67%, #77877c 87%, #526157 100%);
-    box-shadow: inset 0 2px 0 #f2f0d9, inset 0 -3px 0 #273d3266;
+    background: linear-gradient(174deg, #cbd3bf, #839883 45%, #b6c3a9 76%, #85977e);
+    box-shadow: inset 0 1px 0 #e5e6d0, inset 0 -2px 0 #273d3244; transform: none;
 }
 .harmonica-engraving { position: relative; z-index: 1; font: 13px/1.3 Menlo, Consolas, monospace; letter-spacing: .3em; color: #263d30; text-shadow: 0 1px #e6e9cfaa; }
 .harmonica-cover-line { position: absolute; inset: 7px 35px 13px; border: 1px solid #334e3d70; border-radius: 45%; box-shadow: 0 1px #e0e6cd77; }
@@ -76,7 +100,7 @@
 .harmonica-holes {
     position: relative; display: grid; grid-template-columns: repeat(10, 1fr); gap: 5px; padding: 3px 16px 5px;
     border-inline: 1px solid #8b795a;
-    background: repeating-linear-gradient(0deg, #846542 0 1px, #6a5037 1px 4px, #7c5d3d 4px 5px);
+    background: repeating-linear-gradient(0deg, #806747 0 1px, #715b40 1px 5px);
     box-shadow: inset 0 3px #bb9f6e, inset 0 -2px #382b20;
 }
 .music-section .harmonica-holes button {
@@ -87,37 +111,60 @@
 }
 .harmonica-holes button span { position: absolute; inset: -19px 0 auto; color: #25392b; text-shadow: 0 1px #d5ddbd88; }
 .harmonica-reed { position: absolute; left: 43%; top: 9px; width: 14%; height: 24px; border-radius: 0 0 3px 3px; background: linear-gradient(#6c7851, #a9aa6c 76%, #5d6b44); opacity: .4; transform-origin: center top; }
-.music-section .harmonica-holes button.is-playing { border-color: #f6e2a8; background: linear-gradient(#1c2d1c, #536340); box-shadow: inset 0 3px 5px #0008, 0 0 13px #cad58d77; }
-.harmonica-holes button.is-playing .harmonica-reed { opacity: 1; animation: harmonica-reed .09s ease-in-out infinite alternate; }
+.music-section .harmonica-holes button.is-playing, .music-section .harmonica-holes button.is-performing-note { border-color: #f6e2a8; background: linear-gradient(#1c2d1c, #536340); box-shadow: inset 0 3px 5px #0008, 0 0 13px #cad58d77; }
+.harmonica-holes button.is-playing .harmonica-reed, .harmonica-holes button.is-performing-note .harmonica-reed { opacity: 1; animation: harmonica-reed .09s ease-in-out infinite alternate; }
 @keyframes harmonica-reed { from { transform: scaleY(.7); } to { transform: scaleY(1.08); } }
 .harmonica-bottom {
     height: 22px; overflow: hidden; border: 1px solid #a4b19e; border-radius: 0 0 14px 14px;
     background: linear-gradient(#d0d7c4 0%, #84917f 22%, #53634f 68%, #a1af96 100%);
     box-shadow: inset 0 2px #e4e6cf99; white-space: nowrap; color: #344a34; font: 10px/20px Menlo, Consolas, monospace;
 }
-.harmonica-breath { display: flex; justify-content: center; gap: 8px; margin-top: 34px; }
+.harmonica-breath { display: flex; justify-content: center; gap: 8px; margin-top: 10px; }
 .music-section .harmonica-breath button { min-width: 75px; padding: 8px 18px; background: transparent; border: 1px solid #405447; color: #91a795; font-style: italic; }
 .music-section .harmonica-breath button[aria-pressed="true"] { background: #1d2b24; border-color: #a5bd99; color: #e3ebce; }
 .music-section button:focus-visible { outline: 2px solid #f2bad5; outline-offset: 3px; }
-.music-footer { margin: 42px auto 0; }
+.music-footer { margin: 24px auto 0; }
 .music-volume { display: flex; justify-content: center; align-items: center; gap: 14px; color: #b8a6b0; font: 11px/1.5 Menlo, Consolas, monospace; }
 .music-volume input { width: 110px; min-height: 28px; accent-color: #d7b3c6; cursor: pointer; }
 .music-status { min-height: 20px; margin-top: 16px; color: #89998d; font: 11px/1.6 Menlo, Consolas, monospace; }
+/* Song gestures are deliberately decorative; they do not transcribe the audio. */
+.harmonica-instrument.is-performing .harmonica-shell { animation: harmonica-sway 2.8s ease-in-out infinite; }
+.harmonica-air { position: absolute; inset: 20px 20% auto; display: flex; justify-content: space-between; pointer-events: none; }
+.harmonica-air span { color: #b6c9a6; font: 17px/1.3 Menlo, monospace; opacity: 0; }
+.harmonica-instrument.is-performing .harmonica-air span { animation: harmonica-breath 1.9s ease-out infinite; }
+.harmonica-instrument.is-performing .harmonica-air span:nth-child(2) { animation-delay: .6s; }
+.harmonica-instrument.is-performing .harmonica-air span:nth-child(3) { animation-delay: 1.2s; }
+.harmonica-instrument.is-performing .harmonica-space span { animation: music-drift 2.6s ease-in-out infinite alternate; }
+@keyframes harmonica-sway { 0%, 100% { transform: rotate(-3deg); } 50% { transform: translateY(-3px) rotate(-1deg); } }
+@keyframes harmonica-breath { 0% { opacity: 0; transform: translateY(24px); } 35% { opacity: .6; } 100% { opacity: 0; transform: translateY(-10px); } }
+@keyframes music-drift { to { transform: translateY(-10px) rotate(8deg); } }
+.music-section .harmonica-cover:hover, .music-section .harmonica-cover:active { transform: none; background: linear-gradient(174deg, #d5ddc9, #8fa38d 45%, #bdcbb0 76%, #8fa186); }
+.music-manual { max-width: 440px; margin: 8px auto 0; color: #9aa999; font: 11px/1.8 Menlo, Consolas, monospace; }
+.music-manual summary { display: list-item; width: max-content; max-width: 100%; margin: auto; padding: 10px 8px; min-height: 44px; cursor: pointer; }
+.music-manual p { margin: 8px 0 4px; }
 @media (max-width: 800px) {
-    .music-instruments { grid-template-columns: 1fr; max-width: 500px; gap: 54px; margin-top: 42px; }
-    .harmonica-space { height: 75px; }
-    .harmonica-space span:nth-child(1) { top: 8px; }
-    .harmonica-space span:nth-child(3) { top: 30px; }
+    .music-instruments { grid-template-columns: 1fr; max-width: 560px; gap: 34px; margin-top: 32px; }
+    .harmonica-instrument { width: min(360px, 90%); transform: none; }
+    .harmonica-space { height: 48px; }
+    .harmonica-space span:nth-child(1) { top: 0; }
+    .harmonica-space span:nth-child(3) { top: 14px; }
     .music-section { padding-inline: 18px; }
+    .music-footer { margin-top: 24px; }
 }
 @media (max-width: 400px) {
-    .piano-keyboard { height: 116px; }
     .harmonica-holes { gap: 2px; padding-inline: 10px; }
     .harmonica-cover-line { inset-inline: 29px; }
-    .keyboard-hint { display: none; }
+    .music-section .piano-key { border-bottom-width: 3px; }
 }
 @media (prefers-reduced-motion: reduce) {
-    .music-section .piano-key, .piano-hammer { transition: none; }
-    .is-playing > .piano-hammer, .music-section .piano-key.is-playing { transform: none; }
-    .is-playing > .piano-string, .is-playing > .piano-spark, .harmonica-holes button.is-playing .harmonica-reed { animation: none; }
+    .music-section .piano-key, .piano-hammer, .piano-art { transition: none; }
+    .is-playing > .piano-hammer, .is-performing-note > .piano-hammer,
+    .music-section .piano-key.is-playing, .music-section .piano-key.is-performing-note { transform: none; }
+    .is-playing > .piano-string, .is-playing > .piano-spark,
+    .is-performing-note > .piano-string, .is-performing-note > .piano-spark,
+    .harmonica-holes button.is-playing .harmonica-reed,
+    .harmonica-holes button.is-performing-note .harmonica-reed,
+    .harmonica-instrument.is-performing .harmonica-shell,
+    .harmonica-instrument.is-performing .harmonica-space span,
+    .harmonica-instrument.is-performing .harmonica-air span { animation: none; }
 }

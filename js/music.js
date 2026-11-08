@@ -1,4 +1,4 @@
-// Small, self-contained instruments: no recordings, downloads, or microphone.
+// Self-playing little tunes and playable notes, with no downloads or microphone.
 (() => {
     'use strict';
     const section = document.getElementById('musicFinale');
@@ -10,6 +10,28 @@
     const status = document.getElementById('musicStatus');
     const blow = document.getElementById('harmonicaBlow');
     const draw = document.getElementById('harmonicaDraw');
+    const playControls = [...section.querySelectorAll('[data-play-instrument]')];
+    const scenes = {
+        piano: section.querySelector('.piano-instrument'),
+        harmonica: section.querySelector('.harmonica-instrument')
+    };
+    const animatedNotes = new Set();
+    let recital = null;
+    // Two small original phrases preview the experience until songs are selected.
+    // Their audio sequence and the decorative key movement are independent.
+    const tunes = {
+        piano: { beat: 440, steps: [
+            [[60, 64], 1], [67, 1], [72, 1.5], [71, .5], [69, 1], [67, 1],
+            [[57, 64], 1], [69, 1], [72, 1], [76, 1], [74, 1], [72, 1],
+            [[53, 60], 1], [65, 1], [69, 1.5], [67, .5], [64, 1], [62, 1],
+            [[55, 62], 1], [67, 1], [71, 1], [74, 1], [[60, 64, 67], 3]
+        ] },
+        harmonica: { beat: 330, steps: [
+            [60, 1], [64, 1], [67, 1.5], [64, .5], [60, 1], [62, 1],
+            [64, 1], [67, 1], [72, 2], [71, 1], [67, 1], [64, 2],
+            [65, 1], [69, 1], [67, 1.5], [64, .5], [62, 1], [67, 1], [60, 3]
+        ] }
+    };
     // Standard C Richter tuning, holes 1 through 10 (MIDI pitches).
     const tuning = {
         blow: [60, 64, 67, 72, 76, 79, 84, 88, 91, 96],
@@ -107,6 +129,124 @@
         };
     }
 
+    function clearDecorativeNotes() {
+        for (const button of animatedNotes) {
+            button.classList.remove('is-performing-note');
+            if (button.getAttribute('data-instrument') === 'piano') {
+                pianoMechanisms.get(button.getAttribute('data-midi'))?.classList.remove('is-performing-note');
+            }
+        }
+        animatedNotes.clear();
+    }
+    function updatePlayControls() {
+        for (const control of playControls) {
+            const instrument = control.getAttribute('data-play-instrument');
+            const playing = recital?.instrument === instrument;
+            control.setAttribute('aria-pressed', String(playing));
+            control.setAttribute('aria-label', (playing ? 'Stop the ' : 'Play a little ') + instrument + ' tune');
+            const label = control.querySelector('.play-label');
+            const icon = control.querySelector('.play-icon');
+            if (label) label.textContent = playing ? 'click to stop' : 'click to play';
+            if (icon) icon.textContent = playing ? '□' : '▷';
+        }
+        for (const instrument of ['piano', 'harmonica']) {
+            scenes[instrument].classList.toggle('is-performing', recital?.instrument === instrument);
+        }
+    }
+    function stopRecital() {
+        const previous = recital;
+        recital = null;
+        if (previous) {
+            previous.timers.forEach(clearTimeout);
+            previous.voices.forEach(stop => stop());
+            previous.timers.clear();
+            previous.voices.clear();
+        }
+        clearDecorativeNotes();
+        updatePlayControls();
+        if (previous) status.textContent = 'pick an instrument, let it play.';
+    }
+    // Every queued step belongs to one session. A switch, stop, or hidden tab
+    // invalidates both pending audio resumes and all future notes/animations.
+    function later(session, callback, delay) {
+        const timer = setTimeout(() => {
+            session.timers.delete(timer);
+            if (recital === session) callback();
+        }, delay);
+        session.timers.add(timer);
+        return timer;
+    }
+    function animateRecital(session) {
+        clearDecorativeNotes();
+        if (site.reducedMotion.matches || recital !== session) return;
+        const candidates = buttons.filter(button => button.getAttribute('data-instrument') === session.instrument);
+        const count = session.instrument === 'piano' ? 1 + Math.floor(Math.random() * 3) : 1;
+        for (let i = 0; i < count; i++) {
+            const index = Math.floor(Math.random() * candidates.length);
+            const button = candidates.splice(index, 1)[0];
+            animatedNotes.add(button);
+            button.classList.add('is-performing-note');
+            if (session.instrument === 'piano') {
+                pianoMechanisms.get(button.getAttribute('data-midi'))?.classList.add('is-performing-note');
+            }
+        }
+        // Small landing pauses make each new group visibly press and release.
+        later(session, clearDecorativeNotes, 150 + Math.random() * 90);
+        session.animation = later(session, () => animateRecital(session), 320 + Math.random() * 180);
+    }
+    function playStep(session, index) {
+        const tune = tunes[session.instrument];
+        if (index >= tune.steps.length) {
+            later(session, stopRecital, 350);
+            return;
+        }
+        const [notes, beats] = tune.steps[index];
+        const duration = beats * tune.beat;
+        const pitches = Array.isArray(notes) ? notes : [notes];
+        for (const midi of pitches) {
+            const stop = voice(midi, session.instrument);
+            session.voices.add(stop);
+            later(session, () => { stop(); session.voices.delete(stop); }, duration * .86);
+        }
+        later(session, () => playStep(session, index + 1), duration);
+    }
+    function toggleRecital(instrument) {
+        if (!site.entered || document.hidden || !Audio) return;
+        if (recital?.instrument === instrument) { stopRecital(); return; }
+        stopRecital();
+        releaseAll();
+        const session = { instrument, timers: new Set(), voices: new Set(), started: false, animation: null };
+        recital = session;
+        updatePlayControls();
+        function begin() {
+            if (recital !== session) return;
+            session.started = true;
+            status.textContent = 'a little ' + instrument + ' tune';
+            playStep(session, 0);
+            animateRecital(session);
+        }
+        function failed() {
+            if (recital !== session) return;
+            stopRecital();
+            status.textContent = 'Sound couldn’t start. Tap the instrument to try again.';
+        }
+        try {
+            const resumed = prepareAudio();
+            if (resumed) resumed.then(begin).catch(failed);
+            else begin();
+        } catch (_) { failed(); }
+    }
+    playControls.forEach(control => control.addEventListener('click', () => {
+        toggleRecital(control.getAttribute('data-play-instrument'));
+    }));
+    site.reducedMotion.addEventListener('change', () => {
+        clearDecorativeNotes();
+        if (!recital?.started) return;
+        clearTimeout(recital.animation);
+        recital.timers.delete(recital.animation);
+        if (!site.reducedMotion.matches) animateRecital(recital);
+    });
+
     function release(token) {
         const held = active.get(token);
         if (!held) return;
@@ -120,6 +260,8 @@
     }
     function press(button, token, duration) {
         if (!site.entered || document.hidden || active.has(token) || !Audio) return;
+        // Touching an individual key takes over from the automatic tune.
+        if (recital) stopRecital();
         if (active.size >= 16) release(active.keys().next().value);
         const instrument = button.getAttribute('data-instrument');
         const midi = instrument === 'piano' ? Number(button.getAttribute('data-midi'))
@@ -162,7 +304,7 @@
         });
     });
     section.addEventListener('keydown', event => {
-        if (event.key === 'Escape') { releaseAll(); return; }
+        if (event.key === 'Escape') { silence(); return; }
         if (event.repeat || event.ctrlKey || event.metaKey || event.altKey || event.target.closest('input, textarea, select, [contenteditable="true"]')) return;
         const key = event.key.toLowerCase();
         const button = shortcuts.get(key);
@@ -171,13 +313,15 @@
         press(button, 'key:' + key);
     });
     window.addEventListener('keyup', event => release('key:' + event.key.toLowerCase()));
-    window.addEventListener('blur', () => releaseAll());
-    window.addEventListener('pagehide', () => releaseAll());
-    document.addEventListener('visibilitychange', () => { if (document.hidden) releaseAll(); });
+    function silence() { stopRecital(); releaseAll(); }
+    window.addEventListener('blur', silence);
+    window.addEventListener('pagehide', silence);
+    document.addEventListener('visibilitychange', () => { if (document.hidden) silence(); });
     if ('IntersectionObserver' in window) {
-        new IntersectionObserver(entries => { if (!entries[0].isIntersecting) releaseAll(); }).observe(section);
+        new IntersectionObserver(entries => { if (!entries[0].isIntersecting) silence(); }).observe(section);
     }
     function setBreath(next) {
+        if (recital?.instrument === 'harmonica') stopRecital();
         releaseAll('harmonica');
         breath = next;
         blow.setAttribute('aria-pressed', String(next === 'blow'));
@@ -189,7 +333,8 @@
     draw.addEventListener('click', () => setBreath('draw'));
     volume.addEventListener('input', setVolume);
     if (!Audio) {
-        buttons.forEach(button => { button.disabled = true; });
+        [...buttons, ...playControls].forEach(button => { button.disabled = true; });
         status.textContent = 'Audio isn’t available in this browser.';
     }
 })();
+

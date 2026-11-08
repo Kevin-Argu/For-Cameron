@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="css/style.css?v=12">
     <link rel="stylesheet" href="css/peanut-gate.css?v=7">
     <link rel="stylesheet" href="css/flower-math.css?v=9">
-    <link rel="stylesheet" href="css/music.css?v=3">
+    <link rel="stylesheet" href="css/music.css?v=4">
     <link rel="stylesheet" href="css/goodbye.css?v=8">
     <link rel="stylesheet" href="css/pond.css?v=1">
     <!-- Local controls initialize without waiting for the external graph library. -->
@@ -24,7 +24,7 @@
     <script defer src="js/flowers.js?v=10"></script>
     <script defer src="js/heart.js?v=5"></script>
     <script defer src="js/graph-loader.js?v=5"></script>
-    <script defer src="js/music.js?v=2"></script>
+    <script defer src="js/music.js?v=3"></script>
     <script defer src="js/goodbye.js?v=4"></script>
     <script defer src="js/pond.js?v=1"></script>
 </head>
@@ -152,9 +152,14 @@
             <div class="music-instruments">
                 <div class="instrument piano-instrument" role="group" aria-labelledby="pianoHeading">
                     <h3 id="pianoHeading">piano</h3>
-                    <div class="piano-visual">
-                        <img class="piano-art" src="assets/piano.svg" width="630" height="300" alt="A character-art grand piano with hammers and strings that respond to each key">
-                        <svg class="piano-mechanism" viewBox="0 0 630 300" aria-hidden="true" focusable="false">
+                    <!-- Art, action, and playable keys share one coordinate system. The keys
+                         are siblings of the play button so there are no nested buttons. -->
+                    <div class="piano-scene">
+                    <button class="piano-visual" id="pianoPlay" type="button" data-play-instrument="piano"
+                            aria-label="Play a little piano tune" aria-pressed="false">
+                        <img class="piano-art" src="assets/piano.svg?v=2" width="630" height="410" alt="">
+                        <svg class="piano-mechanism" viewBox="0 0 630 410" aria-hidden="true" focusable="false">
+                            <g transform="matrix(1.25 0 0 1 -65 0)">
                             <path class="piano-rail" d="M124 194H496"/>
                             <g data-piano-note="60">
                                 <path class="piano-string" d="M138 130L277 55.0 M140 130L279 55.0 M142 130L281 55.0"/>
@@ -221,38 +226,45 @@
                                 <g class="piano-hammer"><path d="M476 196V181"/><rect x="469" y="175" width="14" height="6" rx="2"/><text x="476" y="181">··</text></g>
                                 <text class="piano-spark" x="476" y="162">♪</text>
                             </g>
+                            </g>
                         </svg>
-                    </div>
+                    </button>
                     <div class="piano-keyboard" id="pianoKeys" role="group" aria-label="Playable piano keys">
                         <div class="piano-white-keys">
-                            <button class="piano-key white-key" type="button" data-instrument="piano" data-midi="60" data-key="a" aria-label="Piano C4, keyboard A"><span>C</span><kbd>A</kbd></button>
-                            <button class="piano-key white-key" type="button" data-instrument="piano" data-midi="62" data-key="s" aria-label="Piano D4, keyboard S"><span>D</span><kbd>S</kbd></button>
-                            <button class="piano-key white-key" type="button" data-instrument="piano" data-midi="64" data-key="d" aria-label="Piano E4, keyboard D"><span>E</span><kbd>D</kbd></button>
-                            <button class="piano-key white-key" type="button" data-instrument="piano" data-midi="65" data-key="f" aria-label="Piano F4, keyboard F"><span>F</span><kbd>F</kbd></button>
-                            <button class="piano-key white-key" type="button" data-instrument="piano" data-midi="67" data-key="g" aria-label="Piano G4, keyboard G"><span>G</span><kbd>G</kbd></button>
-                            <button class="piano-key white-key" type="button" data-instrument="piano" data-midi="69" data-key="h" aria-label="Piano A4, keyboard H"><span>A</span><kbd>H</kbd></button>
-                            <button class="piano-key white-key" type="button" data-instrument="piano" data-midi="71" data-key="j" aria-label="Piano B4, keyboard J"><span>B</span><kbd>J</kbd></button>
-                            <button class="piano-key white-key" type="button" data-instrument="piano" data-midi="72" data-key="k" aria-label="Piano C5, keyboard K"><span>C</span><kbd>K</kbd></button>
+                            <button class="piano-key white-key" type="button" data-instrument="piano" data-midi="60" data-key="a" aria-label="Piano C4, keyboard A"><span>C</span></button>
+                            <button class="piano-key white-key" type="button" data-instrument="piano" data-midi="62" data-key="s" aria-label="Piano D4, keyboard S"><span>D</span></button>
+                            <button class="piano-key white-key" type="button" data-instrument="piano" data-midi="64" data-key="d" aria-label="Piano E4, keyboard D"><span>E</span></button>
+                            <button class="piano-key white-key" type="button" data-instrument="piano" data-midi="65" data-key="f" aria-label="Piano F4, keyboard F"><span>F</span></button>
+                            <button class="piano-key white-key" type="button" data-instrument="piano" data-midi="67" data-key="g" aria-label="Piano G4, keyboard G"><span>G</span></button>
+                            <button class="piano-key white-key" type="button" data-instrument="piano" data-midi="69" data-key="h" aria-label="Piano A4, keyboard H"><span>A</span></button>
+                            <button class="piano-key white-key" type="button" data-instrument="piano" data-midi="71" data-key="j" aria-label="Piano B4, keyboard J"><span>B</span></button>
+                            <button class="piano-key white-key" type="button" data-instrument="piano" data-midi="72" data-key="k" aria-label="Piano C5, keyboard K"><span>C</span></button>
                         </div>
-                        <button class="piano-key black-key" style="--key-position:1" type="button" data-instrument="piano" data-midi="61" data-key="w" aria-label="Piano C sharp 4, keyboard W"><kbd>W</kbd></button>
-                        <button class="piano-key black-key" style="--key-position:2" type="button" data-instrument="piano" data-midi="63" data-key="e" aria-label="Piano D sharp 4, keyboard E"><kbd>E</kbd></button>
-                        <button class="piano-key black-key" style="--key-position:4" type="button" data-instrument="piano" data-midi="66" data-key="t" aria-label="Piano F sharp 4, keyboard T"><kbd>T</kbd></button>
-                        <button class="piano-key black-key" style="--key-position:5" type="button" data-instrument="piano" data-midi="68" data-key="y" aria-label="Piano G sharp 4, keyboard Y"><kbd>Y</kbd></button>
-                        <button class="piano-key black-key" style="--key-position:6" type="button" data-instrument="piano" data-midi="70" data-key="u" aria-label="Piano A sharp 4, keyboard U"><kbd>U</kbd></button>
+                        <button class="piano-key black-key" style="--key-position:1" type="button" data-instrument="piano" data-midi="61" data-key="w" aria-label="Piano C sharp 4, keyboard W"></button>
+                        <button class="piano-key black-key" style="--key-position:2" type="button" data-instrument="piano" data-midi="63" data-key="e" aria-label="Piano D sharp 4, keyboard E"></button>
+                        <button class="piano-key black-key" style="--key-position:4" type="button" data-instrument="piano" data-midi="66" data-key="t" aria-label="Piano F sharp 4, keyboard T"></button>
+                        <button class="piano-key black-key" style="--key-position:5" type="button" data-instrument="piano" data-midi="68" data-key="y" aria-label="Piano G sharp 4, keyboard Y"></button>
+                        <button class="piano-key black-key" style="--key-position:6" type="button" data-instrument="piano" data-midi="70" data-key="u" aria-label="Piano A sharp 4, keyboard U"></button>
                     </div>
-                    <p class="instrument-hint">tap the keys <span class="keyboard-hint">· A–K, with W E T Y U</span></p>
+                    </div>
+                    <button class="instrument-play" type="button" data-play-instrument="piano" aria-pressed="false" aria-label="Play a little piano tune">
+                        <span class="play-icon" aria-hidden="true">▷</span><span class="play-label">click to play</span>
+                    </button>
                 </div>
 
                 <div class="instrument harmonica-instrument" role="group" aria-labelledby="harmonicaHeading">
                     <h3 id="harmonicaHeading">harmonica</h3>
+                    <div class="harmonica-scene">
                     <div class="harmonica-space" aria-hidden="true"><span>♪</span><span>·</span><span>♫</span></div>
+                    <div class="harmonica-air" aria-hidden="true"><span>~ ·</span><span>~</span><span>· ~</span></div>
                     <div class="harmonica-shell">
-                        <div class="harmonica-cover" aria-hidden="true">
+                        <button class="harmonica-cover" id="harmonicaPlay" type="button" data-play-instrument="harmonica"
+                                aria-label="Play a little harmonica tune" aria-pressed="false">
                             <span class="harmonica-screw screw-left">+</span>
                             <span class="harmonica-engraving">· &nbsp; C &nbsp; ·</span>
                             <span class="harmonica-screw screw-right">+</span>
                             <span class="harmonica-cover-line"></span>
-                        </div>
+                        </button>
                         <div class="harmonica-holes" id="harmonicaHoles" role="group" aria-label="Playable harmonica holes">
                             <button type="button" data-instrument="harmonica" data-hole="0" data-key="1" aria-label="Harmonica hole 1, blow C4"><span>1</span><i class="harmonica-reed" aria-hidden="true"></i></button>
                             <button type="button" data-instrument="harmonica" data-hole="1" data-key="2" aria-label="Harmonica hole 2, blow E4"><span>2</span><i class="harmonica-reed" aria-hidden="true"></i></button>
@@ -267,16 +279,23 @@
                         </div>
                         <div class="harmonica-bottom" aria-hidden="true"><span>· : · : · : · : · : · : · : ·</span></div>
                     </div>
-                    <div class="harmonica-breath" role="group" aria-label="Harmonica breath">
-                        <button id="harmonicaBlow" type="button" aria-pressed="true">blow</button>
-                        <button id="harmonicaDraw" type="button" aria-pressed="false">draw</button>
                     </div>
-                    <p class="instrument-hint">hold a hole <span class="keyboard-hint">· 1–0 on your keyboard</span></p>
+                    <button class="instrument-play" type="button" data-play-instrument="harmonica" aria-pressed="false" aria-label="Play a little harmonica tune">
+                        <span class="play-icon" aria-hidden="true">▷</span><span class="play-label">click to play</span>
+                    </button>
                 </div>
             </div>
             <div class="music-footer">
                 <div class="music-volume"><label for="musicVolume">volume</label><input id="musicVolume" type="range" min="0" max="100" value="35" aria-label="Instrument volume"></div>
-                <p id="musicStatus" class="music-status" role="status">tap or hold a note to begin</p>
+                <p id="musicStatus" class="music-status" role="status">pick an instrument, let it play.</p>
+                <details class="music-manual">
+                    <summary>play your own notes</summary>
+                    <p>Tap the keys or holes. Piano: A–K, with W E T Y U for sharps. Harmonica: 1–0.</p>
+                    <div class="harmonica-breath" role="group" aria-label="Harmonica breath">
+                        <button id="harmonicaBlow" type="button" aria-pressed="true">blow</button>
+                        <button id="harmonicaDraw" type="button" aria-pressed="false">draw</button>
+                    </div>
+                </details>
             </div>
             <noscript><p class="music-status">Enable JavaScript to play the instruments.</p></noscript>
         </section>
@@ -330,5 +349,6 @@
     </main>
 </body>
 </html>
+
 
 

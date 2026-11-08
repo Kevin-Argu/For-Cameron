@@ -23,7 +23,7 @@ Open `http://localhost:8000`. The source is a static website with no build step.
 - On “okay bye”, tap the glass bottle of chocolate milk to enlarge it; tap again to shrink it beside Dillbillies' chair. George's original goodbye scene remains commented out, including his meadow and recall button. Its markup, `assets/george.svg`, CSS, and guarded interactions in `js/goodbye.js` are preserved separately from the redesigned welcome rabbit. To restore that older scene, remove the comment wrapper around `georgeMeadow` in `index.html`; its hop and recall controls will resume automatically.
 - The heart's equation and slider stay open. Use the slider's native play/pause control to control the animation. The heart pauses offscreen and when the tab is hidden, while preserving an explicit pause choice.
 - Reduced motion disables automatic heart playback and uses a stationary whale. The native slider's play control can still explicitly enable the heart. Lily growth responds without the rain animation.
-- The music section has a playable piano and a C harmonica. Tap/hold keys or holes. Once focused inside the section, use A–K (W E T Y U for sharps) for piano and 1–0 for harmonica. Blow/Draw changes the reed tuning. Volume can be taken to zero. Escape, leaving the section, tab hiding, and window blur release held notes.
+- Click the piano body or harmonica cover (or its “click to play” control) for a short built-in tune. Click again to stop; switching instruments ends the previous tune. Keys and hammers move in loose decorative patterns, independently of the melody. Individual keys and holes are still playable and take over from an automatic tune. Open “play your own notes” for keyboard shortcuts and harmonica Blow/Draw. Volume can be taken to zero. Escape, leaving the section, tab hiding, and window blur stop all sound and queued movement.
 
 ## Scene colors
 
@@ -54,18 +54,24 @@ linked to the same growth state used by watering and dragging.
 ## Music
 
 `js/music.js` synthesizes a soft piano from decaying harmonics and a reed-like
-harmonica from a periodic waveform with slight vibrato. It uses the browser's
-Web Audio API, starts only after a note gesture, and needs no audio download or
-microphone permission. The ten-hole C Richter tuning follows
+harmonica from a periodic waveform with slight vibrato. Two short original phrases
+provide click-to-play previews; Spotify and external song playback are not connected.
+Audio starts only after a gesture and needs no download or microphone permission.
+The manual ten-hole C Richter tuning follows
 [Hohner's tuning chart](https://hohner.de/fileadmin/documents/instruments/harmonicas/HOHNER-Tuningcharts-Marineband-1896.pdf).
-These are synthesized instruments, not recordings. Touch, keyboard, and accessible
-button clicks share the same note lifecycle; pending audio resumes cannot start
-notes that have already been released.
 
-Each piano note lifts its own hammer and shimmers its strings; multiple held notes
-animate independently. The harmonica has metal covers, a wooden comb, and visible
-reeds that respond to playing. Reduced motion keeps the color feedback and removes
-the moving parts. All note visuals reset on release, tab hiding, or leaving the section.
+The piano drawing, strings, hammers, and HTML keyboard share a single scalable stage;
+the keys sit within its front rim, above the legs. The smaller harmonica rests beside
+it with softer sage metal covers. Song controls lead the page; keyboard legends and
+breath selection live under “play your own notes.” Manual keys still respond directly.
+
+Automatic playing uses separate audio and decorative-animation schedules: random
+small groups of keys and hammers move without matching the notes one for one. The
+harmonica rocks gently, lights a reed, and releases little breath marks. Reduced
+motion removes the decorative movement while preserving playback and active controls.
+Only one tune can play at a time. All queued work and active voices are cleared when
+a tune stops, finishes, loses visibility, or is interrupted by a manual note. Pending
+audio resumes cannot restart a cancelled tune.
 
 ## Desmos configuration
 
@@ -86,5 +92,6 @@ node --test tests/*.test.cjs
 The dependency-free tests cover expression preservation, responsive math bounds, welcome entry without Desmos, George's hop-before-entry sequence and bounded fallbacks, timeout/retry and lazy loading, Explore/Done/Escape, live flower cards, lily growth controls, repeat reveals, idle/offscreen animation scheduling, reduced-motion resize, and native heart playback. The test doubles do not render HTML/CSS or execute the real Desmos library.
 
 Before sharing, check the actual website in desktop and mobile browsers, including Safari: 320px and 390px portrait, landscape, tablet, and desktop; welcome scrolling on short screens; all lily controls; flower panning and note dismissal; repeated section visits; heart math and play/pause; reduced motion; and a throttled/blocked Desmos request. Confirm the API-key notice against the actual key and domain.
+
 
 

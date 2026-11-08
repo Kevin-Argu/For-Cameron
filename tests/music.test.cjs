@@ -125,5 +125,88 @@ test('accessible clicks play a bounded note, volume reaches mute, and unavailabl
     assert.equal(t.gains[0].gain.value, 0);
     const missing = setup({ unsupported: true });
     assert.equal(missing.button('a').disabled, true);
+    assert.equal(missing.h.get('pianoPlay').disabled, true);
+    assert.equal(missing.h.get('harmonicaPlay').disabled, true);
     assert.match(missing.h.get('musicStatus').textContent, /isn’t available/);
 });
+
+test('a click starts a tune; a manual note takes over and cancels the remaining phrase', () => {
+    const t = setup();
+    t.h.get('pianoPlay').click();
+    assert.equal(t.contexts.length, 0);
+    t.h.enter(); t.h.get('pianoPlay').click();
+    assert.equal(t.h.get('pianoPlay').getAttribute('aria-pressed'), 'true');
+    assert.ok(t.oscillators.length > 0);
+    assert.ok(t.h.document.querySelectorAll('.is-performing-note').length > 0);
+    t.h.advance(900);
+    t.down('a'); t.up('a');
+    assert.equal(t.h.get('pianoPlay').getAttribute('aria-pressed'), 'false');
+    const count = t.oscillators.length;
+    t.h.advance(3000);
+    assert.equal(t.oscillators.length, count);
+    assert.equal(t.h.document.querySelectorAll('.is-performing-note').length, 0);
+});
+
+test('switching instruments stops the old phrase; clicking the active instrument stops both sound and movement', () => {
+    const t = setup(); t.h.enter(); t.h.get('pianoPlay').click();
+    const oldVoices = [...t.oscillators];
+    t.h.get('harmonicaPlay').click();
+    assert.equal(t.h.get('pianoPlay').getAttribute('aria-pressed'), 'false');
+    assert.equal(t.h.get('harmonicaPlay').getAttribute('aria-pressed'), 'true');
+    assert.ok(oldVoices.every(node => node.stops.at(-1) === .18));
+    assert.equal(t.h.document.querySelector('.piano-instrument').classList.contains('is-performing'), false);
+    t.h.advance(500); t.h.get('harmonicaPlay').click();
+    const count = t.oscillators.length;
+    t.h.advance(3000);
+    assert.equal(t.oscillators.length, count);
+    assert.equal(t.h.get('harmonicaPlay').getAttribute('aria-pressed'), 'false');
+    assert.equal(t.h.document.querySelectorAll('.is-performing-note').length, 0);
+});
+
+test('leaving, hiding, blurring, or pressing Escape cancels every scheduled tune note', () => {
+    const exits = [
+        h => h.intersect('musicFinale', 0), h => h.hidden(true),
+        h => h.windowEvent('blur'), h => h.windowEvent('pagehide'),
+        h => h.get('musicFinale').dispatchEvent({ type: 'keydown', key: 'Escape' })
+    ];
+    for (const exit of exits) {
+        const t = setup(); t.h.enter(); t.h.get('pianoPlay').click();
+        t.h.advance(500); exit(t.h);
+        const count = t.oscillators.length;
+        t.h.advance(2000);
+        assert.equal(t.oscillators.length, count);
+        assert.equal(t.h.get('pianoPlay').getAttribute('aria-pressed'), 'false');
+        assert.equal(t.h.document.querySelectorAll('.is-performing-note').length, 0);
+    }
+});
+
+test('stopping while audio unlocks cannot start a delayed tune', async () => {
+    const t = setup({ suspended: true }); t.h.enter();
+    t.h.get('pianoPlay').click(); t.h.get('pianoPlay').click();
+    t.resume(); await flush(); t.h.advance(2000);
+    assert.equal(t.oscillators.length, 0);
+    assert.equal(t.h.document.querySelectorAll('.is-performing-note').length, 0);
+});
+
+test('reduced motion keeps the tune playable without randomly moving keys', () => {
+    const t = setup(); t.h.enter(); t.h.setReduced(true);
+    t.h.get('pianoPlay').click(); t.h.advance(500);
+    assert.ok(t.oscillators.length > 0);
+    assert.equal(t.h.document.querySelectorAll('.is-performing-note').length, 0);
+    t.h.setReduced(false);
+    assert.ok(t.h.document.querySelectorAll('.is-performing-note').length > 0);
+    t.h.setReduced(true); t.h.advance(1000);
+    assert.equal(t.h.document.querySelectorAll('.is-performing-note').length, 0);
+    assert.equal(t.h.get('pianoPlay').getAttribute('aria-pressed'), 'true');
+});
+
+test('a finished tune returns to rest without looping or leaving keys held', () => {
+    const t = setup(); t.h.enter(); t.h.get('pianoPlay').click();
+    t.h.advance(18000);
+    assert.equal(t.h.get('pianoPlay').getAttribute('aria-pressed'), 'false');
+    assert.equal(t.h.document.querySelectorAll('.is-performing-note').length, 0);
+    const count = t.oscillators.length;
+    t.h.advance(2000);
+    assert.equal(t.oscillators.length, count);
+});
+
