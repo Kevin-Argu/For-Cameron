@@ -3,8 +3,8 @@
     position: relative; z-index: 20; min-height: 100vh; min-height: 100svh;
     display: flex; flex-direction: column; justify-content: center;
     padding: clamp(44px, 5vw, 72px) max(22px, env(safe-area-inset-left)) 48px;
-    /* Warm charcoal lets the pink and sage instruments lead this section. */
-    background: var(--night-charcoal); color: #e9e5d9; text-align: center;
+    /* A cooler teal gives the music its own setting beside the plum lilies. */
+    background: var(--night-teal); color: #e9e5d9; text-align: center;
 }
 .music-heading h2 { font: italic normal clamp(30px, 5vw, 54px)/1.2 var(--serif); color: #eac3d5; }
 .music-heading p { margin-top: 18px; color: #9cae9d; font: 13px/1.6 Menlo, Consolas, monospace; letter-spacing: .055em; }
@@ -126,7 +126,8 @@
 .music-footer { margin: 24px auto 0; }
 .music-volume { display: flex; justify-content: center; align-items: center; gap: 14px; color: #b8a6b0; font: 11px/1.5 Menlo, Consolas, monospace; }
 .music-volume input { width: 110px; min-height: 28px; accent-color: #d7b3c6; cursor: pointer; }
-.music-status { min-height: 20px; margin-top: 16px; color: #89998d; font: 11px/1.6 Menlo, Consolas, monospace; }
+/* Keep the small playback prompt readable against the lighter teal background. */
+.music-status { min-height: 20px; margin-top: 16px; color: #a4b6a8; font: 11px/1.6 Menlo, Consolas, monospace; }
 /* Song gestures are deliberately decorative; they do not transcribe the audio. */
 .harmonica-instrument.is-performing .harmonica-shell { animation: harmonica-sway 2.8s ease-in-out infinite; }
 .harmonica-air { position: absolute; inset: 20px 20% auto; display: flex; justify-content: space-between; pointer-events: none; }

@@ -32,10 +32,10 @@ Open `http://localhost:8000`. The source is a static website with no build step.
 
 ## Scene colors
 
-`css/palette.css` holds the shared night palette: plum for the lilies and goodbye,
-dusky blue for the ocean, a blue-green tone for birdwatching, and warm charcoal
-for the welcome and music. The two character canvases stay transparent so their
-backgrounds always match their sections. The Desmos scenes keep their light paper
+`css/palette.css` holds the shared night palette: plum for the lilies, dusky blue
+for the ocean, a blue-green tone for birdwatching, warm charcoal for the welcome,
+midnight teal for music, and warm cocoa for goodbye. The two character canvases
+stay transparent so their backgrounds always match their sections. The Desmos scenes keep their light paper
 and graph backgrounds. Lily watering is the primary pink action; secondary text
 controls retain 44px touch targets and visible keyboard focus.
 
